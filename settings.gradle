@@ -1,0 +1,2 @@
+rootProject.name = "KLP"
+include ':app'
