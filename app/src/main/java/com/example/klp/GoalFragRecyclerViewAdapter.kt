@@ -28,7 +28,7 @@ class GoalFragRecyclerViewAdapter(val scheList:List<Schedule>):RecyclerView.Adap
         val end = scheList[position].end
 
 
-        holder.dDayText.text = "D-"+abs((end.timeInMillis - now.timeInMillis) /(24*60*60*1000)).toString()
+        holder.dDayText.text = "D-"+abs((end.timeInMillis - now.timeInMillis) /(24*60*60*1000) + 1).toString()
         holder.percentText.text = scheList[position].percent.toString()+"%"
         holder.periodText.text = "${start.get(Calendar.YEAR)}.${start.get(Calendar.MONTH)+1}.${start.get(Calendar.DAY_OF_MONTH)}~${end.get(Calendar.YEAR)}.${end.get(Calendar.MONTH)+1}.${end.get(Calendar.DAY_OF_MONTH)}"
         holder.cateText.text = "[${scheList[position].category}]${scheList[position].title}"
