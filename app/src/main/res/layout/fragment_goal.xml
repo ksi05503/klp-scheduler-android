@@ -62,5 +62,16 @@
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/goalViewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_weight="2">
+
+    </androidx.viewpager2.widget.ViewPager2>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/customCalendar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:layout_weight="1" />
+
 </LinearLayout>
