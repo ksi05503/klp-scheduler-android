@@ -6,6 +6,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".MainActivity">
+    <Button
+        android:id="@+id/addBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="right"
+        android:layout_marginRight="6dp"
+        android:backgroundTint="#DDDDDD"
+        android:text="+"
+        android:textColor="#3E3D3D"
+        android:textSize="24sp"
+        app:iconTint="#9F9F9F">
+
+
+    </Button>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayout"
         android:layout_width="match_parent"
