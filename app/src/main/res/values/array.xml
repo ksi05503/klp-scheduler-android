@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="goalSpinner">
+        <item>사용자 설정 순</item>
+        <item>남은 기한 순</item>
+        <item>카테고리별 정렬</item>
+    </string-array>
+</resources>
