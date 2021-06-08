@@ -1,15 +1,21 @@
 package com.example.klp
 
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.klp.retrofit.RetrofitManager
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 enum class ActionType{
     Add,Delete,Modify
 }
 class ScheduleViewModel: ViewModel() {
-
     //내부에서 설정하는 자료형은 뮤터블로 변경가능하도록 설정
 
     private val _newSchedule = MutableLiveData<ScheduleData>()
@@ -29,10 +35,8 @@ class ScheduleViewModel: ViewModel() {
         _newSchedule.value = input
 
         when(actionType){
-/*            ActionType.Add ->
-*/
-
-            //db에 추가
+            ActionType.Add ->
+                RetrofitManager.instance.addSchedule(schedule = input)
 /*            ActionType.Delete ->
                 //db에서 삭제
             ActionType.Modify ->

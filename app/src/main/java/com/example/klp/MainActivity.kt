@@ -3,6 +3,7 @@ package com.example.klp
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -11,8 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.klp.databinding.ActivityMainBinding
 import androidx.lifecycle.Observer
+import com.example.klp.retrofit.RetrofitManager
 
 import com.google.android.material.tabs.TabLayoutMediator
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -40,8 +47,15 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun dialogBuilder(){    //일정추가 dialog
-        binding.addBtn.setOnClickListener{
+
+//              일정추가 dialog
+    private fun dialogBuilder(){
+
+
+
+
+
+    binding.addBtn.setOnClickListener{
             val builder = AlertDialog.Builder(this)
 
             val dialogView = layoutInflater.inflate(R.layout.dialog_add_schedule,null)
@@ -111,7 +125,6 @@ class MainActivity : AppCompatActivity() {
                         scheduleViewModel.handleScheduleDB(actionType = ActionType.Add, newSchedule)
                 //뷰모델 데이터에 dialog input 스케줄 추가
                         Toast.makeText(this@MainActivity, "뷰모델에 추가된 일정: ${scheduleViewModel.newSchedule.value?.getName()}",Toast.LENGTH_SHORT).show()
-
                      }
 
                 }
@@ -125,4 +138,6 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
+
 }
