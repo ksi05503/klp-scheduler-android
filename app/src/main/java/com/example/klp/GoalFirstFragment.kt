@@ -11,16 +11,17 @@ import android.view.ViewGroup
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.klp.adapter.GoalFragRecyclerViewAdapter
 import com.example.klp.databinding.FragmentGoalFirstBinding
+import com.example.klp.datas.Schedule
 import java.lang.Exception
-import java.util.*
 import kotlin.collections.ArrayList
 
 
 class GoalFirstFragment : Fragment() {
     var binding:FragmentGoalFirstBinding?=null
     var recyclerView:RecyclerView?=null
-    var adapter:GoalFragRecyclerViewAdapter?=null
+    var adapter: GoalFragRecyclerViewAdapter?=null
     var scheduleList = mutableListOf<Schedule>()
     var mCalendarList:MutableLiveData<ArrayList<Any>>?=null
     override fun onCreateView(

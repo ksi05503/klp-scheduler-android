@@ -2,6 +2,7 @@ package com.example.klp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.klp.adapter.MyFragStateAdapter
 import com.example.klp.databinding.ActivityMainBinding
 import com.google.android.material.tabs.TabLayoutMediator
 

@@ -1,4 +1,4 @@
-package com.example.klp
+package com.example.klp.adapter
 
 import android.icu.util.Calendar
 import android.view.LayoutInflater
@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.klp.R
+import com.example.klp.datas.Schedule
 import kotlin.math.abs
 
 class GoalFragRecyclerViewAdapter(val scheList:List<Schedule>):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
