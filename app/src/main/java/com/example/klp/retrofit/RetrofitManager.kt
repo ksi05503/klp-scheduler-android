@@ -2,7 +2,7 @@ package com.example.klp.retrofit
 
 import android.content.ContentValues.TAG
 import android.util.Log
-import com.example.klp.ScheduleData
+import com.example.klp.data.ScheduleData
 import com.example.klp.utils.API
 import retrofit2.Call
 import retrofit2.Response

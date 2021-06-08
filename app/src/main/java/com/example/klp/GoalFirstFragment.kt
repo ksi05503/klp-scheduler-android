@@ -8,16 +8,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.klp.data.ScheduleViewModel
 import com.example.klp.databinding.FragmentGoalFirstBinding
 import java.lang.Exception
-import java.util.*
 import kotlin.collections.ArrayList
 
 
 class GoalFirstFragment : Fragment() {
+
+    private val scheduleViewModel: ScheduleViewModel by activityViewModels()
+
     var binding:FragmentGoalFirstBinding?=null
     var recyclerView:RecyclerView?=null
     var adapter:GoalFragRecyclerViewAdapter?=null
@@ -40,6 +44,7 @@ class GoalFirstFragment : Fragment() {
         cal2.set(Calendar.YEAR, 2021)
         cal2.set(Calendar.MONTH, Calendar.MAY)
         cal2.set(Calendar.DAY_OF_MONTH, 31)
+        // scheduleViewModel.loadAllSchedules() 이걸 어댑터에서 사용
         scheduleList.add(Schedule(0, "운동", "러닝", cal1, cal2))
 
         binding.apply {
@@ -49,6 +54,12 @@ class GoalFirstFragment : Fragment() {
             recyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             recyclerView!!.adapter = adapter
         }
+/*
+        scheduleViewModel.newSchedule.observe(this, Observer {
+
+        })  를 이용해서 값이 변경될때마다 목표 프래그먼트의 리사이클러뷰 아이템을 고쳐주면 될듯 하다.
+*/
+
     }
 
     private fun setCalendarList(){
@@ -75,4 +86,6 @@ class GoalFirstFragment : Fragment() {
         }
         mCalendarList!!.value = calendarList
     }
+
+
 }

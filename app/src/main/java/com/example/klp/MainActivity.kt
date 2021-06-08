@@ -3,29 +3,23 @@ package com.example.klp
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Bundle
-import android.util.Log
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.klp.databinding.ActivityMainBinding
-import androidx.lifecycle.Observer
-import com.example.klp.retrofit.RetrofitManager
+import com.example.klp.data.ScheduleData
+import com.example.klp.data.ScheduleViewModel
 
 import com.google.android.material.tabs.TabLayoutMediator
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
-    
-    lateinit var scheduleViewModel: ScheduleViewModel  //add Schedule 뷰모델
-    
+
+    private val scheduleViewModel: ScheduleViewModel by viewModels()
+
+
+
     lateinit var binding:ActivityMainBinding
     val fragArr = arrayListOf<String>("전체 목표", "오늘 실천", "나의 통계", "커뮤니티")
 
@@ -110,7 +104,6 @@ class MainActivity : AppCompatActivity() {
             builder.setView(dialogView)
                 .setPositiveButton("확인"){ dialogInterface, i ->
 
-                    scheduleViewModel = ViewModelProvider(this).get(ScheduleViewModel::class.java)
 
 
                     binding.apply{
@@ -121,11 +114,9 @@ class MainActivity : AppCompatActivity() {
                         val importance = dialogImportanceRadioGroup.indexOfChild(dialogView.findViewById<RadioButton>(dialogImportanceRadioGroup.checkedRadioButtonId))
                         val detail = dialogDetail.text.toString()
 //              입력된 DATA 정보들은 위와같다. (정규일정여부와 소요시간과 중요도(라디오버튼input)는 index정보로 db에 들어갈것이다)
-                        val newSchedule:ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
-                        scheduleViewModel.handleScheduleDB(actionType = ActionType.Add, newSchedule)
-                //뷰모델 데이터에 dialog input 스케줄 추가
-                        Toast.makeText(this@MainActivity, "뷰모델에 추가된 일정: ${scheduleViewModel.newSchedule.value?.getName()}",Toast.LENGTH_SHORT).show()
-                     }
+                        val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
+
+                    }
 
                 }
                 .setNegativeButton("취소"){ dialogInterface, i ->

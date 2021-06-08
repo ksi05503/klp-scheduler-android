@@ -1,6 +1,6 @@
 package com.example.klp.retrofit
 
-import com.example.klp.ScheduleData
+import com.example.klp.data.ScheduleData
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -8,7 +8,10 @@ import retrofit2.http.*
 interface IRetrofit {
     //   @GET("/getSchedule")
     //   fun getSchedule(@Query("name") name: String): Call<ScheduleData>
-    //   @GET("/getScheduleid")
+
+    @GET("/schedule")
+    fun getSchedules(@Query("type") type: String): Call<ArrayList<ScheduleData>>
+
     //   fun getSchedule(@Query("sname") sname: String): Call<Int>
 
     // http//,,baseURL,,/addSchedule/?query=""
