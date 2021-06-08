@@ -5,4 +5,10 @@
         <item>남은 기한 순</item>
         <item>카테고리별 정렬</item>
     </string-array>
+    <string-array name="articleSpinner">
+        <item>자유</item>
+        <item>인증</item>
+        <item>자랑</item>
+        <item>고민</item>
+    </string-array>
 </resources>

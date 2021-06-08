@@ -22,7 +22,7 @@ class GoalFirstFragment : Fragment() {
     var recyclerView:RecyclerView?=null
     var adapter:GoalFragRecyclerViewAdapter?=null
     var scheduleList = mutableListOf<Schedule>()
-    var mCalendarList:MutableLiveData<ArrayList<Object>>?=null
+    var mCalendarList:MutableLiveData<ArrayList<Any>>?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -53,20 +53,20 @@ class GoalFirstFragment : Fragment() {
 
     private fun setCalendarList(){
         var cal = GregorianCalendar()
-        var calendarList = ArrayList<Object>()
+        var calendarList = ArrayList<Any>()
 
         for(i:Int in -300..300){
             try{
                 var calendar = GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + i, 1, 0, 0, 0)
-                calendarList.add(calendar.timeInMillis as Object)
+                calendarList.add(calendar.timeInMillis)
 
                 val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1 //해당 월  시작 요일 - 1 = 빈칸
                 val max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH) //해당 월 마지막 요일
                 for(j in 0 until dayOfWeek){
-                    calendarList.add("empty" as Object)
+                    calendarList.add("empty")
                 }
                 for(j in 1..max){
-                    calendarList.add(GregorianCalendar(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), j) as Object)
+                    calendarList.add(GregorianCalendar(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), j))
                 }
             }
             catch(e:Exception){
