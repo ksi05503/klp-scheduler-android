@@ -31,7 +31,7 @@ class GoalFragRecyclerViewAdapter(val scheList:List<Schedule>):RecyclerView.Adap
         val start = scheList[position].start
         val end = scheList[position].end
         val percent = scheList[position].percent
-        val dDay = (end.timeInMillis - now.timeInMillis) /(24*60*60*1000) + 1
+        val dDay = (end.timeInMillis - now.timeInMillis)/(24*60*60*1000)
 
         holder.per_circle.progress = percent
         holder.percentText.text = scheList[position].percent.toString()+"%"
