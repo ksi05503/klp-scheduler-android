@@ -41,7 +41,7 @@ class GoalFirstFragment : Fragment() {
         cal2.set(Calendar.YEAR, 2021)
         cal2.set(Calendar.MONTH, Calendar.MAY)
         cal2.set(Calendar.DAY_OF_MONTH, 31)
-        scheduleList.add(Schedule(0, "운동", "러닝", cal1, cal2))
+        scheduleList.add(Schedule(60, "운동", "러닝", cal1, cal2))
 
         binding.apply {
             recyclerView = binding!!.goalFirstRecycler
