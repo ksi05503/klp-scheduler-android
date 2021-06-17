@@ -34,6 +34,8 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_weight="1"
+                android:padding="3dp"
+                android:scaleType="fitXY"
                 android:src="@android:drawable/ic_menu_edit" />
 
             <TextView
@@ -55,7 +57,9 @@
             android:id="@+id/goalSpinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:entries="@array/goalSpinner" />
+            android:entries="@array/goalSpinner"
+            android:gravity="center"
+            android:textAlignment="textEnd" />
 
     </LinearLayout>
 

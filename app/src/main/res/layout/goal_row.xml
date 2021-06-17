@@ -1,10 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="left"
-    android:orientation="horizontal"
-    android:id="@+id/rootView">
+    android:orientation="horizontal">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/percent_circle"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:indeterminateOnly="false"
+            android:progressDrawable="@drawable/percent_circle"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:progress="90" />
+
+        <TextView
+            android:id="@+id/percentText"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:text="90%"
+            android:textColor="@color/black"
+            android:textSize="11sp" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -12,19 +38,13 @@
         android:layout_marginLeft="12dp"
         android:orientation="vertical">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/dDay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/dDay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="3dp"
-                android:text="D-day"
-                android:textColor="@color/purple_500" />
-        </LinearLayout>
+            android:padding="3dp"
+            android:text="D-day"
+            android:textColor="@color/purple_500" />
 
         <TextView
             android:id="@+id/stype"
@@ -35,25 +55,26 @@
 
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             android:layout_weight="1"
-            >
+            android:orientation="vertical">
+
             <TextView
                 android:id="@+id/sname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="일정이름"
-                android:padding="3dp"
-                android:textSize="15dp"
                 android:layout_weight="2"
+                android:padding="3dp"
+                android:text="일정이름"
+                android:textSize="15dp"
 
                 />
+
             <TextView
                 android:id="@+id/sdate"
                 android:layout_width="wrap_content"
@@ -66,11 +87,15 @@
 
         </LinearLayout>
 
-        <CheckBox
-            android:id="@+id/doneCheckBox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            />
     </LinearLayout>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+    <CheckBox
+        android:id="@+id/doneCheckBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right|center_vertical" />
 </LinearLayout>
