@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.klp.adapter.GoalFragRecyclerViewAdapter
+import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.FragmentTodayBinding
 import com.example.klp.datas.Schedule
 import com.example.klp.utils.Category
@@ -31,7 +32,7 @@ class TodayFragment : Fragment() {
         binding!!.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerView!!.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
-            adapter = GoalFragRecyclerViewAdapter(ArrayList<Schedule>())
+            adapter = GoalFragRecyclerViewAdapter(ArrayList<ScheduleData>())
             recyclerView.adapter = adapter
             adapter!!.apply {
                 var cal1 = Calendar.getInstance()
@@ -44,7 +45,7 @@ class TodayFragment : Fragment() {
                 cal2.set(Calendar.DAY_OF_MONTH, 30)
 
 
-                scheList.add(Schedule(35, Category.STUDY, "토익 문제집", cal1, cal2))
+//                scheList.add(Schedule(35, Category.STUDY, "토익 문제집", cal1, cal2))
             }
         }
     }
