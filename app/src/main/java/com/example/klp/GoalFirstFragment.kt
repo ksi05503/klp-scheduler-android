@@ -8,10 +8,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.klp.data.ScheduleData
 import com.example.klp.data.ScheduleViewModel
 import com.example.klp.databinding.FragmentGoalFirstBinding
 import java.lang.Exception
@@ -22,10 +26,12 @@ class GoalFirstFragment : Fragment() {
 
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
 
+
     var binding:FragmentGoalFirstBinding?=null
     var recyclerView:RecyclerView?=null
     var adapter:GoalFragRecyclerViewAdapter?=null
     var scheduleList = mutableListOf<Schedule>()
+    var scheduleDataList = ArrayList<ScheduleData>()
     var mCalendarList:MutableLiveData<ArrayList<Object>>?=null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -49,10 +55,35 @@ class GoalFirstFragment : Fragment() {
 
         binding.apply {
             recyclerView = binding!!.goalFirstRecycler
-            adapter = GoalFragRecyclerViewAdapter(scheduleList)
+
+            scheduleDataList = scheduleViewModel.loadAllSchedules()
+            adapter = GoalFragRecyclerViewAdapter(scheduleDataList)
+            //클릭이벤트
+            adapter!!.setItemClickListener(object : GoalFragRecyclerViewAdapter.OnItemClickListener{
+                override fun onClick(v: View, position: Int) {
+                    val item = scheduleDataList[position]
+
+                    Toast.makeText(v.context, "Activity\n${item.sname}\n${item.sdate}", Toast.LENGTH_SHORT).show()
+
+                    //다이얼로그
+
+
+
+
+
+
+
+
+                    adapter!!.notifyDataSetChanged()
+                }
+            })
+
 
             recyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             recyclerView!!.adapter = adapter
+
+
+
         }
 /*
         scheduleViewModel.newSchedule.observe(this, Observer {

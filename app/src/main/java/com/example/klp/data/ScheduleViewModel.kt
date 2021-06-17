@@ -3,6 +3,7 @@ package com.example.klp.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.klp.Schedule
 import com.example.klp.data.ScheduleData
 
 
@@ -23,23 +24,48 @@ class ScheduleViewModel: ViewModel() {
     }
 
 
+    //임시 데이터
+
+    var data1 = ScheduleData ("khw98",1,"KLP 회의","2021-06-17 17:00",1,"월 수 금","회의",3,1,"늦지않기",0)
+    var data2 = ScheduleData ("khw98",2,"컴퓨터그래픽스 시험","2021-06-17 13:30",0,"","시험",2,3,"망한듯",0)
+    var data3 = ScheduleData ("khw98",2,"옷사기","2021-06-17 13:30",0,"","시험",2,3,"망한듯",1)
 
     //fun 전체목표 불러오기
-    fun loadAllSchedules(){
+    fun loadAllSchedules():ArrayList<ScheduleData>{
         //레트로핏으로 데이터 받아올것
    //     _newSchedules.value =  getSchedules~
 
 
+        var scheduleArrayList = ArrayList<ScheduleData>()
 
 
+        scheduleArrayList.add(data1)
+        scheduleArrayList.add(data2)
+
+        return scheduleArrayList
     }
 
     //fun 오늘 목표 불러오기
-    fun loadTodaySchedules(){
+    fun loadTodaySchedules():ArrayList<ScheduleData>{
         //레트로핏으로 데이터 받아올것
         //     _newSchedules.value =  getSchedules~
 
 
+        var scheduleArrayList = ArrayList<ScheduleData>()
+
+
+        scheduleArrayList.add(data1)
+
+        return scheduleArrayList
+    }
+
+
+    fun loadDoneSchedules():ArrayList<ScheduleData>{
+        var scheduleArrayList = ArrayList<ScheduleData>()
+
+        scheduleArrayList.add(data3)
+
+        return scheduleArrayList
     }
 
 
