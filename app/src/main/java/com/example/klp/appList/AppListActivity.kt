@@ -6,7 +6,6 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.klp.databinding.ActivityAppListBinding
-import com.example.lab11.AppData
 
 class AppListActivity : AppCompatActivity() {
     private val binding: ActivityAppListBinding by lazy { ActivityAppListBinding.inflate(layoutInflater) }
@@ -32,7 +31,7 @@ class AppListActivity : AppCompatActivity() {
                 val appPackageName = appInfo.activityInfo.packageName
                 val appIcon = appInfo.loadIcon(packageManager)
 
-                adapter.items.add(AppData(appLabel.toString(), appClass, appPackageName, appIcon))
+                adapter.items.add(AppData(appLabel.toString(), appPackageName, appIcon))
             }
         }
         adapter.itemClickListener = object : MyAdapter.OnItemClickListener {
