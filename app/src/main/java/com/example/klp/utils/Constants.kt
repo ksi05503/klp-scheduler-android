@@ -1,5 +1,5 @@
 package com.example.klp.utils
 
 object API{
-    const val BASE_URL : String = "베이스url (맨뒤에 /포함)"
+    const val BASE_URL : String = "http://35.232.144.196:3000/"
 }

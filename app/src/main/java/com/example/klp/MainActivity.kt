@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity() {
                         val importance = dialogImportanceRadioGroup.indexOfChild(dialogView.findViewById<RadioButton>(dialogImportanceRadioGroup.checkedRadioButtonId))
                         val detail = dialogDetail.text.toString()
 //              입력된 DATA 정보들은 위와같다. (정규일정여부와 소요시간과 중요도(라디오버튼input)는 index정보로 db에 들어갈것이다)
-                        val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
+            //            val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
 
                     }
 
