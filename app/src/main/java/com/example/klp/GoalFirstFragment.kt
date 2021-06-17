@@ -8,12 +8,17 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.adapter.GoalFragRecyclerViewAdapter
 import com.example.klp.databinding.FragmentGoalFirstBinding
 import com.example.klp.datas.Schedule
+import com.example.klp.model.GoalViewModel
+import com.example.klp.utils.Category
 import java.lang.Exception
 import kotlin.collections.ArrayList
 
@@ -22,7 +27,7 @@ class GoalFirstFragment : Fragment() {
     var binding:FragmentGoalFirstBinding?=null
     var recyclerView:RecyclerView?=null
     var adapter: GoalFragRecyclerViewAdapter?=null
-    var mCalendarList:MutableLiveData<ArrayList<Any>>?=null
+    val viewModel:GoalViewModel by activityViewModels()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,44 +42,45 @@ class GoalFirstFragment : Fragment() {
             adapter = GoalFragRecyclerViewAdapter(ArrayList<Schedule>())
 
             recyclerView!!.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            recyclerView!!.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
             recyclerView!!.adapter = adapter
 
-            var cal1 = Calendar.getInstance()
-            cal1.set(Calendar.YEAR, 2021)
-            cal1.set(Calendar.MONTH, Calendar.MAY)
-            cal1.set(Calendar.DAY_OF_MONTH, 5)
-            var cal2 = Calendar.getInstance()
-            cal2.set(Calendar.YEAR, 2021)
-            cal2.set(Calendar.MONTH, Calendar.MAY)
-            cal2.set(Calendar.DAY_OF_MONTH, 31)
+            //테스트 코드
+            var cal1 = generateCal(2021, 5, 1)
+            var cal2 = generateCal(2021, 5, 5)
+            var cal3 = generateCal(2021, 5, 15)
+            var cal4 = generateCal(2021, 6, 20)
+            var cal5 = generateCal(2021, 6, 30)
 
-            adapter!!.scheList.add(Schedule(60, "운동", "러닝", cal1, cal2))
+            adapter!!.scheList.add(Schedule(15, Category.STUDY, "토익", cal3, cal5))
+            adapter!!.scheList.add(Schedule(60, Category.EXERCISE, "러닝", cal2, cal3))
+            adapter!!.scheList.add(Schedule(90, Category.EXERCISE, "턱걸이", cal1, cal2))
+            adapter!!.scheList.add(Schedule(38, Category.SCHEDULE, "면접 준비", cal3, cal4))
             adapter!!.notifyDataSetChanged()
         }
+
+        viewModel.selected.observe(viewLifecycleOwner, Observer {
+            when(it){
+                0->{
+
+                }
+                1->{
+                    adapter!!.scheList.sortBy { it.end }
+                    adapter!!.notifyDataSetChanged()
+                }
+                2->{
+                    adapter!!.scheList.sortBy { it.category }
+                    adapter!!.notifyDataSetChanged()
+                }
+            }
+        })
     }
 
-    private fun setCalendarList(){
-        var cal = GregorianCalendar()
-        var calendarList = ArrayList<Any>()
-
-        for(i:Int in -300..300){
-            try{
-                var calendar = GregorianCalendar(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH) + i, 1, 0, 0, 0)
-                calendarList.add(calendar.timeInMillis)
-
-                val dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1 //해당 월  시작 요일 - 1 = 빈칸
-                val max = calendar.getActualMaximum(Calendar.DAY_OF_MONTH) //해당 월 마지막 요일
-                for(j in 0 until dayOfWeek){
-                    calendarList.add("empty")
-                }
-                for(j in 1..max){
-                    calendarList.add(GregorianCalendar(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), j))
-                }
-            }
-            catch(e:Exception){
-                Log.e("Exception", e.toString())
-            }
-        }
-        mCalendarList!!.value = calendarList
+    private fun generateCal(year:Int, month:Int, day:Int):Calendar{
+        var cal = Calendar.getInstance()
+        cal.set(Calendar.YEAR, year)
+        cal.set(Calendar.MONTH, month-1)
+        cal.set(Calendar.DAY_OF_MONTH, day)
+        return cal
     }
 }

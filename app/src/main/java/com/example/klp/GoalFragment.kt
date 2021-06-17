@@ -5,15 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import com.example.klp.adapter.CalendarAdapter
 import com.example.klp.adapter.GoalFragStateAdapter
 import com.example.klp.databinding.FragmentGoalBinding
+import com.example.klp.model.GoalViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 class GoalFragment : Fragment() {
     var binding:FragmentGoalBinding?=null
     val fragArr = arrayListOf<String>("진행 중인 목표", "종료된 목표")
     var calendarAdapter: CalendarAdapter?=null
+    val viewModel:GoalViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,11 +37,38 @@ class GoalFragment : Fragment() {
     }
 
     private fun init() {
-        binding!!.goalViewPager.adapter = GoalFragStateAdapter(this.requireActivity())
-        TabLayoutMediator(binding!!.goalTabLayout, binding!!.goalViewPager){
-            tab, position ->
-            tab.text = fragArr[position]
-        }.attach()
+        binding!!.apply {
+            goalViewPager.adapter = GoalFragStateAdapter(requireActivity())
+            TabLayoutMediator(binding!!.goalTabLayout, binding!!.goalViewPager){
+                    tab, position ->
+                tab.text = fragArr[position]
+            }.attach()
+
+            goalSpinner.onItemSelectedListener = object:AdapterView.OnItemSelectedListener{
+                override fun onItemSelected(
+                    parent: AdapterView<*>?,
+                    view: View?,
+                    position: Int,
+                    id: Long
+                ) {
+                    when(position){
+                        0->{
+                            Toast.makeText(parent?.context, "사용자 설정 순", Toast.LENGTH_SHORT).show()
+                            viewModel.select(0)
+                        }
+                        1->{
+                            Toast.makeText(parent?.context, "남은 기한 순", Toast.LENGTH_SHORT).show()
+                            viewModel.select(1)
+                        }
+                        2->{
+                            Toast.makeText(parent?.context, "카테고리 별", Toast.LENGTH_SHORT).show()
+                            viewModel.select(2)
+                        }
+                    }
+                }
+                override fun onNothingSelected(parent: AdapterView<*>?) { }
+            }
+        }
     }
 
     override fun onDestroy() {
