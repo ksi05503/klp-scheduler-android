@@ -35,23 +35,23 @@
         android:layout_height="wrap_content">
 
         <Button
-            android:id="@+id/dateBtn"
+            android:id="@+id/dateBtn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
             android:backgroundTint="#818181"
             android:layout_weight="1"
-            android:text="날짜설정"></Button>
+            android:text="시작날짜"></Button>
 
         <Button
-            android:id="@+id/timeBtn"
+            android:id="@+id/dateBtn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="40dp"
             android:backgroundTint="#818181"
             android:layout_weight="1"
-            android:text="시간설정"></Button>
+            android:text="종료날짜"></Button>
     </LinearLayout>
 
 

@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    binding.addBtn.setOnClickListener{
+        binding.addBtn.setOnClickListener{
             val builder = AlertDialog.Builder(this)
 
             val dialogView = layoutInflater.inflate(R.layout.dialog_add_schedule,null)
@@ -60,15 +60,42 @@ class MainActivity : AppCompatActivity() {
             val dialogImportanceRadioGroup = dialogView.findViewById<RadioGroup>(R.id.importanceRadiogroup)
             val dialogDetail = dialogView.findViewById<EditText>(R.id.emptyTextField)
 
-            val calBtn = dialogView.findViewById<Button>(R.id.dateBtn)
-            val timeBtn = dialogView.findViewById<Button>(R.id.timeBtn)
+            val calBtn1 = dialogView.findViewById<Button>(R.id.dateBtn1)
+            val calBtn2 = dialogView.findViewById<Button>(R.id.dateBtn2)
             var dbDate = ""  //db에 들어갈 string
             var dbTime = ""  //db에 들어갈 string
-            calBtn.setOnClickListener {
-                var calendar = Calendar.getInstance()
-                var year = calendar.get(Calendar.YEAR)
-                var month = calendar.get(Calendar.MONTH)
-                var day = calendar.get(Calendar.DAY_OF_MONTH)
+
+            var calendar = Calendar.getInstance()
+            var myYear = calendar.get(Calendar.YEAR)
+            var myMonth = calendar.get(Calendar.MONTH)
+            var myDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+            calBtn1.setOnClickListener {
+                var date_listener = object : DatePickerDialog.OnDateSetListener{
+                    override fun onDateSet(
+                        view: DatePicker?,
+                        year: Int,
+                        month: Int,
+                        dayOfMonth: Int
+                    ) {
+                        calBtn1.text = "$year/${month+1}/$dayOfMonth"
+
+                        myYear = year
+                        myMonth = month
+                        myDay = dayOfMonth
+                        dbDate = "${year.toString()}/${month.toString()}/${dayOfMonth}"
+                        calBtn2.text = "$myYear/${myMonth+1}/$myDay"
+
+                    }
+                }
+                var builder = DatePickerDialog(this, date_listener, myYear, myMonth, myDay)
+                builder.show()
+            }
+
+            calBtn2.setOnClickListener {
+                var year = myYear
+                var month = myMonth
+                var day = myDay
 
                 var date_listener = object : DatePickerDialog.OnDateSetListener{
                     override fun onDateSet(
@@ -77,13 +104,16 @@ class MainActivity : AppCompatActivity() {
                         month: Int,
                         dayOfMonth: Int
                     ) {
-                        calBtn.text = "$year/${month+1}/$dayOfMonth"
-                        dbDate = "${year.toString()}/${month.toString()}/${dayOfMonth}"
+                        calBtn2.text = "$year/${month+1}/$dayOfMonth"
+                        dbTime = "${year.toString()}/${month.toString()}/${dayOfMonth}"
                     }
                 }
                 var builder = DatePickerDialog(this, date_listener, year, month, day)
                 builder.show()
             }
+
+
+/*
 
             timeBtn.setOnClickListener {
                 var time = Calendar.getInstance()
@@ -99,6 +129,7 @@ class MainActivity : AppCompatActivity() {
                 var builder = TimePickerDialog(this, timeListener, hour, minute, false)
                 builder.show()
             }
+*/
 
 
             builder.setView(dialogView)
