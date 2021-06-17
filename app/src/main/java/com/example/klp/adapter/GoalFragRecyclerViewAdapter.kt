@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.R
 import com.example.klp.customclass.handleSdate
 import com.example.klp.data.ScheduleData
+import kotlin.math.abs
 
 class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
 
@@ -69,10 +70,31 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
 
         val hsd = handleSdate(scheList[position].sdate)
         holder.sname.text = scheList[position].sname
-
         holder.sdate.text = "${hsd.year}년 ${hsd.month}월 ${hsd.day}일 ${hsd.hour}:${hsd.minute}"
         holder.stype.text = scheList[position].stype
+
+        val dDayValue = calculateDday(hsd.year, hsd.month, hsd.day)
+        if(dDayValue > 0){
+            holder.dDay.text = "D-"+abs(dDayValue + 1).toString()
+        }
+        else if(dDayValue==0L){
+            holder.dDay.text = "D-DAY"
+        }
+        else{
+            holder.dDay.text = "D+"+abs(dDayValue).toString()
+        }
     }
+
+    private fun calculateDday(year:Int, month:Int, day:Int):Long {
+        val now = Calendar.getInstance()
+        val end = Calendar.getInstance()
+        end.set(Calendar.YEAR, year)
+        end.set(Calendar.MONTH, month-1)
+        end.set(Calendar.DAY_OF_MONTH, day)
+
+        return (end.timeInMillis - now.timeInMillis)/(24*60*60*1000)
+    }
+
     // (2) 리스너 인터페이스
     interface OnItemClickListener {
         fun onClick(v: View, position: Int)
