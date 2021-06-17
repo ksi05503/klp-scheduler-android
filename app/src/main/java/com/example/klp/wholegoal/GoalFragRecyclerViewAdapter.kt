@@ -1,5 +1,6 @@
 package com.example.klp.wholegoal
 
+import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +9,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.R
-import com.example.klp.customclass.handleSdate
 import com.example.klp.data.ScheduleData
 import kotlin.math.abs
 
@@ -21,7 +21,6 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
         val stype:TextView = view.findViewById(R.id.stype)
         val percentText:TextView = view.findViewById(R.id.percentText)
         val per_circle:ProgressBar = view.findViewById(R.id.percent_circle)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -68,12 +67,16 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
         now.get(Calendar.MONTH)
         now.get(Calendar.DATE)
 
-        val hsd = handleSdate(scheList[position].sdate)
         holder.sname.text = scheList[position].sname
-        holder.sdate.text = "${hsd.year}년 ${hsd.month}월 ${hsd.day}일 ${hsd.hour}:${hsd.minute}"
         holder.stype.text = scheList[position].stype
+        holder.sdate.text = scheList[position].sdate
 
-        val dDayValue = calculateDday(hsd.year, hsd.month, hsd.day)
+        val ymdStr = scheList[position].sdate.split(" ")[0]
+        val year = ymdStr.split("-")[0].toInt()
+        val month = ymdStr.split("-")[1].toInt()
+        val day = ymdStr.split("-")[2].toInt()
+
+        val dDayValue = calculateDday(year, month, day)
         if(dDayValue > 0){
             holder.dDay.text = "D-"+abs(dDayValue + 1).toString()
         }
