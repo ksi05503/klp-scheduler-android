@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".CommunityFragment">
+    tools:context=".community.CommunityFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

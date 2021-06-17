@@ -1,4 +1,4 @@
-package com.example.klp
+package com.example.klp.wholegoal
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

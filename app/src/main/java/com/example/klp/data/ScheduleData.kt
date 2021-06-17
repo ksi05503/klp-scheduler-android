@@ -7,5 +7,4 @@ data class ScheduleData(var uid:String, var sid:Int, var sname:String, var sdate
                         var sregular:Int, var sweekly:String,
                         var stype:String, var sestimate:Int, var simportance:Int,
                         var sdetail:String, var sdone:Int) {
-
 }

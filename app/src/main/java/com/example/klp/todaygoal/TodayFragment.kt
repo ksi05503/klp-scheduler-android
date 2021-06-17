@@ -1,4 +1,4 @@
-package com.example.klp
+package com.example.klp.todaygoal
 
 import android.icu.util.Calendar
 import android.os.Bundle

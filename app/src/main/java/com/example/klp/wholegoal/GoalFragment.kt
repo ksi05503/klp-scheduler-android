@@ -1,4 +1,4 @@
-package com.example.klp
+package com.example.klp.wholegoal
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -11,14 +11,13 @@ import androidx.fragment.app.activityViewModels
 import com.example.klp.adapter.CalendarAdapter
 import com.example.klp.adapter.GoalFragStateAdapter
 import com.example.klp.databinding.FragmentGoalBinding
-import com.example.klp.model.GoalViewModel
 import com.google.android.material.tabs.TabLayoutMediator
 
 class GoalFragment : Fragment() {
     var binding:FragmentGoalBinding?=null
     val fragArr = arrayListOf<String>("진행 중인 목표", "종료된 목표")
     var calendarAdapter: CalendarAdapter?=null
-    val viewModel:GoalViewModel by activityViewModels()
+    val viewModel: SpinnerViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

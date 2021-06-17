@@ -1,4 +1,4 @@
-package com.example.klp
+package com.example.klp.community
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.klp.WriteArticleActivity
 import com.example.klp.databinding.FragmentCommunityBinding
 
 

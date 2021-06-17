@@ -1,4 +1,4 @@
-package com.example.klp
+package com.example.klp.wholegoal
 
 import android.icu.util.Calendar
 import android.os.Bundle
@@ -13,11 +13,10 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.data.ScheduleData
-import com.example.klp.data.ScheduleViewModel
+import com.example.klp.model.ScheduleViewModel
 import com.example.klp.adapter.GoalFragRecyclerViewAdapter
 import com.example.klp.databinding.FragmentGoalFirstBinding
 import com.example.klp.data.Schedule
-import com.example.klp.model.GoalViewModel
 import kotlin.collections.ArrayList
 
 
@@ -27,7 +26,7 @@ class GoalFirstFragment : Fragment() {
 
     var binding:FragmentGoalFirstBinding?=null
     var recyclerView:RecyclerView?=null
-    val viewModel:GoalViewModel by activityViewModels()
+    val viewModel: SpinnerViewModel by activityViewModels()
     var adapter:GoalFragRecyclerViewAdapter?=null
     var scheduleList = mutableListOf<Schedule>()
     var scheduleDataList = ArrayList<ScheduleData>()
@@ -68,8 +67,6 @@ class GoalFirstFragment : Fragment() {
                     ).show()
 
                     //다이얼로그
-
-
                     adapter!!.notifyDataSetChanged()
                 }
             })

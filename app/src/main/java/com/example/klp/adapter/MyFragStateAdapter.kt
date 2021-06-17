@@ -3,9 +3,9 @@ package com.example.klp.adapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.klp.CommunityFragment
-import com.example.klp.GoalFragment
-import com.example.klp.TodayFragment
+import com.example.klp.community.CommunityFragment
+import com.example.klp.wholegoal.GoalFragment
+import com.example.klp.todaygoal.TodayFragment
 import com.example.klp.statistics.StatisticsFragment
 
 class MyFragStateAdapter(fragmentActivity:FragmentActivity):FragmentStateAdapter(fragmentActivity) {
@@ -15,11 +15,11 @@ class MyFragStateAdapter(fragmentActivity:FragmentActivity):FragmentStateAdapter
 
     override fun createFragment(position: Int): Fragment {
         return when(position){
-            0->GoalFragment()
-            1->TodayFragment()
+            0-> GoalFragment()
+            1-> TodayFragment()
             2-> StatisticsFragment()
-            3->CommunityFragment()
-            else->GoalFragment()
+            3-> CommunityFragment()
+            else-> GoalFragment()
         }
     }
 }
