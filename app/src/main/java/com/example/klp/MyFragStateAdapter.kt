@@ -1,4 +1,4 @@
-package com.example.klp.adapter
+package com.example.klp
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity

@@ -1,8 +1,7 @@
-package com.example.klp.adapter
+package com.example.klp.wholegoal
 
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.example.klp.wholegoal.CalendarFragment
 import org.joda.time.DateTime
 
 class CalendarAdapter(fragment:FragmentActivity):FragmentStateAdapter(fragment) {

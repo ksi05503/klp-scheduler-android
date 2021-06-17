@@ -8,14 +8,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.klp.adapter.GoalFragRecyclerViewAdapter
+import com.example.klp.wholegoal.GoalFragRecyclerViewAdapter
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.FragmentTodayBinding
 
 
 class TodayFragment : Fragment() {
     var binding:FragmentTodayBinding?=null
-    var adapter:GoalFragRecyclerViewAdapter?=null
+    var adapter: GoalFragRecyclerViewAdapter?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

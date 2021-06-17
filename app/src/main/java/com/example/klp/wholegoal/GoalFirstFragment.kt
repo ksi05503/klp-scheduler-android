@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.data.ScheduleData
 import com.example.klp.model.ScheduleViewModel
-import com.example.klp.adapter.GoalFragRecyclerViewAdapter
 import com.example.klp.databinding.FragmentGoalFirstBinding
 import com.example.klp.data.Schedule
 import kotlin.collections.ArrayList
@@ -27,7 +26,7 @@ class GoalFirstFragment : Fragment() {
     var binding:FragmentGoalFirstBinding?=null
     var recyclerView:RecyclerView?=null
     val viewModel: SpinnerViewModel by activityViewModels()
-    var adapter:GoalFragRecyclerViewAdapter?=null
+    var adapter: GoalFragRecyclerViewAdapter?=null
     var scheduleList = mutableListOf<Schedule>()
     var scheduleDataList = ArrayList<ScheduleData>()
     var mCalendarList:MutableLiveData<ArrayList<Object>>?=null

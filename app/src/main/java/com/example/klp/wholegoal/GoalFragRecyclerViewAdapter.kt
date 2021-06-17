@@ -1,4 +1,4 @@
-package com.example.klp.adapter
+package com.example.klp.wholegoal
 
 import android.icu.util.Calendar
 import android.view.LayoutInflater

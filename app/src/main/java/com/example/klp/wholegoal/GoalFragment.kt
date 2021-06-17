@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import com.example.klp.adapter.CalendarAdapter
-import com.example.klp.adapter.GoalFragStateAdapter
 import com.example.klp.databinding.FragmentGoalBinding
 import com.google.android.material.tabs.TabLayoutMediator
 

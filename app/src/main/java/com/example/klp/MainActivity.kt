@@ -6,7 +6,6 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.klp.adapter.MyFragStateAdapter
 import com.example.klp.databinding.ActivityMainBinding
 import com.example.klp.model.ScheduleViewModel
 import androidx.fragment.app.Fragment

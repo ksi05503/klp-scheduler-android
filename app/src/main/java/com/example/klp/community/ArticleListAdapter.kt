@@ -1,4 +1,4 @@
-package com.example.klp.adapter
+package com.example.klp.community
 
 import android.view.View
 import android.view.ViewGroup
