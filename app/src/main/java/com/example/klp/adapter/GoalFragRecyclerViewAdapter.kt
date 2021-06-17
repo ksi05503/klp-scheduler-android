@@ -10,9 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.R
 import com.example.klp.customclass.handleSdate
 import com.example.klp.data.ScheduleData
-import com.example.klp.datas.Schedule
-import com.example.klp.utils.Category
-import kotlin.math.abs
 
 class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
 

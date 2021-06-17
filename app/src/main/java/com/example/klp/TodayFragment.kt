@@ -11,8 +11,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.klp.adapter.GoalFragRecyclerViewAdapter
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.FragmentTodayBinding
-import com.example.klp.datas.Schedule
-import com.example.klp.utils.Category
 
 
 class TodayFragment : Fragment() {

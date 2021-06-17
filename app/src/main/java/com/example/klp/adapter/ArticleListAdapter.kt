@@ -3,7 +3,7 @@ package com.example.klp.adapter
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.klp.datas.Article
+import com.example.klp.data.Article
 
 class ArticleListAdapter(val scheList:List<Article>):
     RecyclerView.Adapter<ArticleListAdapter.ViewHolder>() {

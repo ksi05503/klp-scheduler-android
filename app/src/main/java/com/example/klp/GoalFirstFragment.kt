@@ -1,19 +1,14 @@
 package com.example.klp
 
 import android.icu.util.Calendar
-import android.icu.util.GregorianCalendar
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RadioButton
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,10 +16,8 @@ import com.example.klp.data.ScheduleData
 import com.example.klp.data.ScheduleViewModel
 import com.example.klp.adapter.GoalFragRecyclerViewAdapter
 import com.example.klp.databinding.FragmentGoalFirstBinding
-import com.example.klp.datas.Schedule
+import com.example.klp.data.Schedule
 import com.example.klp.model.GoalViewModel
-import com.example.klp.utils.Category
-import java.lang.Exception
 import kotlin.collections.ArrayList
 
 
