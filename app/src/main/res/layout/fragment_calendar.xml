@@ -16,7 +16,7 @@
         android:padding="3dp"
         android:textStyle="bold" />
 
-    <com.example.klp.custonview.CalendarView
+    <com.example.klp.customview.CalendarView
         android:id="@+id/calendarView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

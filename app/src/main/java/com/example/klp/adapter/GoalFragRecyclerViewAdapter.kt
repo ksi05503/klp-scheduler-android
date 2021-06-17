@@ -11,7 +11,7 @@ import com.example.klp.R
 import com.example.klp.datas.Schedule
 import kotlin.math.abs
 
-class GoalFragRecyclerViewAdapter(val scheList:List<Schedule>):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
+class GoalFragRecyclerViewAdapter(val scheList:ArrayList<Schedule>):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val percentText:TextView = view.findViewById(R.id.percentText)
@@ -39,7 +39,7 @@ class GoalFragRecyclerViewAdapter(val scheList:List<Schedule>):RecyclerView.Adap
         holder.cateText.text = "[${scheList[position].category}]${scheList[position].title}"
 
         if(dDay > 0){
-            holder.dDayText.text = "D-"+abs(dDay).toString()
+            holder.dDayText.text = "D-"+abs(dDay + 1).toString()
         }
         else{
             holder.dDayText.text = "D+"+abs(dDay).toString()
