@@ -17,9 +17,12 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.example.klp.appList.AppData
 import com.example.klp.databinding.FragmentStatsDayBinding
+import com.example.klp.request.APIService
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
+import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +35,10 @@ import java.util.*
 import kotlin.Comparator
 
 class StatsDayFragment : Fragment() {
+    companion object {
+        val TAG = "retrofit"
+    }
+
     private var binding: FragmentStatsDayBinding? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,8 +48,10 @@ class StatsDayFragment : Fragment() {
         return binding!!.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        init()
     }
 
     override fun onDestroyView() {
@@ -66,7 +75,7 @@ class StatsDayFragment : Fragment() {
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         } else {
             // We have the permission. Query app usage stats.
-            showAppUsageStats(getAppUsageStats())
+            postMethod()
         }
 
 
@@ -82,16 +91,27 @@ class StatsDayFragment : Fragment() {
         return mode == AppOpsManager.MODE_ALLOWED
     }
 
-    private fun getAppUsageStats(year: Int, month: Int, date: Int): MutableList<UsageStats> {
+    private fun getAppUsageStats(year: Int, month: Int, date: Int): List<AppData> {
         val beginTime = Calendar.getInstance()
-        beginTime.set(year, month - 1, date, 0-9, 0, 0)
+        beginTime.set(year, month - 1, date, 0 - 9, 0, 0)
         val endTime = Calendar.getInstance()
-        endTime.set(year, month - 1, date, 23-9, 59, 59)
+        endTime.set(year, month - 1, date, 23 - 9, 59, 59)
         val usageStatsManager =
             requireActivity().getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager // 2
-        return usageStatsManager.queryUsageStats(
+        val result = usageStatsManager.queryUsageStats(
             UsageStatsManager.INTERVAL_DAILY, beginTime.timeInMillis, endTime.timeInMillis// 3
         )
+        result.sortWith(Comparator { right, left ->
+            compareValues(left.lastTimeUsed, right.lastTimeUsed)
+        })
+
+        return (result.filter { it.totalTimeInForeground > 0 }.map {
+            AppData(
+                it.packageName,
+                it.packageName,
+                usageTime = (it.totalTimeInForeground / 1000 / 60).toInt()
+            )
+        })
     }
 
     private fun postMethod() {
@@ -105,6 +125,7 @@ class StatsDayFragment : Fragment() {
         // formData()
 
     }
+
     private fun rawJSON() {
 
         // Create Retrofit
@@ -114,22 +135,73 @@ class StatsDayFragment : Fragment() {
 
         // Create Service
         val service = retrofit.create(APIService::class.java)
+        UserApiClient.instance.me { user, error ->
+            if (error != null) {
+                Log.e(TAG, "사용자 정보 요청 실패", error)
+            } else {
+                val jsonObject = JSONObject()
+                jsonObject.put("uid", user!!.id)
+                jsonObject.put("date", "2021-06-07")
+                val list = getAppUsageStats(2021, 6, 7)
+                jsonObject.put("app_name", list[0].appPackageName)
+                jsonObject.put("usage_time", list[0].usageTime)
 
+                // Convert JSONObject to String
+                val jsonObjectString = jsonObject.toString()
+
+                // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
+                val requestBody =
+                    jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    // Do the POST request and get response
+                    val response = service.createEmployee(requestBody)
+
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+
+                            // Convert raw JSON to pretty JSON using GSON library
+                            val gson = GsonBuilder().setPrettyPrinting().create()
+                            val prettyJson = gson.toJson(
+                                JsonParser.parseString(
+                                    response.body()
+                                        ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
+                                )
+                            )
+                            Log.d("Pretty Printed JSON :", prettyJson)
+
+                            Toast.makeText(requireActivity(), "전송완료", Toast.LENGTH_SHORT).show()
+
+                        } else {
+
+                            Log.e(TAG, response.code().toString())
+
+                        }
+                    }
+                }
+            }
+        }
         // Create JSON using JSONObject
-        val jsonObject = JSONObject()
-        jsonObject.put("name", "Jack")
-        jsonObject.put("salary", "3540")
-        jsonObject.put("age", "23")
 
-        // Convert JSONObject to String
-        val jsonObjectString = jsonObject.toString()
+    }
+    private fun getMethod() {
 
-        // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
-        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+        // Create Retrofit
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://dummy.restapiexample.com")
+            .build()
+
+        // Create Service
+        val service = retrofit.create(APIService::class.java)
 
         CoroutineScope(Dispatchers.IO).launch {
-            // Do the POST request and get response
-            val response = service.createEmployee(requestBody)
+            /*
+             * For @Query: You need to replace the following line with val response = service.getEmployees(2)
+             * For @Path: You need to replace the following line with val response = service.getEmployee(53)
+             */
+
+            // Do the GET request and get response
+            val response = service.getEmployees()
 
             withContext(Dispatchers.Main) {
                 if (response.isSuccessful) {
@@ -144,9 +216,6 @@ class StatsDayFragment : Fragment() {
                     )
                     Log.d("Pretty Printed JSON :", prettyJson)
 
-                    val intent = Intent(this@MainActivity, DetailsActivity::class.java)
-                    intent.putExtra("json_results", prettyJson)
-                    this@MainActivity.startActivity(intent)
 
                 } else {
 
@@ -156,14 +225,14 @@ class StatsDayFragment : Fragment() {
             }
         }
     }
-    private fun showAppUsageStats(usageStats: MutableList<UsageStats>) {
+    private fun filterAppUsageStats(usageStats: MutableList<UsageStats>) {
         usageStats.sortWith(Comparator { right, left ->
             compareValues(left.lastTimeUsed, right.lastTimeUsed)
         })
 
         usageStats.filter { it.totalTimeInForeground > 0 }.forEach {
             Log.d(
-                "HH",
+                TAG,
                 "packageName: ${it.packageName}, lastTimeUsed: ${Date(it.lastTimeUsed)}, lastTimeStamp: ${it.lastTimeStamp}, " +
                         "totalTimeInForeground: ${it.totalTimeInForeground / 1000 / 60}분 = ${it.totalTimeInForeground / 1000 / 60 / 60}시간"
             )

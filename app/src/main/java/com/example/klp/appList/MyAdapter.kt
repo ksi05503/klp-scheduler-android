@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.databinding.AppRowBinding
-import com.example.lab11.AppData
 
 class MyAdapter(val items: ArrayList<AppData>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
     interface OnItemClickListener {
