@@ -25,9 +25,9 @@ class ScheduleViewModel: ViewModel() {
 
     //임시 데이터
 
-    var data1 = ScheduleData ("khw98",1,"KLP 회의","2021-06-17 17:00",1,"월 수 금","회의",3,1,"늦지않기",0)
-    var data2 = ScheduleData ("khw98",2,"컴퓨터그래픽스 시험","2021-06-17 13:30",0,"","시험",2,3,"망한듯",0)
-    var data3 = ScheduleData ("khw98",2,"옷사기","2021-06-17 13:30",0,"","시험",2,3,"망한듯",1)
+    var data1 = ScheduleData (1,1,"KLP 회의","2021-06-17 10:00","2021-06-17 10:00",1,1,"회의",3,1,"늦지않기",0)
+    var data2 = ScheduleData (1,2,"컴퓨터그래픽스 시험","2021-06-17 10:00","2021-06-17 10:00",0,-1,"시험",2,3,"망한듯",0)
+    var data3 = ScheduleData (1,3,"옷사기","2021-06-17 10:00","2021-06-17 10:00",0,3,"시험",2,3,"망한듯",1)
 
     //fun 전체목표 불러오기
     fun loadAllSchedules():ArrayList<ScheduleData>{

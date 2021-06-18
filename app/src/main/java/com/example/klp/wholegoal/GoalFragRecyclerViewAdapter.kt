@@ -68,7 +68,7 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
         now.get(Calendar.MONTH)
         now.get(Calendar.DATE)
 
-        val hsd = handleSdate(scheList[position].sdate)
+        val hsd = handleSdate(scheList[position].sdate1)
         holder.sname.text = scheList[position].sname
         holder.sdate.text = "${hsd.year}년 ${hsd.month}월 ${hsd.day}일 ${hsd.hour}:${hsd.minute}"
         holder.stype.text = scheList[position].stype
