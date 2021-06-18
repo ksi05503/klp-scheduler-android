@@ -1,12 +1,11 @@
 package com.example.klp.model
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.klp.data.ScheduleData
 
 
-class ScheduleViewModel: ViewModel() {
+class ScheduleViewModel : ViewModel() {
     //내부에서 설정하는 자료형은 뮤터블로 변경가능하도록 설정
 
     private val _newSchedules = MutableLiveData<ArrayList<ScheduleData>>()
@@ -14,26 +13,45 @@ class ScheduleViewModel: ViewModel() {
     //변경되지 않는 데이터를 가저올때 이름을 _ 언더스코어 없이 설정
     //공개적으로 가져오는 변수는 private이 아닌 퍼블릭으로 외부에서 접근가능하도록 설정
     //값을 직접 라이브데이터에 접근하지 않고 뷰모델을 통해 가져올 수 있도록 설정
+    private var type = 0
+    val newSchedules: LiveScheduleData<ArrayList<ScheduleData>>
+        get() {
+            val liveData = LiveScheduleData<ArrayList<ScheduleData>>()
 
-    val newSchedules: LiveData<ArrayList<ScheduleData>>
-        get() = _newSchedules        //get함수 대신 그냥 바로 newSchedule을 가져오면 된다 (수직관계를 위해 이렇게까지)
+            if (type == 0) {
+                val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 0 } ?: ArrayList<ScheduleData>())
+                liveData.setData(data)
+            } else {
+                val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 1 } ?: ArrayList<ScheduleData>())
+                liveData.setData(data)
+            }
+            return liveData
+        }
 
-    init{
+    init {
         //스케줄 초기화 필요하다면 추가
     }
 
+    fun setDone() {
+        type = 0
+    }
 
+    fun setOngoing() {
+        type = 1
+    }
     //임시 데이터
 
-    var data1 = ScheduleData (1,1,"KLP 회의","2021-06-17","2021-06-17",2,1,"회의",3,1,"늦지않기",0)
-    var data2 = ScheduleData (1,2,"컴퓨터그래픽스 시험","2021-06-17","2021-06-20",3,-1,"시험",2,3,"망한듯",0)
-    var data3 = ScheduleData (1,3,"옷사기","2021-06-17","2021-06-18",2,3,"시험",2,3,"망한듯",1)
-    var data4 = ScheduleData (2,4,"화장실청소","2021-06-19","2021-06-20",2,5,"기타",2,1,"꼭해라",1)
+    var data1 =
+        ScheduleData(1, 1, "KLP 회의", "2021-06-17", "2021-06-17", 2, 1, "회의", 3, 1, "늦지않기", 0)
+    var data2 =
+        ScheduleData(1, 2, "컴퓨터그래픽스 시험", "2021-06-17", "2021-06-20", 3, -1, "시험", 2, 3, "망한듯", 0)
+    var data3 = ScheduleData(1, 3, "옷사기", "2021-06-17", "2021-06-18", 2, 3, "시험", 2, 3, "망한듯", 1)
+    var data4 = ScheduleData(2, 4, "화장실청소", "2021-06-19", "2021-06-20", 2, 5, "기타", 2, 1, "꼭해라", 1)
 
     //fun 전체목표 불러오기
-    fun loadAllSchedules():ArrayList<ScheduleData>{
+    fun loadAllSchedules() {
         //레트로핏으로 데이터 받아올것
-   //     _newSchedules.value =  getSchedules~
+        //     _newSchedules.value =  getSchedules~
 
 
         var scheduleArrayList = ArrayList<ScheduleData>()
@@ -44,11 +62,11 @@ class ScheduleViewModel: ViewModel() {
         scheduleArrayList.add(data3)
         scheduleArrayList.add(data4)
 
-        return scheduleArrayList
+        _newSchedules.value = scheduleArrayList
     }
 
     //fun 오늘 목표 불러오기
-    fun loadTodaySchedules():ArrayList<ScheduleData>{
+    fun loadTodaySchedules(): ArrayList<ScheduleData> {
         //레트로핏으로 데이터 받아올것
         //     _newSchedules.value =  getSchedules~
 
@@ -60,23 +78,6 @@ class ScheduleViewModel: ViewModel() {
 
         return scheduleArrayList
     }
-
-
-    fun loadDoneSchedules():ArrayList<ScheduleData>{
-        var scheduleArrayList = ArrayList<ScheduleData>()
-
-        scheduleArrayList.add(data3)
-
-        return scheduleArrayList
-    }
-
-
-
-
-
-
-
-
 
 /*
 model(db) view(layout) control

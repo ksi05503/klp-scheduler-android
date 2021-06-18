@@ -2,15 +2,15 @@ package com.example.klp.todaygoal
 
 import android.icu.util.Calendar
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.klp.wholegoal.GoalFragRecyclerViewAdapter
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.FragmentTodayBinding
+import com.example.klp.wholegoal.GoalFragRecyclerViewAdapter
 
 
 class TodayFragment : Fragment() {

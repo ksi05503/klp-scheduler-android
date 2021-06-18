@@ -7,26 +7,36 @@ import android.view.ViewGroup
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.klp.R
 import com.example.klp.customclass.handleSdate
 import com.example.klp.data.ScheduleData
+import com.example.klp.databinding.GoalRowBinding
 import kotlin.math.abs
 
-class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
-
-    inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
-        val sname:TextView = view.findViewById(R.id.sname)
-        val sdate:TextView = view.findViewById(R.id.sdate)
-        val dDay:TextView = view.findViewById(R.id.dDay)
-        val stype:TextView = view.findViewById(R.id.stype)
-        val percentText:TextView = view.findViewById(R.id.percentText)
-        val per_circle:ProgressBar = view.findViewById(R.id.percent_circle)
+class GoalFragRecyclerViewAdapter(var scheList: ArrayList<ScheduleData>?) :
+    RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
+    inner class ViewHolder(binding: GoalRowBinding) : RecyclerView.ViewHolder(binding.root) {
+        val sname: TextView = binding.sname
+        val sdate: TextView = binding.sdate
+        val dDay: TextView = binding.dDay
+        val stype: TextView = binding.stype
+        val percentText: TextView = binding.percentText
+        val per_circle: ProgressBar = binding.percentCircle
 
     }
 
+    fun setData(data: ArrayList<ScheduleData>?) {
+        scheList = data
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.goal_row, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(
+            GoalRowBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -68,65 +78,58 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
         now.get(Calendar.MONTH)
         now.get(Calendar.DATE)
 
-        val hsd = handleSdate(scheList[position].sdate1)
-        holder.sname.text = scheList[position].sname
+        val hsd = handleSdate(scheList!![position].sdate1)
+        holder.sname.text = scheList!![position].sname
         holder.sdate.text = "${hsd.year}년 ${hsd.month}월 ${hsd.day}일"
-        holder.stype.text = scheList[position].stype
+        holder.stype.text = scheList!![position].stype
 
         val dDayValue = calculateDday(hsd.year, hsd.month, hsd.day)
-        if(dDayValue > 0){
-            holder.dDay.text = "D-"+abs(dDayValue + 1).toString()
-        }
-        else if(dDayValue==0L){
+        if (dDayValue > 0) {
+            holder.dDay.text = "D-" + abs(dDayValue + 1).toString()
+        } else if (dDayValue == 0L) {
             holder.dDay.text = "D-DAY"
-        }
-        else{
-            holder.dDay.text = "D+"+abs(dDayValue).toString()
+        } else {
+            holder.dDay.text = "D+" + abs(dDayValue).toString()
         }
     }
 
-    private fun calculateDday(year:Int, month:Int, day:Int):Long {
+    private fun calculateDday(year: Int, month: Int, day: Int): Long {
         val now = Calendar.getInstance()
         val end = Calendar.getInstance()
         end.set(Calendar.YEAR, year)
-        end.set(Calendar.MONTH, month-1)
+        end.set(Calendar.MONTH, month - 1)
         end.set(Calendar.DAY_OF_MONTH, day)
 
-        return (end.timeInMillis - now.timeInMillis)/(24*60*60*1000)
+        return (end.timeInMillis - now.timeInMillis) / (24 * 60 * 60 * 1000)
     }
 
     // (2) 리스너 인터페이스
     interface OnItemClickListener {
         fun onClick(v: View, position: Int)
     }
+
     // (3) 외부에서 클릭 시 이벤트 설정
     fun setItemClickListener(onItemClickListener: OnItemClickListener) {
         this.itemClickListener = onItemClickListener
     }
+
     // (4) setItemClickListener로 설정한 함수 실행
-    private lateinit var itemClickListener : OnItemClickListener
+    private lateinit var itemClickListener: OnItemClickListener
 
 
-    interface OnItemLongClickListener{
+    interface OnItemLongClickListener {
         fun onLongClick(v: View, position: Int): Boolean {
             return true
         }
     }
 
-    fun setItemLongClickListener(onItemLongClickListener: OnItemLongClickListener){
+    fun setItemLongClickListener(onItemLongClickListener: OnItemLongClickListener) {
         this.itemLongClickListener = onItemLongClickListener
     }
+
     private lateinit var itemLongClickListener: OnItemLongClickListener
 
-
-
-
     override fun getItemCount(): Int {
-        return scheList.size
+        return scheList?.size ?: 0
     }
-
-
-
-
-
 }
