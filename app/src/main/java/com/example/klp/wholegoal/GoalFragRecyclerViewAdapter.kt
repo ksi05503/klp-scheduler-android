@@ -106,7 +106,27 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
     // (4) setItemClickListener로 설정한 함수 실행
     private lateinit var itemClickListener : OnItemClickListener
 
+
+    interface OnItemLongClickListener{
+        fun onLongClick(v: View, position: Int): Boolean {
+            return true
+        }
+    }
+
+    fun setItemLongClickListener(onItemLongClickListener: OnItemLongClickListener){
+        this.itemLongClickListener = onItemLongClickListener
+    }
+    private lateinit var itemLongClickListener: OnItemLongClickListener
+
+
+
+
     override fun getItemCount(): Int {
         return scheList.size
     }
+
+
+
+
+
 }

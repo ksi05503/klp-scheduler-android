@@ -74,7 +74,33 @@ class GoalFirstFragment : Fragment() {
 
                     adapter!!.notifyDataSetChanged()
                 }
+
             })
+            adapter!!.setItemLongClickListener(object :
+                GoalFragRecyclerViewAdapter.OnItemLongClickListener{
+                override fun onLongClick(v: View, position: Int): Boolean {
+                    val item = scheduleDataList[position]
+
+                    Toast.makeText(v.context,"길게누르면 삭제 다이얼로그",Toast.LENGTH_SHORT).show()
+
+/*                    val builder1 = AlertDialog.Builder(v.context)
+                    builder1
+                        .setTitle("일정을 삭제하시겠습니까?")
+                        .setPositiveButton("삭제") { dialogInterface, i ->
+
+                            //DB에서 일정 삭제 후 UpdateUI
+                        }
+                        .setNegativeButton("취소") { dialogInterface, i ->
+
+                        }
+                        .show()*/
+
+                    adapter!!.notifyDataSetChanged()
+                    return true
+
+                }
+                }
+            )
 
             recyclerView!!.adapter = adapter
 /*
