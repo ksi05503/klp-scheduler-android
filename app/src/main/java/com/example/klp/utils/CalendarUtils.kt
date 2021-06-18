@@ -10,7 +10,7 @@ class CalendarUtils {
 
     companion object {
 
-        const val WEEKS_PER_MONTH = 6
+        const val WEEKS_PER_MONTH = 5
 
         /**
          * 선택된 날짜에 해당하는 월간 달력을 반환한다.
