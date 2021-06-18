@@ -1,6 +1,7 @@
 package com.example.klp.customview
 
 import android.content.Context
+import android.icu.util.Calendar
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.ViewGroup
@@ -13,6 +14,7 @@ import com.example.klp.data.ScheduleData
 import com.example.klp.utils.CalendarUtils.Companion.WEEKS_PER_MONTH
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.DAYS_PER_WEEK
+import kotlin.collections.ArrayList
 
 import kotlin.math.max
 
@@ -67,40 +69,47 @@ class CalendarView @JvmOverloads constructor(
             val tempArray = ArrayList<ScheduleData>()
             tempArray.addAll(schedules)
 
+            val now = Calendar.getInstance()
+
             val year = it.year
             val month = it.monthOfYear
             val date = it.dayOfMonth
-            tempArray.removeIf {
-                val ymdStr = it.sdate2.split("-")
-                year!=ymdStr[0].toInt()
-                        || month != ymdStr[1].toInt()
-                        || date != ymdStr[2].toInt()
-            }
 
             var figure = 0
-            var done = 0
-            var notdone = 0
-            if(tempArray.size==0){
-                figure = 0
-            }
-            else{
-                for(schedule in tempArray){
-                    if(schedule.sdone==0){
-                        notdone++
-                    }
-                    else{
-                        done++
-                    }
+
+            if(now.get(Calendar.DAY_OF_MONTH) >= date){ // 아직 해당일이 오지 않은 곳은 그리기 X
+                tempArray.removeIf {
+                    val ymdStr = it.sdate2.split("-")
+
+                    (it.sregular==0 && (year!=ymdStr[0].toInt() || month != ymdStr[1].toInt() || date != ymdStr[2].toInt()))
+                            || (it.sregular==2 && it.sweekly != now.get(Calendar.DAY_OF_WEEK))
+                            || (it.sregular==3 && it.sdate1.split("-")[2].toInt() != date)
                 }
 
-                if(done > notdone && notdone == 0){
-                    figure = 3
+                var done = 0
+                var notdone = 0
+                if(tempArray.size==0){
+                    figure = 0
                 }
-                else if(done <= notdone && done != 0){
-                    figure = 2
-                }
-                else if(done == 0 && done < notdone){
-                    figure = 1
+                else{
+                    for(schedule in tempArray){
+                        if(schedule.sdone==0){
+                            notdone++
+                        }
+                        else{
+                            done++
+                        }
+                    }
+
+                    if(done > notdone && notdone == 0){
+                        figure = 3
+                    }
+                    else if(done <= notdone && done != 0){
+                        figure = 2
+                    }
+                    else if(done == 0 && done < notdone){
+                        figure = 1
+                    }
                 }
             }
 
