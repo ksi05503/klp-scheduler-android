@@ -2,6 +2,7 @@ package com.example.klp
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -58,11 +59,17 @@ class MainActivity : AppCompatActivity() {
             val dialogScheduleTypeSpinner = dialogView.findViewById<Spinner>(R.id.spinner1)
             val dialogRegularRadioGroup =
                 dialogView.findViewById<RadioGroup>(R.id.regularRadiogroup)
-            val dialogEstimatedTimeRadioGroup =
-                dialogView.findViewById<RadioGroup>(R.id.estimatedTimeRadiogroup)
-            val dialogImportanceRadioGroup =
-                dialogView.findViewById<RadioGroup>(R.id.importanceRadiogroup)
+
+            val dialogSeekBar1 = dialogView.findViewById<SeekBar>(R.id.estimateSeekBar)
+            val dialogEstimateTextView = dialogView.findViewById<TextView>(R.id.estimateTextView)
+            val dialogSeekBar2 = dialogView.findViewById<SeekBar>(R.id.importanceSeekBar)
+            val dialogImportanceTextView = dialogView.findViewById<TextView>(R.id.importanceTextView)
+
+
+
             val dialogDetail = dialogView.findViewById<EditText>(R.id.emptyTextField)
+            val sRegularLayout = dialogView.findViewById<LinearLayout>(R.id.sRegularLayout)
+            val dayOfWeekLayout = dialogView.findViewById<LinearLayout>(R.id.dayOfWeekLayout)
 
             val calBtn1 = dialogView.findViewById<Button>(R.id.dateBtn1)
             val calBtn2 = dialogView.findViewById<Button>(R.id.dateBtn2)
@@ -73,6 +80,69 @@ class MainActivity : AppCompatActivity() {
             var myYear = calendar.get(Calendar.YEAR)
             var myMonth = calendar.get(Calendar.MONTH)
             var myDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+            val radioButtonWeekly = dialogView.findViewById<RadioButton>(R.id.radioButtonWeekly)
+
+            radioButtonWeekly.setOnCheckedChangeListener { buttonView, isChecked ->
+                if(isChecked){
+                    dayOfWeekLayout.visibility = View.VISIBLE
+                }else{
+                    dayOfWeekLayout.visibility = View.GONE
+                }
+            }
+
+            var estimateDB = 0
+            dialogEstimateTextView.setText("금방끝나는일정^^")
+            dialogSeekBar1.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    when(progress){
+                        0->dialogEstimateTextView.setText("금방끝나는일정^^")
+                        1->dialogEstimateTextView.setText("1시간이내^^")
+                        2->dialogEstimateTextView.setText("1~4시간...")
+                        3->dialogEstimateTextView.setText("4시간 이상.....")
+                        4->dialogEstimateTextView.setText("상상을 초월..........")
+                    }
+                    estimateDB = progress
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                }
+            })
+
+            var importanceDB = 0
+            dialogImportanceTextView.setText("안중요한 일정")
+            dialogSeekBar2.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+                override fun onProgressChanged(
+                    seekBar: SeekBar?,
+                    progress: Int,
+                    fromUser: Boolean
+                ) {
+                    when(progress){
+                        0->dialogImportanceTextView.setText("안중요한 일정")
+                        1->dialogImportanceTextView.setText("까먹지만말기")
+                        2->dialogImportanceTextView.setText("살짝 중요")
+                        3->dialogImportanceTextView.setText("중요한 일정")
+                        4->dialogImportanceTextView.setText("매우 중요")
+                        5->dialogImportanceTextView.setText("굉장히 중요!")
+                    }
+                    importanceDB = progress
+                }
+
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                }
+
+            }
+            )
 
             calBtn1.setOnClickListener {
                 var date_listener = object : DatePickerDialog.OnDateSetListener {
@@ -89,6 +159,13 @@ class MainActivity : AppCompatActivity() {
                         myDay = dayOfMonth
                         dbDate = "${year.toString()}/${month.toString()}/${dayOfMonth}"
                         calBtn2.text = "$myYear/${myMonth + 1}/$myDay"
+
+                        if(calBtn1.text == calBtn2.text ){
+                            sRegularLayout.visibility = View.GONE
+                        }else{
+                            sRegularLayout.visibility = View.VISIBLE
+                        }
+
 
                     }
                 }
@@ -110,31 +187,18 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         calBtn2.text = "$year/${month + 1}/$dayOfMonth"
                         dbTime = "${year.toString()}/${month.toString()}/${dayOfMonth}"
+                        if(calBtn1.text == calBtn2.text ){
+                            sRegularLayout.visibility = View.GONE
+                        }else{
+                            sRegularLayout.visibility = View.VISIBLE
+                        }
+
                     }
                 }
                 var builder = DatePickerDialog(this, date_listener, year, month, day)
+
                 builder.show()
             }
-
-
-/*
-
-            timeBtn.setOnClickListener {
-                var time = Calendar.getInstance()
-                var hour = time.get(Calendar.HOUR)
-                var minute = time.get(Calendar.MINUTE)
-
-                var timeListener = object: TimePickerDialog.OnTimeSetListener{
-                    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
-                        timeBtn.text = "$hourOfDay : $minute"
-                        dbTime = "${hourOfDay.toString()}:${minute.toString()}"
-                    }
-                }
-                var builder = TimePickerDialog(this, timeListener, hour, minute, false)
-                builder.show()
-            }
-*/
-
 
             builder.setView(dialogView)
                 .setPositiveButton("확인") { dialogInterface, i ->
@@ -146,12 +210,8 @@ class MainActivity : AppCompatActivity() {
                         val regular = dialogRegularRadioGroup.indexOfChild(
                             dialogView.findViewById<RadioButton>(dialogRegularRadioGroup.checkedRadioButtonId)
                         )
-                        val estimate = dialogEstimatedTimeRadioGroup.indexOfChild(
-                            dialogView.findViewById<RadioButton>(dialogEstimatedTimeRadioGroup.checkedRadioButtonId)
-                        )
-                        val importance = dialogImportanceRadioGroup.indexOfChild(
-                            dialogView.findViewById<RadioButton>(dialogImportanceRadioGroup.checkedRadioButtonId)
-                        )
+                        val estimate = estimateDB
+                        val importance = importanceDB
                         val detail = dialogDetail.text.toString()
 //              입력된 DATA 정보들은 위와같다. (정규일정여부와 소요시간과 중요도(라디오버튼input)는 index정보로 db에 들어갈것이다)
                         //            val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -61,7 +62,7 @@ class GoalFirstFragment : Fragment() {
 
                     Toast.makeText(
                         v.context,
-                        "Activity\n${item.sname}\n${item.sdate}",
+                        "Activity\n${item.sname}\n${item.sdate1}",
                         Toast.LENGTH_SHORT
                     ).show()
 
@@ -91,21 +92,22 @@ class GoalFirstFragment : Fragment() {
 //            adapter!!.notifyDataSetChanged()
 
 
-//            viewModel.selected.observe(viewLifecycleOwner, Observer {
-//                when (it) {
-//                    0 -> {
-//
-//                    }
-//                    1 -> {
-//                        adapter!!.scheList.sortBy { it.end }
-//                        adapter!!.notifyDataSetChanged()
-//                    }
-//                    2 -> {
-//                        adapter!!.scheList.sortBy { it.category }
-//                        adapter!!.notifyDataSetChanged()
-//                    }
-//                }
-//            })
+            viewModel.selected.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    0 -> {
+                        adapter!!.scheList.sortBy { it.stype}
+                        adapter!!.notifyDataSetChanged()
+                    }
+                    1 -> {
+                        adapter!!.scheList.sortBy { it.sname}
+                        adapter!!.notifyDataSetChanged()
+                    }
+                    2 -> {
+                        adapter!!.scheList.sortBy { it.stype}
+                        adapter!!.notifyDataSetChanged()
+                    }
+                }
+            })
         }
     }
 

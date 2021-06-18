@@ -69,9 +69,9 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
 
         holder.sname.text = scheList[position].sname
         holder.stype.text = scheList[position].stype
-        holder.sdate.text = scheList[position].sdate
+        holder.sdate.text = scheList[position].sdate1
 
-        val ymdStr = scheList[position].sdate.split(" ")[0]
+        val ymdStr = scheList[position].sdate1.split(" ")[0]
         val year = ymdStr.split("-")[0].toInt()
         val month = ymdStr.split("-")[1].toInt()
         val day = ymdStr.split("-")[2].toInt()
