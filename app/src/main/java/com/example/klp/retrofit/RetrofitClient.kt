@@ -1,7 +1,5 @@
 package com.example.klp.retrofit
 
-import android.content.ContentValues.TAG
-import android.util.Log
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -12,9 +10,6 @@ object RetrofitClient{
 
     //레트로핏 클라이언트 가져오기
     fun getClient(baseUrl: String): Retrofit?{
-        Log.d(TAG,"RetrofitClient -getClient() called")
-
-
         if(retrofitClient == null){
 
             //레트로핏 빌더로 인스턴스 생성
