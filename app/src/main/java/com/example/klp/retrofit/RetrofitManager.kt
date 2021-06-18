@@ -1,52 +1,67 @@
 package com.example.klp.retrofit
 
-import android.content.ContentValues.TAG
 import android.util.Log
-import com.example.klp.data.ScheduleData
-import com.example.klp.utils.API
-import retrofit2.Call
+import com.example.klp.data.AppUsageTime
+import com.google.gson.GsonBuilder
+import com.google.gson.JsonParser
+import kotlinx.coroutines.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Response
 
 
-
 class RetrofitManager {
-    companion object{
+    companion object {
+        private const val baseUrl =
+            "https://jsonplaceholder.typicode.com/" //http://35.232.144.196:3000
         val instance = RetrofitManager()
     }
 
-    //레트로핏 인터페이스 가져오기
-    private val iRetrofit : IRetrofit? = RetrofitClient.getClient(API.BASE_URL)
-        ?.create(IRetrofit::class.java)
+    private val iRetrofit: IRetrofit = RetrofitClient
+        .getClient(baseUrl)!!
+        .create(IRetrofit::class.java)
 
-    //스케줄 추가 api 호출
-    fun addSchedule(schedule: ScheduleData) {
-
-        val call = iRetrofit?.addSchedule(schedule = schedule).let{
-            it
-        }?: return
-
-        call.enqueue(object: retrofit2.Callback<Boolean>{
-            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
-                Log.d(TAG,"RetrofitManager - onResponse() called/ t: ${response.body()}")
+    private suspend fun execute(response: Response<ResponseBody>): Any {
+        val value = GlobalScope.async(Dispatchers.IO) {
+            // Do the GET request and get response
+            if (response.isSuccessful) {
+                // Convert raw JSON to pretty JSON using GSON library
+                val gson = GsonBuilder().setPrettyPrinting().create()
+                return@async gson.toJson(
+                    JsonParser.parseString(
+                        response.body()
+                            ?.string() // About this thread blocking annotation : https://github.com/square/retrofit/issues/3255
+                    )
+                )
+            } else {
+                Log.e("HI", response.code().toString())
             }
-
-            override fun onFailure(call: Call<Boolean>, t: Throwable) {
-                Log.d(TAG,"RetrofitManager - onFailure() called/ t: $t")
-            }
-
-        })
-
+        }.await()
+        return value
     }
 
-/*
-            override fun onResponse(call: Call<ScheduleData>, response: Response<ScheduleData>) {
-                Log.d(TAG,"RetrofitManager - onResponse() called/ t: ${response.raw()}")
+    suspend fun getDiary(uid: Int, enterDate: String): Any {
+        return execute(iRetrofit.getDiary(uid, enterDate))
+    }
 
-                completion(response.raw().toString())
-            }
+    suspend fun getPost(id: Int): Any {
+        return execute(iRetrofit.getPost(id))
+    }
 
-            override fun onFailure(call: Call<ScheduleData>, t: Throwable) {
-                Log.d(TAG,"RetrofitManager - onFailure() called/ t: $t")
-            }
- */
+    suspend fun postAppUsageTime(uid: Int, enterDate: String, appUsageList: Array<AppUsageTime>) {
+        val jsonObject = JSONObject()
+        jsonObject.put("uid", uid)
+        jsonObject.put("enter_date", enterDate)
+        jsonObject.put("app_list", appUsageList)
+
+        // Convert JSONObject to String
+        val jsonObjectString = jsonObject.toString()
+
+        // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
+        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+
+        execute(iRetrofit.postAppUsageTime(requestBody))
+    }
 }

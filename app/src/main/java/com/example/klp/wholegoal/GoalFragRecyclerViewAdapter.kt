@@ -70,7 +70,7 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
 
         val hsd = handleSdate(scheList[position].sdate1)
         holder.sname.text = scheList[position].sname
-        holder.sdate.text = "${hsd.year}년 ${hsd.month}월 ${hsd.day}일 ${hsd.hour}:${hsd.minute}"
+        holder.sdate.text = "${hsd.year}년 ${hsd.month}월 ${hsd.day}일"
         holder.stype.text = scheList[position].stype
 
         val dDayValue = calculateDday(hsd.year, hsd.month, hsd.day)
@@ -106,7 +106,27 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
     // (4) setItemClickListener로 설정한 함수 실행
     private lateinit var itemClickListener : OnItemClickListener
 
+
+    interface OnItemLongClickListener{
+        fun onLongClick(v: View, position: Int): Boolean {
+            return true
+        }
+    }
+
+    fun setItemLongClickListener(onItemLongClickListener: OnItemLongClickListener){
+        this.itemLongClickListener = onItemLongClickListener
+    }
+    private lateinit var itemLongClickListener: OnItemLongClickListener
+
+
+
+
     override fun getItemCount(): Int {
         return scheList.size
     }
+
+
+
+
+
 }

@@ -10,7 +10,6 @@ interface APIService {
     /*
        POST METHOD
     */
-
     // Raw JSON
     @POST("/api/v1/create")
     suspend fun createEmployee(@Body requestBody: RequestBody): Response<ResponseBody>
@@ -24,6 +23,14 @@ interface APIService {
 
     @GET("/api/v1/employees")
     suspend fun getEmployees(): Response<ResponseBody>
+
+
+    // Request using @Query (e.g https://example.com/diary?uid=""&enter_date="")
+    @GET("/diary")
+    suspend fun getDiary(
+        @Query("uid") uid: Int,
+        @Query("enter_date") enter_date: String,
+    ): Response<ResponseBody>
 
 
     // Request using @Query (e.g https://example.com/usageTime?from=“”&to=“”[&app_name=“”][&uid=“”])

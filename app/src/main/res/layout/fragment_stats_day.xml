@@ -27,7 +27,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/big_margin"
-                android:text="TextViewTextViewTextView\n\n\n\n\n\n\n\n\n\nTextView\n\n\nViewTextViewTextView\n\n\nViewTextViewTextViewTextView" />
+                android:text="" />
 
             <TextView
                 style="@style/MainText"

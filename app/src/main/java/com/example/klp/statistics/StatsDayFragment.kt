@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import com.example.klp.appList.AppData
 import com.example.klp.databinding.FragmentStatsDayBinding
 import com.example.klp.request.APIService
+import com.example.klp.retrofit.RetrofitManager
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import com.kakao.sdk.user.UserApiClient
@@ -78,6 +79,15 @@ class StatsDayFragment : Fragment() {
             //postMethod()
         }
 
+        UserApiClient.instance.me { user, _ ->
+  
+            Log.i("HI", "회원번호: " + user!!.id)
+            CoroutineScope(Dispatchers.Main).launch {
+                //val value = RetrofitManager.instance.getDiary(user!!.id.toInt(), "2021-06-17")
+                val value = RetrofitManager.instance.getPost(1)
+                binding!!.dailyText.text = value.toString()
+            }
+        }
 
     }
 
@@ -184,6 +194,7 @@ class StatsDayFragment : Fragment() {
         // Create JSON using JSONObject
 
     }
+
     private fun getMethod() {
 
         // Create Retrofit
@@ -225,6 +236,7 @@ class StatsDayFragment : Fragment() {
             }
         }
     }
+
     private fun filterAppUsageStats(usageStats: MutableList<UsageStats>) {
         usageStats.sortWith(Comparator { right, left ->
             compareValues(left.lastTimeUsed, right.lastTimeUsed)
@@ -238,4 +250,5 @@ class StatsDayFragment : Fragment() {
             )
         }
     }
+
 }
