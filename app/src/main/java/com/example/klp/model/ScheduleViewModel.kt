@@ -30,6 +30,7 @@ class ScheduleViewModel: ViewModel() {
     var data3 = ScheduleData (1,3,"옷사기","2021-06-17","2021-06-20",0,3,"약속",3,3,"망한듯",1)
     var data4 = ScheduleData (1,4,"자료구조 시험","2021-06-15","2021-06-24",2,6,"시험",2,5,"망한듯",0)
     var data5 = ScheduleData (1,5,"조깅","2021-06-16","2021-07-27",3,5,"운동",2,1,"",0)
+    var data6 = ScheduleData (1,6,"대청소","2021-06-18","2021-07-18",3,5,"기타",2,4,"",0)
 
     //fun 전체목표 불러오기
     fun loadAllSchedules():ArrayList<ScheduleData>{
@@ -50,6 +51,7 @@ class ScheduleViewModel: ViewModel() {
             add(data3)
             add(data4)
             add(data5)
+            add(data6)
         }
 
         return _newSchedules.value!!

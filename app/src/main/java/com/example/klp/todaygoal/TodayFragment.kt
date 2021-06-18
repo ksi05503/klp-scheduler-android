@@ -61,7 +61,8 @@ class TodayFragment : Fragment() {
             //아래 조건이면 삭제
             it.sdone==1 // 이미 완료된 일정
                     || (it.sregular==0 && (year!=tarYear || month!=tarMonth || date!=tarDate)) //마감일이 오늘이 아닐 때
-                    || ((it.sregular==2 || it.sregular==3) && (it.sweekly != dow)) // 매주, 매달인데 요일이 동일
+                    || (it.sregular==2 && (it.sweekly != dow)) // 매주인데 요일이 동일
+                    || (it.sregular==3 && (it.sdate1.split("-")[2].toInt() != date))
         }
     }
 }
