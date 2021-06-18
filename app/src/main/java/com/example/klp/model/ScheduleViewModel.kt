@@ -20,28 +20,39 @@ class ScheduleViewModel: ViewModel() {
 
     init{
         //스케줄 초기화 필요하다면 추가
+        _newSchedules.value = ArrayList()
     }
 
 
     //임시 데이터
-
     var data1 = ScheduleData (1,1,"KLP 회의","2021-06-17 10:00","2021-06-30 10:00",1,1,"회의",3,1,"늦지않기",0)
     var data2 = ScheduleData (1,2,"컴퓨터그래픽스 시험","2021-06-17 10:00","2021-06-23 10:00",0,-1,"시험",2,3,"망한듯",0)
-    var data3 = ScheduleData (1,3,"옷사기","2021-06-17 10:00","2021-06-20 10:00",0,3,"시험",2,3,"망한듯",1)
+    var data3 = ScheduleData (1,3,"옷사기","2021-06-17 10:00","2021-06-20 10:00",0,3,"약속",3,3,"망한듯",1)
+    var data4 = ScheduleData (1,4,"자료구조 시험","2021-06-15 10:00","2021-06-24 10:00",0,3,"시험",2,5,"망한듯",0)
+    var data5 = ScheduleData (1,5,"조깅","2021-06-16 10:00","2021-06-27 10:00",0,3,"운동",2,1,"",0)
 
     //fun 전체목표 불러오기
     fun loadAllSchedules():ArrayList<ScheduleData>{
         //레트로핏으로 데이터 받아올것
    //     _newSchedules.value =  getSchedules~
 
+//        var scheduleArrayList = ArrayList<ScheduleData>()
+//
+//        scheduleArrayList.add(data1)
+//        scheduleArrayList.add(data2)
+//        scheduleArrayList.add(data3)
+//
+//        return scheduleArrayList
+        _newSchedules.value = ArrayList()
+        _newSchedules.value!!.apply {
+            add(data1)
+            add(data2)
+            add(data3)
+            add(data4)
+            add(data5)
+        }
 
-        var scheduleArrayList = ArrayList<ScheduleData>()
-
-
-        scheduleArrayList.add(data1)
-        scheduleArrayList.add(data2)
-
-        return scheduleArrayList
+        return _newSchedules.value!!
     }
 
     //fun 오늘 목표 불러오기

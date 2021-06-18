@@ -50,7 +50,7 @@ class GoalFragment : Fragment() {
                 ) {
                     when(position){
                         0->{
-                            Toast.makeText(parent?.context, "사용자 설정 순", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(parent?.context, "중요도 순", Toast.LENGTH_SHORT).show()
                             viewModel.select(0)
                         }
                         1->{

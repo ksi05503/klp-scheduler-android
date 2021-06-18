@@ -23,14 +23,11 @@ import kotlin.collections.ArrayList
 class GoalFirstFragment : Fragment() {
 
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
-
     var binding:FragmentGoalFirstBinding?=null
     var recyclerView:RecyclerView?=null
     val viewModel: SpinnerViewModel by activityViewModels()
+    var scheduleList = ArrayList<ScheduleData>()
     var adapter: GoalFragRecyclerViewAdapter?=null
-    var scheduleList = mutableListOf<Schedule>()
-    var scheduleDataList = ArrayList<ScheduleData>()
-    var mCalendarList:MutableLiveData<ArrayList<Object>>?=null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -52,13 +49,14 @@ class GoalFirstFragment : Fragment() {
                     LinearLayoutManager.VERTICAL
                 )
             )
-            scheduleDataList = scheduleViewModel.loadAllSchedules()
-            adapter = GoalFragRecyclerViewAdapter(scheduleDataList)
+
+            scheduleList.addAll(scheduleViewModel.loadAllSchedules())
+            adapter = GoalFragRecyclerViewAdapter(scheduleList)
             //클릭이벤트
             adapter!!.setItemClickListener(object :
                 GoalFragRecyclerViewAdapter.OnItemClickListener {
                 override fun onClick(v: View, position: Int) {
-                    val item = scheduleDataList[position]
+                    val item = adapter!!.scheList[position]
 
                     Toast.makeText(
                         v.context,
@@ -72,30 +70,21 @@ class GoalFirstFragment : Fragment() {
             })
 
             recyclerView!!.adapter = adapter
+            adapter!!.scheList.removeIf {
+                it.sdone == 1
+            }
+            adapter!!.notifyDataSetChanged()
 /*
         scheduleViewModel.newSchedule.observe(this, Observer {
 
         })  를 이용해서 값이 변경될때마다 목표 프래그먼트의 리사이클러뷰 아이템을 고쳐주면 될듯 하다.
 */
 
-            //테스트 코드
-//            var cal1 = generateCal(2021, 5, 1)
-//            var cal2 = generateCal(2021, 5, 5)
-//            var cal3 = generateCal(2021, 5, 15)
-//            var cal4 = generateCal(2021, 6, 20)
-//            var cal5 = generateCal(2021, 6, 30)
-//
-//            adapter!!.scheList.add(Schedule(15, Category.STUDY, "토익", cal3, cal5))
-//            adapter!!.scheList.add(Schedule(60, Category.EXERCISE, "러닝", cal2, cal3))
-//            adapter!!.scheList.add(Schedule(90, Category.EXERCISE, "턱걸이", cal1, cal2))
-//            adapter!!.scheList.add(Schedule(38, Category.SCHEDULE, "면접 준비", cal3, cal4))
-//            adapter!!.notifyDataSetChanged()
-
-
             viewModel.selected.observe(viewLifecycleOwner, Observer {
                 when (it) {
                     0 -> {
                         adapter!!.scheList.sortBy { it.simportance}
+                        adapter!!.scheList.reverse()
                         adapter!!.notifyDataSetChanged()
                     }
                     1 -> {
