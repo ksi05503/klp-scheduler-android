@@ -95,11 +95,11 @@ class GoalFirstFragment : Fragment() {
             viewModel.selected.observe(viewLifecycleOwner, Observer {
                 when (it) {
                     0 -> {
-                        adapter!!.scheList.sortBy { it.stype}
+                        adapter!!.scheList.sortBy { it.simportance}
                         adapter!!.notifyDataSetChanged()
                     }
                     1 -> {
-                        adapter!!.scheList.sortBy { it.sname}
+                        adapter!!.scheList.sortBy { it.sdate2}
                         adapter!!.notifyDataSetChanged()
                     }
                     2 -> {
