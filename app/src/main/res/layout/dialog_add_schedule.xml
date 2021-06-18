@@ -55,60 +55,128 @@
     </LinearLayout>
 
 
-    <TextView
-        android:id="@+id/radioButtonTitle0"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:text="정기일정" />
-
-    <RadioGroup
-        android:id="@+id/regularRadiogroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-
-        android:orientation="horizontal"
+        android:orientation="vertical"
+        android:id="@+id/sRegularLayout"
+        android:visibility="gone"
         >
 
-        <RadioButton
-            android:id="@+id/radioButton7"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/radioButtonTitle0"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
-            android:text="아님" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="정기일정" />
 
-        <RadioButton
-            android:id="@+id/radioButton8"
-            android:layout_width="match_parent"
+        <RadioGroup
+            android:id="@+id/regularRadiogroup"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:checkedButton="@id/radioButton7"
+            android:orientation="horizontal"
+            >
 
-            android:text="매일" />
+            <RadioButton
+                android:id="@+id/radioButton7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="7dp"
+                android:text="아님"
+                android:visibility="gone"
+                />
 
-        <RadioButton
-            android:id="@+id/radioButton9"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
+            <RadioButton
+                android:id="@+id/radioButton8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="7dp"
 
-            android:text="매주" />
-        <RadioButton
-            android:id="@+id/radioButton10"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="7dp"
+                android:text="매일" />
 
-            android:text="매월" />
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radioButtonWeekly"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="7dp"
 
+                android:text="매주" />
+            <RadioButton
+                android:id="@+id/radioButton10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="7dp"
 
+                android:text="매월" />
+        </RadioGroup>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/dayOfWeekLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"
+        >
+        <ToggleButton
+            android:text="0"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textOn="월"
+            android:textOff="월"
+            android:textSize="15dp" />
+        <ToggleButton
+            android:text="1"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textOn="화"
+            android:textOff="화"
+            android:textSize="15dp" />
+        <ToggleButton
+            android:text="2"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textOn="수"
+            android:textOff="수"
+            android:textSize="15dp" />
+        <ToggleButton
+            android:text="3"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textOn="목"
+            android:textOff="목"
+            android:textSize="15dp" />
+        <ToggleButton
+            android:text="4"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textOn="금"
+            android:textOff="금"
+            android:textSize="15dp" />
+        <ToggleButton
+            android:text="5"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textOn="토"
+            android:textOff="토"
+            android:textSize="15dp" />
+        <ToggleButton
+            android:text="6"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:textOn="일"
+            android:textOff="일"
+            android:textSize="15dp" />
+
+    </LinearLayout>
     <TextView
         android:id="@+id/spinnerTitle1"
         android:layout_width="wrap_content"
@@ -144,34 +212,26 @@
         android:layout_marginRight="16dp"
         android:text="소요시간" />
 
-    <RadioGroup
-        android:id="@+id/estimatedTimeRadiogroup"
+
+    <SeekBar
+        android:id="@+id/estimateSeekBar"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:max="4"
+        android:progress="0"
+
+        />
+    <TextView
+        android:id="@+id/estimateTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal"
-        >
-
-        <RadioButton
-            android:id="@+id/radioButton1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="1시간이내" />
-
-        <RadioButton
-            android:id="@+id/radioButton2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="2~4시간" />
-
-        <RadioButton
-            android:id="@+id/radioButton3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="4시간이상" />
-    </RadioGroup>
+        android:text=""
+        android:textSize="10dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
+        />
 
     <TextView
         android:id="@+id/radioButtonTitle2"
@@ -181,35 +241,26 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:text="중요도" />
-    <RadioGroup
-        android:id="@+id/importanceRadiogroup"
+
+    <SeekBar
+        android:id="@+id/importanceSeekBar"
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_gravity="center"
+        android:max="5"
+        android:progress="0"
+
+        />
+    <TextView
+        android:id="@+id/importanceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:orientation="horizontal"
-        >
-
-        <RadioButton
-            android:id="@+id/radioButton4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="매우중요" />
-
-        <RadioButton
-            android:id="@+id/radioButton5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="평범" />
-
-        <RadioButton
-            android:id="@+id/radioButton6"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="안중요" />
-    </RadioGroup>
+        android:text=""
+        android:textSize="10dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="15dp"
+        />
 
     <EditText
         android:id="@+id/emptyTextField"
