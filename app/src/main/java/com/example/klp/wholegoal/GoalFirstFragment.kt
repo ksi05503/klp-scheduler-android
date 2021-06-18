@@ -61,7 +61,7 @@ class GoalFirstFragment : Fragment() {
 
                     Toast.makeText(
                         v.context,
-                        "Activity\n${item.sname}\n${item.sdate}",
+                        "Activity\n${item.sname}\n${item.sdate1}",
                         Toast.LENGTH_SHORT
                     ).show()
 
