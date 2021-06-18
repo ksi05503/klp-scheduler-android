@@ -173,7 +173,12 @@ class GoalFirstFragment : Fragment() {
         dialogDetailEditTxt.setText(schedule.sdetail)
 
         when(schedule.stype){
-            
+            "공부"->dialogScheduleTypeSpinner.setSelection(0)
+            "과제"->dialogScheduleTypeSpinner.setSelection(1)
+            "운동"->dialogScheduleTypeSpinner.setSelection(2)
+            "회의"->dialogScheduleTypeSpinner.setSelection(3)
+            "약속"->dialogScheduleTypeSpinner.setSelection(4)
+            "기타"->dialogScheduleTypeSpinner.setSelection(5)
         }
 
         when(schedule.sregular){
@@ -190,13 +195,13 @@ class GoalFirstFragment : Fragment() {
 
         if(radioButtonWeekly.isChecked){
             when(schedule.sweekly){
-                0->monToggle.isChecked = true
-                1->tueToggle.isChecked = true
-                2->wedToggle.isChecked = true
-                3->thuToggle.isChecked = true
-                4->friToggle.isChecked = true
-                5->satToggle.isChecked = true
-                6->sunToggle.isChecked = true
+                1->sunToggle.isChecked = true
+                2->monToggle.isChecked = true
+                3->tueToggle.isChecked = true
+                4->wedToggle.isChecked = true
+                5->thuToggle.isChecked = true
+                6->friToggle.isChecked = true
+                7->satToggle.isChecked = true
             }
 
         }
@@ -351,8 +356,9 @@ class GoalFirstFragment : Fragment() {
         }
 
         builder.setView(dialogView)
-            .setPositiveButton("확인") { dialogInterface, i ->
+            .setPositiveButton("수정") { dialogInterface, i ->
 
+            //DB 데이터 수정
 
                 binding.apply {
                     val name = dialogScheduleName.text.toString()
