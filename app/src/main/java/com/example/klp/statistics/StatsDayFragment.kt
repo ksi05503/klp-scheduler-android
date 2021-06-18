@@ -75,7 +75,7 @@ class StatsDayFragment : Fragment() {
             startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
         } else {
             // We have the permission. Query app usage stats.
-            postMethod()
+            //postMethod()
         }
 
 
