@@ -94,7 +94,7 @@
                 />
 
             <RadioButton
-                android:id="@+id/radioButton8"
+                android:id="@+id/radioButtonDaily"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="7dp"
@@ -109,7 +109,7 @@
 
                 android:text="매주" />
             <RadioButton
-                android:id="@+id/radioButton10"
+                android:id="@+id/radioButtonMonthly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="7dp"
@@ -127,6 +127,7 @@
         android:visibility="gone"
         >
         <ToggleButton
+            android:id="@+id/mon"
             android:text="0"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -134,6 +135,7 @@
             android:textOff="월"
             android:textSize="15dp" />
         <ToggleButton
+            android:id="@+id/tue"
             android:text="1"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -141,6 +143,7 @@
             android:textOff="화"
             android:textSize="15dp" />
         <ToggleButton
+            android:id="@+id/wed"
             android:text="2"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -148,6 +151,7 @@
             android:textOff="수"
             android:textSize="15dp" />
         <ToggleButton
+            android:id="@+id/thu"
             android:text="3"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -155,6 +159,7 @@
             android:textOff="목"
             android:textSize="15dp" />
         <ToggleButton
+            android:id="@+id/fri"
             android:text="4"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -162,6 +167,7 @@
             android:textOff="금"
             android:textSize="15dp" />
         <ToggleButton
+            android:id="@+id/sat"
             android:text="5"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -169,6 +175,7 @@
             android:textOff="토"
             android:textSize="15dp" />
         <ToggleButton
+            android:id="@+id/sun"
             android:text="6"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -263,7 +270,7 @@
         />
 
     <EditText
-        android:id="@+id/emptyTextField"
+        android:id="@+id/detailEditText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"

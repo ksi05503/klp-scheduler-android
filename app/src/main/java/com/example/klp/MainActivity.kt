@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-            val dialogDetail = dialogView.findViewById<EditText>(R.id.emptyTextField)
+            val dialogDetail = dialogView.findViewById<EditText>(R.id.detailEditText)
             val sRegularLayout = dialogView.findViewById<LinearLayout>(R.id.sRegularLayout)
             val dayOfWeekLayout = dialogView.findViewById<LinearLayout>(R.id.dayOfWeekLayout)
 
