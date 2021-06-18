@@ -35,67 +35,63 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/dDay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:text="D-day"
-            android:textColor="@color/purple_500" />
-
-        <TextView
-            android:id="@+id/stype"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="분류이름" />
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/dDay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="D-day"
+                android:textColor="@color/purple_500" />
 
             <TextView
                 android:id="@+id/sname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
                 android:padding="3dp"
                 android:text="일정이름"
                 android:textSize="15dp"
 
                 />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/stype"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="분류이름" />
+
             <TextView
                 android:id="@+id/sdate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:padding="3dp"
                 android:text="종료날짜"
                 android:textColor="@color/purple_200"
                 android:textSize="10dp" />
 
+            <TextView
+                android:id="@+id/sregular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:text="주기"
+                android:textSize="10dp" />
+
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/sregular"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:padding="3dp"
-            android:text="주기"
-            android:textSize="10dp" />
-
     </LinearLayout>
+
 
     <View
         android:layout_width="0dp"
