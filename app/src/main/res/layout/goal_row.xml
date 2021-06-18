@@ -60,8 +60,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
@@ -86,6 +85,15 @@
                 android:textSize="10dp" />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/sregular"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:padding="3dp"
+            android:text="주기"
+            android:textSize="10dp" />
 
     </LinearLayout>
 

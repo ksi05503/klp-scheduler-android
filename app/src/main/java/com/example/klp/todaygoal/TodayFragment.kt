@@ -6,16 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.klp.wholegoal.GoalFragRecyclerViewAdapter
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.FragmentTodayBinding
+import com.example.klp.model.ScheduleViewModel
+import com.example.klp.wholegoal.SpinnerViewModel
 
 
 class TodayFragment : Fragment() {
     var binding:FragmentTodayBinding?=null
     var adapter: GoalFragRecyclerViewAdapter?=null
+    val scheduleViewModel:ScheduleViewModel by activityViewModels()
+    val spinnerViewModel:SpinnerViewModel by activityViewModels()
+    var scheduleList=ArrayList<ScheduleData>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,21 +36,32 @@ class TodayFragment : Fragment() {
         binding!!.apply {
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerView!!.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
-            adapter = GoalFragRecyclerViewAdapter(ArrayList<ScheduleData>())
+
+            scheduleList.addAll(scheduleViewModel.loadAllSchedules())
+            adapter = GoalFragRecyclerViewAdapter(scheduleList)
             recyclerView.adapter = adapter
-            adapter!!.apply {
-                var cal1 = Calendar.getInstance()
-                cal1.set(Calendar.YEAR, 2021)
-                cal1.set(Calendar.MONTH, Calendar.MAY)
-                cal1.set(Calendar.DAY_OF_MONTH, 1)
-                var cal2 = Calendar.getInstance()
-                cal2.set(Calendar.YEAR, 2021)
-                cal2.set(Calendar.MONTH, Calendar.JUNE)
-                cal2.set(Calendar.DAY_OF_MONTH, 30)
+        }
 
+        todayFiltering()
+    }
 
-//                scheList.add(Schedule(35, Category.STUDY, "토익 문제집", cal1, cal2))
-            }
+    private fun todayFiltering() {
+        val now = Calendar.getInstance()
+        val year = now.get(Calendar.YEAR)
+        val month = now.get(Calendar.MONTH)+1
+        val date = now.get(Calendar.DAY_OF_MONTH)
+        val dow = now.get(Calendar.DAY_OF_WEEK)
+
+        scheduleList.removeIf {
+            val ymdStr = it.sdate2.split("-")
+            val tarYear = ymdStr[0].toInt()
+            val tarMonth = ymdStr[1].toInt()
+            val tarDate = ymdStr[2].toInt()
+
+            //아래 조건이면 삭제
+            it.sdone==1 // 이미 완료된 일정
+                    || (it.sregular==0 && (year!=tarYear || month!=tarMonth || date!=tarDate)) //마감일이 오늘이 아닐 때
+                    || ((it.sregular==2 || it.sregular==3) && (it.sweekly != dow)) // 매주, 매달인데 요일이 동일
         }
     }
 }

@@ -17,6 +17,7 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val sname:TextView = view.findViewById(R.id.sname)
         val sdate:TextView = view.findViewById(R.id.sdate)
+        val sregular:TextView = view.findViewById(R.id.sregular)
         val dDay:TextView = view.findViewById(R.id.dDay)
         val stype:TextView = view.findViewById(R.id.stype)
         val percentText:TextView = view.findViewById(R.id.percentText)
@@ -44,24 +45,6 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
 //        holder.percentText.text = scheList[position].percent.toString()+"%"
 //        holder.periodText.text = "${start.get(Calendar.YEAR)}.${start.get(Calendar.MONTH)+1}.${start.get(Calendar.DAY_OF_MONTH)}~${end.get(Calendar.YEAR)}.${end.get(Calendar.MONTH)+1}.${end.get(Calendar.DAY_OF_MONTH)}"
 //        holder.titleText.text = "${scheList[position].title}"
-//        when(scheList[position].category){
-//            Category.EXERCISE->{ //운동
-//                holder.cateText.text = "[운동]"
-//            }
-//            Category.STUDY->{ //공부
-//                holder.cateText.text = "[공부]"
-//            }
-//            Category.SCHEDULE->{ //일정
-//                holder.cateText.text = "[일정]"
-//            }
-//        }
-//
-//        if(dDay > 0){
-//            holder.dDayText.text = "D-"+abs(dDay + 1).toString()
-//        }
-//        else{
-//            holder.dDayText.text = "D+"+abs(dDay).toString()
-//        }
 
         now.get(Calendar.YEAR)
         now.get(Calendar.MONTH)
@@ -70,11 +53,17 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
         holder.sname.text = scheList[position].sname
         holder.stype.text = scheList[position].stype
         holder.sdate.text = scheList[position].sdate2
+        when(scheList[position].sregular){
+            0->holder.sregular.text = ""
+            1->holder.sregular.text = "매일"
+            2->holder.sregular.text = "매주"
+            3->holder.sregular.text = "매달"
+        }
 
-        val ymdStr = scheList[position].sdate2.split(" ")[0]
-        val year = ymdStr.split("-")[0].toInt()
-        val month = ymdStr.split("-")[1].toInt()
-        val day = ymdStr.split("-")[2].toInt()
+        val ymdStr = scheList[position].sdate2.split("-")
+        val year = ymdStr[0].toInt()
+        val month = ymdStr[1].toInt()
+        val day = ymdStr[2].toInt()
 
         val dDayValue = calculateDday(year, month, day)
         if(dDayValue > 0){
