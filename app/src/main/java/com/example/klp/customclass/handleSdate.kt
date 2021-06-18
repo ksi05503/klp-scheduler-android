@@ -1,37 +1,26 @@
 package com.example.klp.customclass
 
-class handleSdate(str:String) {
-
-    private var dateString : String = ""
-
+class handleSdate(dayString:String) {
 
 
     var dayString =""
     var year:Int =-1
     var month:Int =-1
     var day:Int =-1
+    var syear =""
+    var smonth=""
+    var sday=""
 
-    var timeString = ""
-    var hour:Int = -1
-    var minute:Int =-1
 
     init {
-        dateString = str
 
-        if (dateString.split(' ').size == 2){
-            dayString = dateString.split(' ')[0]
-            timeString = dateString.split(' ')[1]
-        }else{
-            dayString = "0000-00-00"
-            timeString = "00:00"
-        }
+        syear = dayString.split('-')[0]
+        smonth = dayString.split('-')[1]
+        sday = dayString.split('-')[2]
 
         year = dayString.split('-')[0].toInt()
         month = dayString.split('-')[1].toInt()
         day = dayString.split('-')[2].toInt()
-
-        hour = timeString.split(':')[0].toInt()
-        minute = timeString.split(':')[1].toInt()
 
     }
 
