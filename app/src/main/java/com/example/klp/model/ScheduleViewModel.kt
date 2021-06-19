@@ -32,6 +32,7 @@ class ScheduleViewModel : ViewModel() {
                     ?: tmp)
                 liveData.setData(data)
             }
+
             return liveData
         }
 
@@ -42,7 +43,6 @@ class ScheduleViewModel : ViewModel() {
     fun setOngoing() {
         type = 1
     }
-
     //fun 전체목표 불러오기
     suspend fun loadAllSchedules() {
         UserApiClient.instance.me { user, _ ->

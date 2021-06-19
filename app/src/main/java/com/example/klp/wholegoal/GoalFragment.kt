@@ -1,7 +1,6 @@
 package com.example.klp.wholegoal
 
 import android.app.DatePickerDialog
-import android.icu.util.Calendar
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,7 +23,6 @@ import com.example.klp.model.ScheduleViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
-
 
 class GoalFragment : Fragment() {
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
@@ -58,7 +56,7 @@ class GoalFragment : Fragment() {
                 ) {
                     when (position) {
                         0 -> {
-                            Toast.makeText(parent?.context, "사용자 설정 순", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(parent?.context, "중요도 순", Toast.LENGTH_SHORT).show()
                             viewModel.select(0)
                         }
                         1 -> {
@@ -141,38 +139,21 @@ class GoalFragment : Fragment() {
                 recyclerView!!.adapter = adapter
             }
 
-/*
-        scheduleViewModel.newSchedule.observe(this, Observer {
-
-        })  를 이용해서 값이 변경될때마다 목표 프래그먼트의 리사이클러뷰 아이템을 고쳐주면 될듯 하다.
-*/
-
-            //테스트 코드
-//            var cal1 = generateCal(2021, 5, 1)
-//            var cal2 = generateCal(2021, 5, 5)
-//            var cal3 = generateCal(2021, 5, 15)
-//            var cal4 = generateCal(2021, 6, 20)
-//            var cal5 = generateCal(2021, 6, 30)
-//
-//            adapter!!.scheList.add(Schedule(15, Category.STUDY, "토익", cal3, cal5))
-//            adapter!!.scheList.add(Schedule(60, Category.EXERCISE, "러닝", cal2, cal3))
-//            adapter!!.scheList.add(Schedule(90, Category.EXERCISE, "턱걸이", cal1, cal2))
-//            adapter!!.scheList.add(Schedule(38, Category.SCHEDULE, "면접 준비", cal3, cal4))
-//            adapter!!.notifyDataSetChanged()
-
 
 //            viewModel.selected.observe(viewLifecycleOwner, Observer {
 //                when (it) {
 //                    0 -> {
-//
+//                        adapter.scheList?.sortBy { it.simportance}
+//                        adapter.scheList?.reverse()
+//                        adapter.notifyDataSetChanged()
 //                    }
 //                    1 -> {
-//                        adapter!!.scheList.sortBy { it.end }
-//                        adapter!!.notifyDataSetChanged()
+//                        adapter.scheList?.sortBy { it.sdate2}
+//                        adapter.notifyDataSetChanged()
 //                    }
 //                    2 -> {
-//                        adapter!!.scheList.sortBy { it.category }
-//                        adapter!!.notifyDataSetChanged()
+//                        adapter.scheList?.sortBy { it.stype}
+//                        adapter.notifyDataSetChanged()
 //                    }
 //                }
 //            })
@@ -180,13 +161,6 @@ class GoalFragment : Fragment() {
     }
 
 
-    private fun generateCal(year: Int, month: Int, day: Int): Calendar {
-        var cal = Calendar.getInstance()
-        cal.set(Calendar.YEAR, year)
-        cal.set(Calendar.MONTH, month - 1)
-        cal.set(Calendar.DAY_OF_MONTH, day)
-        return cal
-    }
 
     private fun dialogBuilder(view: View, schedule: ScheduleData) {
         val builder = AlertDialog.Builder(view.context)
@@ -445,6 +419,7 @@ class GoalFragment : Fragment() {
             }
             .show()
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

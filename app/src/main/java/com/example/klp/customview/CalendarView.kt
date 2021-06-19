@@ -1,6 +1,7 @@
 package com.example.klp.customview
 
 import android.content.Context
+import android.icu.util.Calendar
 import android.util.AttributeSet
 import android.view.ContextThemeWrapper
 import android.view.ViewGroup
@@ -9,10 +10,10 @@ import androidx.annotation.StyleRes
 import androidx.core.content.withStyledAttributes
 import androidx.core.view.children
 import com.example.klp.R
+import com.example.klp.data.ScheduleData
 import com.example.klp.utils.CalendarUtils.Companion.WEEKS_PER_MONTH
 import org.joda.time.DateTime
 import org.joda.time.DateTimeConstants.DAYS_PER_WEEK
-
 import kotlin.math.max
 
 class CalendarView @JvmOverloads constructor(
@@ -61,13 +62,60 @@ class CalendarView @JvmOverloads constructor(
      * @param firstDayOfMonth   한 달의 시작 요일
      * @param list              달력이 가지고 있는 요일과 이벤트 목록 (총 42개)
      */
-    fun initCalendar(firstDayOfMonth: DateTime, list: List<DateTime>) {
+    fun initCalendar(firstDayOfMonth: DateTime, list: List<DateTime>, schedules:ArrayList<ScheduleData>) {
         list.forEach {
+            val tempArray = ArrayList<ScheduleData>()
+            tempArray.addAll(schedules)
+
+            val now = Calendar.getInstance()
+
+            val year = it.year
+            val month = it.monthOfYear
+            val date = it.dayOfMonth
+
+            var figure = 0
+
+            if(now.get(Calendar.DAY_OF_MONTH) >= date){ // 아직 해당일이 오지 않은 곳은 그리기 X
+                tempArray.removeIf {
+                    val ymdStr = it.SDATE2.split("-")
+
+                    (it.SREGULAR==0 && (year!=ymdStr[0].toInt() || month != ymdStr[1].toInt() || date != ymdStr[2].toInt()))
+                            /* || (it.SREGULAR==2 && it.sweekly != now.get(Calendar.DAY_OF_WEEK)) */
+                            || (it.SREGULAR==3 && it.SDATE1.split("-")[2].toInt() != date)
+                }
+
+                var done = 0
+                var notdone = 0
+                if(tempArray.size==0){
+                    figure = 0
+                }
+                else{
+                    for(schedule in tempArray){
+                        if(schedule.SDONE==0){
+                            notdone++
+                        }
+                        else{
+                            done++
+                        }
+                    }
+
+                    if(done > notdone && notdone == 0){
+                        figure = 3
+                    }
+                    else if(done <= notdone && done != 0){
+                        figure = 2
+                    }
+                    else if(done == 0 && done < notdone){
+                        figure = 1
+                    }
+                }
+            }
+
             addView(DayItemView(
                 context = context,
                 date = it,
-                firstDayOfMonth = firstDayOfMonth
-            ))
+                firstDayOfMonth = firstDayOfMonth,
+            figure = figure))
         }
     }
 }

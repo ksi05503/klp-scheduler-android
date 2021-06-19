@@ -20,7 +20,8 @@ class DayItemView @JvmOverloads constructor(
     @AttrRes private val defStyleAttr: Int = R.attr.itemViewStyle,
     @StyleRes private val defStyleRes: Int = R.style.Calendar_ItemViewStyle,
     private val date: DateTime = DateTime(),
-    private val firstDayOfMonth: DateTime = DateTime()
+    private val firstDayOfMonth: DateTime = DateTime(),
+    private val figure:Int
 ) : View(ContextThemeWrapper(context, defStyleRes), attrs, defStyleAttr) {
 
     private val bounds = Rect()
@@ -57,30 +58,36 @@ class DayItemView @JvmOverloads constructor(
         )
 
         if(isSameMonth(date, firstDayOfMonth)){
-            if(dateStr.toInt() < 10){
-                canvas.drawPath(configurePath(Path(), width.toFloat(), height.toFloat()), paint.apply {
-                    color = Color.BLACK
-                    strokeWidth = 3f
-                })
-            }
-            else if (dateStr.toInt() in 10..19){
-                canvas.drawLine(width-20f, height-20f, width-2f, height-2f, paint.apply {
-                    color = Color.BLACK
-                    strokeWidth = 3f
-                })
-                canvas.drawLine(width-20f, height-2f, width-2f, height-20f, paint.apply {
-                    color = Color.BLACK
-                    strokeWidth = 3f
-                })
-            }
-            else{
-                canvas.drawCircle(
-                    width - 15f, height - 15f, 10F, paint.apply {
+            when(figure){
+                0->{
+
+                }
+                1->{
+                    canvas.drawLine(width-20f, height-20f, width-2f, height-2f, paint.apply {
                         color = Color.BLACK
-                        style = Paint.Style.STROKE
                         strokeWidth = 3f
-                    }
-                )
+                    })
+                    canvas.drawLine(width-20f, height-2f, width-2f, height-20f, paint.apply {
+                        color = Color.BLACK
+                        strokeWidth = 3f
+                    })
+                }
+                2->{
+
+                    canvas.drawPath(configurePath(Path(), width.toFloat(), height.toFloat()), paint.apply {
+                        color = Color.BLACK
+                        strokeWidth = 3f
+                    })
+                }
+                3->{
+                    canvas.drawCircle(
+                        width - 15f, height - 15f, 10F, paint.apply {
+                            color = Color.BLACK
+                            style = Paint.Style.STROKE
+                            strokeWidth = 3f
+                        }
+                    )
+                }
             }
         }
     }
