@@ -76,9 +76,7 @@ class GoalFragment : Fragment() {
 
                 override fun onNothingSelected(parent: AdapterView<*>?) {}
             }
-        }
 
-        binding!!.apply {
             CoroutineScope(Dispatchers.Main).launch {
                 scheduleViewModel._newSchedules.value = RetrofitManager.instance.getGoals(1759543463)
                 Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())

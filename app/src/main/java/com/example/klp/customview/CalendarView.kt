@@ -79,9 +79,7 @@ class CalendarView @JvmOverloads constructor(
                 tempArray.removeIf {
                     val ymdStr = it.SDATE2.split("T")[0].split("-")
 
-                    (it.SREGULAR==0 && (year!=ymdStr[0].toInt() || month != ymdStr[1].toInt() || date != ymdStr[2].toInt()))
-                            /* || (it.SREGULAR==2 && it.sweekly != now.get(Calendar.DAY_OF_WEEK)) */
-                            || (it.SREGULAR==3 && it.SDATE1.split("-")[2].toInt() != date)
+                    (year!=ymdStr[0].toInt() || month != ymdStr[1].toInt() || date != ymdStr[2].toInt())
                 }
 
                 var done = 0
