@@ -6,15 +6,27 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.klp.databinding.ActivityAppListBinding
+import com.example.klp.login.GlobalApplication
 
 class AppListActivity : AppCompatActivity() {
-    private val binding: ActivityAppListBinding by lazy { ActivityAppListBinding.inflate(layoutInflater) }
+    private val binding: ActivityAppListBinding by lazy {
+        ActivityAppListBinding.inflate(
+            layoutInflater
+        )
+    }
     private val adapter = MyAdapter(ArrayList<AppData>())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         initRecyclerView()
+        binding.appListCheckBtn.setOnClickListener {
+            val items = adapter.items.filter { item -> item.checked }.map { item -> item.appLabel }
+            val appLabelSet = mutableSetOf<String>()
+            items.forEach { item -> appLabelSet.add(item) }
+            GlobalApplication.prefs.setStringSet(value = appLabelSet)
+            finish()
+        }
     }
 
     private fun initRecyclerView() {
@@ -41,8 +53,7 @@ class AppListActivity : AppCompatActivity() {
                 data: AppData,
                 position: Int
             ) {
-                val intent = packageManager.getLaunchIntentForPackage(data.appPackageName)
-                startActivity(intent)
+                adapter.checkItem(position)
             }
         }
         binding.recyclerView.adapter = adapter

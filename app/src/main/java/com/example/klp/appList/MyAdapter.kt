@@ -21,6 +21,11 @@ class MyAdapter(val items: ArrayList<AppData>) : RecyclerView.Adapter<MyAdapter.
         }
     }
 
+    fun checkItem(position: Int) {
+        items[position].checked = !items[position].checked
+        notifyItemChanged(position)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = AppRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(view)
@@ -35,6 +40,8 @@ class MyAdapter(val items: ArrayList<AppData>) : RecyclerView.Adapter<MyAdapter.
             appLabel.text = items[position].appLabel
             appPackage.text = items[position].appPackageName
             appIcon.setImageDrawable(items[position].appIcon)
+            if (items[position].checked) checkImg.visibility = View.VISIBLE
+            else checkImg.visibility = View.INVISIBLE
         }
     }
 }

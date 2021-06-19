@@ -52,10 +52,6 @@ class RetrofitManager {
         return execute(iRetrofit.getDiary(uid, enterDate))
     }
 
-    suspend fun getSchedules(type: String, from: String, to: String, achieved: Int): Any {
-        return execute(iRetrofit.getSchedules(type, from, to, achieved))
-    }
-
     val array = """[
         { "name": "Joe", "age": 23 },
         { "name": "Jill", "age": 35 }
@@ -87,6 +83,16 @@ class RetrofitManager {
         return execute(iRetrofit.getPost(id))
     }
 
+    suspend fun getStats(
+        type: String,
+        from: String?,
+        to: String?,
+        uid: Int?,
+        achieved: Int?
+    ): Any {
+        return execute(iRetrofit.getStats(type, from, to, uid, achieved))
+    }
+
     suspend fun postAppUsageTime(uid: Int, enterDate: String, appUsageList: Array<AppUsageTime>) {
         val jsonObject = JSONObject()
         jsonObject.put("uid", uid)
@@ -100,5 +106,20 @@ class RetrofitManager {
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
 
         execute(iRetrofit.postAppUsageTime(requestBody))
+    }
+
+    suspend fun postDangerApp(uid: Int, month: Int, appName: String) {
+        val jsonObject = JSONObject()
+        jsonObject.put("uid", uid)
+        jsonObject.put("month", month)
+        jsonObject.put("app_name", appName)
+
+        // Convert JSONObject to String
+        val jsonObjectString = jsonObject.toString()
+
+        // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
+        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+
+        execute(iRetrofit.postDangerApp(requestBody))
     }
 }

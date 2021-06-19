@@ -1,12 +1,12 @@
 package com.example.klp.wholegoal
 
+import android.content.Context
 import android.icu.util.Calendar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.customclass.handleSdate
 import com.example.klp.data.ScheduleData
@@ -17,6 +17,7 @@ import kotlin.math.round
 
 class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
 
+
     inner class ViewHolder(binding: GoalRowBinding):RecyclerView.ViewHolder(binding.root){
         val sname: TextView = binding.sname
         val sdate: TextView = binding.sdate
@@ -24,7 +25,11 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         val dDay: TextView = binding.dDay
         val stype: TextView = binding.stype
         val per_circle: ProgressBar = binding.percentCircle
+        val doneCheckBox: CheckBox = binding.doneCheckBox
+
+
     }
+
 
     fun setData(data: ArrayList<ScheduleData>?) {
         scheList = data
@@ -46,7 +51,25 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         holder.itemView.setOnClickListener {
             itemClickListener.onClick(it, position)
         }
+        holder.itemView.setOnLongClickListener {
+            itemLongClickListener.onLongClick(it, position)
+        }
 
+        holder.doneCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                //잘 동작하는거 확인했음 (여기서 DB에 sdone = 1 로 patch)
+            }else{
+                //여기서 DB에 sdone = 0 으로 patch
+            }
+        }
+
+        //완료일정인경우 체크박스가 표시되어있는채로
+        holder.doneCheckBox.isChecked = scheList!![position].SDONE==1
+
+
+
+
+        //텍스트바인드
         val hsd = handleSdate(scheList!![position].SDATE2)
         holder.sname.text = scheList!![position].SNAME
         holder.sdate.text = "${hsd.year}년 ${hsd.month}월 ${hsd.day}일"
@@ -144,4 +167,10 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
     override fun getItemCount(): Int {
         return scheList?.size ?: 0
     }
+
+
+
+
+
+
 }

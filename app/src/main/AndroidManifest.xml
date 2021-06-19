@@ -17,9 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KLP"
         android:usesCleartextTraffic="true">
-        <activity android:name=".WriteArticleActivity"></activity>
+        <activity android:name=".appList.PreferencesActivity"></activity>
+        <activity android:name=".WriteArticleActivity" />
         <activity android:name=".ArticleActivity" />
-        <activity android:name=".appList.AppListActivity"></activity>
+        <activity android:name=".appList.AppListActivity" />
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -33,7 +34,7 @@
                     android:scheme="kakaoaa6e1ee8c36cee02c00dbd53731beba0" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.LoginActivity"></activity>
+        <activity android:name=".login.LoginActivity" />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan">
