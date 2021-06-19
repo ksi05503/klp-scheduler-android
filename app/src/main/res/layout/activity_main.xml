@@ -48,7 +48,8 @@
                 android:layout_gravity="center"
                 android:background="@android:color/white"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/ic_baseline_control_point_50" />
+                app:srcCompat="@drawable/ic_baseline_control_point_50"
+                app:tint="@color/purple_500" />
 
         </FrameLayout>
 
