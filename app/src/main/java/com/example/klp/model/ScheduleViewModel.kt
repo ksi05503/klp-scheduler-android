@@ -18,19 +18,22 @@ class ScheduleViewModel : ViewModel() {
         get() {
             val liveData = LiveScheduleData<ArrayList<ScheduleData>>()
 
-            if (type == 0) {
-                val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 0 } ?: ArrayList<ScheduleData>())
-                liveData.setData(data)
-            } else {
-                val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 1 } ?: ArrayList<ScheduleData>())
-                liveData.setData(data)
+            when(type){
+                0->{
+                    val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 0 } ?: ArrayList<ScheduleData>())
+                    liveData.setData(data)
+                }
+                1->{
+                    val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 1 } ?: ArrayList<ScheduleData>())
+                    liveData.setData(data)
+                }
+                2->{
+
+                }
             }
+
             return liveData
         }
-
-    init {
-        //스케줄 초기화 필요하다면 추가
-    }
 
     fun setDone() {
         type = 0
@@ -40,27 +43,30 @@ class ScheduleViewModel : ViewModel() {
         type = 1
     }
     //임시 데이터
-
-    var data1 =
-        ScheduleData(1, 1, "KLP 회의", "2021-06-17", "2021-06-17", 2, 1, "회의", 3, 1, "늦지않기", 0)
-    var data2 =
-        ScheduleData(1, 2, "컴퓨터그래픽스 시험", "2021-06-17", "2021-06-20", 3, -1, "시험", 2, 3, "망한듯", 0)
-    var data3 = ScheduleData(1, 3, "옷사기", "2021-06-17", "2021-06-18", 2, 3, "시험", 2, 3, "망한듯", 1)
-    var data4 = ScheduleData(2, 4, "화장실청소", "2021-06-19", "2021-06-20", 2, 5, "기타", 2, 1, "꼭해라", 1)
+    var data1 = ScheduleData (1,1,"KLP 회의","2021-06-17","2021-06-30",1,1,"회의",3,1,"늦지않기",0)
+    var data2 = ScheduleData (1,2,"컴퓨터그래픽스 시험","2021-06-17","2021-06-18",0,-1,"시험",2,3,"망한듯",0)
+    var data3 = ScheduleData (1,3,"옷사기","2021-06-17","2021-06-20",0,3,"약속",3,3,"망한듯",1)
+    var data4 = ScheduleData (1,4,"자료구조 시험","2021-06-15","2021-06-24",2,6,"시험",2,5,"망한듯",0)
+    var data5 = ScheduleData (1,5,"조깅","2021-06-16","2021-07-27",3,5,"운동",2,1,"",0)
+    var data6 = ScheduleData (1,6,"대청소","2021-06-18","2021-07-18",3,5,"기타",2,4,"",0)
+    var data7 = ScheduleData (1,6,"콘서트","2021-06-12","2021-06-18",0,5,"약속",2,4,"",1)
 
     //fun 전체목표 불러오기
     fun loadAllSchedules() {
         //레트로핏으로 데이터 받아올것
         //     _newSchedules.value =  getSchedules~
 
-
         var scheduleArrayList = ArrayList<ScheduleData>()
 
-
-        scheduleArrayList.add(data1)
-        scheduleArrayList.add(data2)
-        scheduleArrayList.add(data3)
-        scheduleArrayList.add(data4)
+        scheduleArrayList.apply {
+            add(data1)
+            add(data2)
+            add(data3)
+            add(data4)
+            add(data5)
+            add(data6)
+            add(data7)
+        }
 
         _newSchedules.value = scheduleArrayList
     }
