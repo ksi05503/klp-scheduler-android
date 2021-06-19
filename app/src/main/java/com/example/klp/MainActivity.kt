@@ -229,7 +229,7 @@ class MainActivity : AppCompatActivity() {
 
 
                         CoroutineScope(Dispatchers.Main).launch{
-                            RetrofitManager.instance.addSchedule(1,22,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
+                            RetrofitManager.instance.addSchedule(1759543463,22,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
                         }
 
 

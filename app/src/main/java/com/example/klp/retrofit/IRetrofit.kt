@@ -110,7 +110,7 @@ interface IRetrofit {
     @DELETE("/typicode/demo/posts/1")
     suspend fun deleteC(): Response<ResponseBody>
 
-    @DELETE("/deleteSchedule")
+    @POST("/deleteSchedule")
     suspend fun deleteSchedule(@Body requestBody: RequestBody): Response<ResponseBody>
 
 

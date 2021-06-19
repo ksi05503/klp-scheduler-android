@@ -131,7 +131,7 @@ class GoalFragment : Fragment() {
                             .setPositiveButton("삭제") { dialogInterface, i ->
                             //DB 데이터 삭제
                                 CoroutineScope(Dispatchers.Main).launch{
-                                    RetrofitManager.instance.deleteSchedule(1,item.SID)
+                                    RetrofitManager.instance.deleteSchedule(1759543463,item.SID)
                                 }
                             }
                             .setNegativeButton("취소") { dialogInterface, i ->
