@@ -7,9 +7,9 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import com.example.klp.databinding.ActivityMainBinding
 import com.example.klp.model.ScheduleViewModel
-import androidx.fragment.app.Fragment
 import com.example.klp.retrofit.RetrofitManager
 import com.example.klp.statistics.StatsDayFragment
 import com.example.klp.statistics.StatsMonthFragment
@@ -67,8 +67,8 @@ class MainActivity : AppCompatActivity() {
             val dialogSeekBar1 = dialogView.findViewById<SeekBar>(R.id.estimateSeekBar)
             val dialogEstimateTextView = dialogView.findViewById<TextView>(R.id.estimateTextView)
             val dialogSeekBar2 = dialogView.findViewById<SeekBar>(R.id.importanceSeekBar)
-            val dialogImportanceTextView = dialogView.findViewById<TextView>(R.id.importanceTextView)
-
+            val dialogImportanceTextView =
+                dialogView.findViewById<TextView>(R.id.importanceTextView)
 
 
             val dialogDetail = dialogView.findViewById<EditText>(R.id.detailEditText)
@@ -87,27 +87,27 @@ class MainActivity : AppCompatActivity() {
             val radioButtonWeekly = dialogView.findViewById<RadioButton>(R.id.radioButtonWeekly)
 
             radioButtonWeekly.setOnCheckedChangeListener { buttonView, isChecked ->
-                if(isChecked){
+                if (isChecked) {
                     dayOfWeekLayout.visibility = View.VISIBLE
-                }else{
+                } else {
                     dayOfWeekLayout.visibility = View.GONE
                 }
             }
 
             var estimateDB = 0
             dialogEstimateTextView.setText("금방끝나는일정^^")
-            dialogSeekBar1.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            dialogSeekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    when(progress){
-                        0->dialogEstimateTextView.setText("금방끝나는일정^^")
-                        1->dialogEstimateTextView.setText("1시간이내^^")
-                        2->dialogEstimateTextView.setText("1~4시간...")
-                        3->dialogEstimateTextView.setText("4시간 이상.....")
-                        4->dialogEstimateTextView.setText("상상을 초월..........")
+                    when (progress) {
+                        0 -> dialogEstimateTextView.setText("금방끝나는일정^^")
+                        1 -> dialogEstimateTextView.setText("1시간이내^^")
+                        2 -> dialogEstimateTextView.setText("1~4시간...")
+                        3 -> dialogEstimateTextView.setText("4시간 이상.....")
+                        4 -> dialogEstimateTextView.setText("상상을 초월..........")
                     }
                     estimateDB = progress
                 }
@@ -121,19 +121,19 @@ class MainActivity : AppCompatActivity() {
 
             var importanceDB = 0
             dialogImportanceTextView.setText("안중요한 일정")
-            dialogSeekBar2.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            dialogSeekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    when(progress){
-                        0->dialogImportanceTextView.setText("안중요한 일정")
-                        1->dialogImportanceTextView.setText("까먹지만말기")
-                        2->dialogImportanceTextView.setText("살짝 중요")
-                        3->dialogImportanceTextView.setText("중요한 일정")
-                        4->dialogImportanceTextView.setText("매우 중요")
-                        5->dialogImportanceTextView.setText("굉장히 중요!")
+                    when (progress) {
+                        0 -> dialogImportanceTextView.setText("안중요한 일정")
+                        1 -> dialogImportanceTextView.setText("까먹지만말기")
+                        2 -> dialogImportanceTextView.setText("살짝 중요")
+                        3 -> dialogImportanceTextView.setText("중요한 일정")
+                        4 -> dialogImportanceTextView.setText("매우 중요")
+                        5 -> dialogImportanceTextView.setText("굉장히 중요!")
                     }
                     importanceDB = progress
                 }
@@ -147,7 +147,7 @@ class MainActivity : AppCompatActivity() {
             }
             )
             var dbDate1 = ""  //db에 들어갈 string
-            var dbDate2= ""  //db에 들어갈 string
+            var dbDate2 = ""  //db에 들어갈 string
             calBtn1.setOnClickListener {
                 var date_listener = object : DatePickerDialog.OnDateSetListener {
                     override fun onDateSet(
@@ -156,18 +156,21 @@ class MainActivity : AppCompatActivity() {
                         month: Int,
                         dayOfMonth: Int
                     ) {
+
                         calBtn1.text = "$year/${month + 1}/$dayOfMonth"
-                        dbDate1 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
-                        dbDate2 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
+                        val monthStr = if (month + 1 >= 10) (month + 1) else '0' + (month + 1).toString()
+                        dbDate1 =
+                            "$year-${monthStr}-${dayOfMonth}T00:00:00"
+                        dbDate2 = "$year-${monthStr}-${dayOfMonth}T00:00:00"
 
                         myYear = year
                         myMonth = month
                         myDay = dayOfMonth
                         calBtn2.text = "$myYear/${myMonth + 1}/$myDay"
 
-                        if(calBtn1.text == calBtn2.text ){
+                        if (calBtn1.text == calBtn2.text) {
                             sRegularLayout.visibility = View.GONE
-                        }else{
+                        } else {
                             sRegularLayout.visibility = View.VISIBLE
                         }
 
@@ -191,10 +194,11 @@ class MainActivity : AppCompatActivity() {
                         dayOfMonth: Int
                     ) {
                         calBtn2.text = "$year/${month + 1}/$dayOfMonth"
-                        dbDate2 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
-                        if(calBtn1.text == calBtn2.text ){
+                        val monthStr = if (month + 1 >= 10) (month + 1) else '0' + (month + 1).toString()
+                        dbDate2 = "$year-${monthStr}-${dayOfMonth}T00:00:00"
+                        if (calBtn1.text == calBtn2.text) {
                             sRegularLayout.visibility = View.GONE
-                        }else{
+                        } else {
                             sRegularLayout.visibility = View.VISIBLE
                         }
 
@@ -222,8 +226,20 @@ class MainActivity : AppCompatActivity() {
                         //            val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
 
 
-                        CoroutineScope(Dispatchers.Main).launch{
-                            RetrofitManager.instance.addSchedule(1,10,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
+                        CoroutineScope(Dispatchers.Main).launch {
+                            RetrofitManager.instance.addSchedule(
+                                1,
+                                10,
+                                name,
+                                dbDate1,
+                                dbDate2,
+                                regular,
+                                type,
+                                estimate,
+                                importance,
+                                detail,
+                                0
+                            )
                         }
 
 
@@ -249,7 +265,6 @@ class MainActivity : AppCompatActivity() {
             fragment.commit()
         })
     }
-
 
 
 }

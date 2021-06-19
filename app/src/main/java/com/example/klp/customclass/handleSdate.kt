@@ -20,6 +20,9 @@ class handleSdate(dayString:String) {
         month = dayString.split('-')[1].toInt()
         day = (dayString.split('-')[2].subSequence(0,2) as String).toInt()
 
+        if(year<10){
+            syear = "0${year}"
+        }
 
         dayInt = year*10000+ month*100 + day
     }

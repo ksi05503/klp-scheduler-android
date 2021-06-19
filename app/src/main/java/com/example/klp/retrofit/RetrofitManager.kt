@@ -131,6 +131,7 @@ class RetrofitManager {
         jsonObject.put("SDATE1",SDATE1)
         jsonObject.put("SDATE2",SDATE2)
         jsonObject.put("SREGULAR",SREGULAR)
+        jsonObject.put("SWEEKLY",0)
         jsonObject.put("STYPE",STYPE)
         jsonObject.put("SESTIMATE",SESTIMATE)
         jsonObject.put("SIMPORTANCE",SIMPORTANCE)
@@ -138,7 +139,7 @@ class RetrofitManager {
         jsonObject.put("SDONE",SDONE)
         val jsonObjectString = jsonObject.toString()
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
-        execute(iRetrofit.postAppUsageTime(requestBody))
+        execute(iRetrofit.addSchedule(requestBody))
 
 
     }
@@ -150,7 +151,8 @@ class RetrofitManager {
 
         val jsonObjectString = jsonObject.toString()
         val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
-        execute(iRetrofit.postAppUsageTime(requestBody))
+        execute(iRetrofit.deleteSchedule(requestBody))
+
     suspend fun postDangerApp(uid: Int, month: Int, appName: String) {
         val jsonObject = JSONObject()
         jsonObject.put("uid", uid)

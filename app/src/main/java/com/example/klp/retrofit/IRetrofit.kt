@@ -111,7 +111,7 @@ interface IRetrofit {
     suspend fun deleteC(): Response<ResponseBody>
 
     @DELETE("/deleteSchedule")
-    suspend fun deleteSchedule(): Response<ResponseBody>
+    suspend fun deleteSchedule(@Body requestBody: RequestBody): Response<ResponseBody>
 
 
     /*****************************************************************************************************************************************************/
