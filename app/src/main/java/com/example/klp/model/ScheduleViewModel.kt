@@ -3,12 +3,17 @@ package com.example.klp.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.klp.data.ScheduleData
+import com.example.klp.retrofit.RetrofitManager
+import com.kakao.sdk.user.UserApiClient
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 
 
 class ScheduleViewModel : ViewModel() {
     //내부에서 설정하는 자료형은 뮤터블로 변경가능하도록 설정
 
-    private val _newSchedules = MutableLiveData<ArrayList<ScheduleData>>()
+    val _newSchedules = MutableLiveData<ArrayList<ScheduleData>>()
 
     //변경되지 않는 데이터를 가저올때 이름을 _ 언더스코어 없이 설정
     //공개적으로 가져오는 변수는 private이 아닌 퍼블릭으로 외부에서 접근가능하도록 설정
@@ -17,20 +22,19 @@ class ScheduleViewModel : ViewModel() {
     val newSchedules: LiveScheduleData<ArrayList<ScheduleData>>
         get() {
             val liveData = LiveScheduleData<ArrayList<ScheduleData>>()
-
+            val tmp = ArrayList<ScheduleData>()
             if (type == 0) {
-                val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 0 } ?: ArrayList<ScheduleData>())
+                val data = ArrayList(_newSchedules?.value?.filter { item -> item.SDONE == 0 }
+                    ?: tmp)
                 liveData.setData(data)
             } else {
-                val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 1 } ?: ArrayList<ScheduleData>())
+                val data = ArrayList(_newSchedules?.value?.filter { item -> item.SDONE == 1 }
+                    ?: tmp)
                 liveData.setData(data)
             }
+
             return liveData
         }
-
-    init {
-        //스케줄 초기화 필요하다면 추가
-    }
 
     fun setDone() {
         type = 0
@@ -39,46 +43,14 @@ class ScheduleViewModel : ViewModel() {
     fun setOngoing() {
         type = 1
     }
-    //임시 데이터
-
-    var data1 =
-        ScheduleData(1, 1, "KLP 회의", "2021-06-17", "2021-06-17", 2, 1, "회의", 3, 1, "늦지않기", 0)
-    var data2 =
-        ScheduleData(1, 2, "컴퓨터그래픽스 시험", "2021-06-17", "2021-06-20", 3, -1, "시험", 2, 3, "망한듯", 0)
-    var data3 = ScheduleData(1, 3, "옷사기", "2021-06-17", "2021-06-18", 2, 3, "시험", 2, 3, "망한듯", 1)
-    var data4 = ScheduleData(2, 4, "화장실청소", "2021-06-19", "2021-06-20", 2, 5, "기타", 2, 1, "꼭해라", 1)
-
     //fun 전체목표 불러오기
-    fun loadAllSchedules() {
-        //레트로핏으로 데이터 받아올것
-        //     _newSchedules.value =  getSchedules~
-
-
-        var scheduleArrayList = ArrayList<ScheduleData>()
-
-
-        scheduleArrayList.add(data1)
-        scheduleArrayList.add(data2)
-        scheduleArrayList.add(data3)
-        scheduleArrayList.add(data4)
-
-        _newSchedules.value = scheduleArrayList
+    suspend fun loadAllSchedules() {
+        UserApiClient.instance.me { user, _ ->
+            val result = CoroutineScope(Dispatchers.Main).async {
+                _newSchedules.value = RetrofitManager.instance.getGoals(user!!.id.toInt())
+            }
+        }
     }
-
-    //fun 오늘 목표 불러오기
-    fun loadTodaySchedules(): ArrayList<ScheduleData> {
-        //레트로핏으로 데이터 받아올것
-        //     _newSchedules.value =  getSchedules~
-
-
-        var scheduleArrayList = ArrayList<ScheduleData>()
-
-
-        scheduleArrayList.add(data1)
-
-        return scheduleArrayList
-    }
-
 /*
 model(db) view(layout) control
 model <- viewmodel <- view 수직관계를 항상 염두하기

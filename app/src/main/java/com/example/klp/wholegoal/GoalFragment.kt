@@ -1,8 +1,8 @@
 package com.example.klp.wholegoal
 
 import android.app.DatePickerDialog
-import android.icu.util.Calendar
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,14 +21,17 @@ import com.example.klp.data.Schedule
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.FragmentGoalBinding
 import com.example.klp.model.ScheduleViewModel
-
+import com.example.klp.retrofit.RetrofitManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class GoalFragment : Fragment() {
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
 
     var binding: FragmentGoalBinding? = null
     var calendarAdapter: CalendarAdapter? = null
-    val viewModel: SpinnerViewModel by activityViewModels()
+    val spinnerViewModel: SpinnerViewModel by activityViewModels()
     var recyclerView: RecyclerView? = null
     var scheduleList = mutableListOf<Schedule>()
     var mCalendarList: MutableLiveData<ArrayList<Object>>? = null
@@ -44,20 +48,7 @@ class GoalFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        scheduleViewModel.loadAllSchedules()
-        val adapter = GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
-
         binding!!.apply {
-            onGoingBtn.setOnClickListener {
-                scheduleViewModel.setDone()
-                adapter.setData(scheduleViewModel.newSchedules.value)
-            }
-            doneBtn.setOnClickListener {
-                scheduleViewModel.setOngoing()
-                adapter.setData(scheduleViewModel.newSchedules.value)
-
-            }
-
             goalSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>?,
@@ -67,16 +58,16 @@ class GoalFragment : Fragment() {
                 ) {
                     when (position) {
                         0 -> {
-                            Toast.makeText(parent?.context, "사용자 설정 순", Toast.LENGTH_SHORT).show()
-                            viewModel.select(0)
+                            Toast.makeText(parent?.context, "중요도 순", Toast.LENGTH_SHORT).show()
+                            spinnerViewModel.select(0)
                         }
                         1 -> {
                             Toast.makeText(parent?.context, "남은 기한 순", Toast.LENGTH_SHORT).show()
-                            viewModel.select(1)
+                            spinnerViewModel.select(1)
                         }
                         2 -> {
                             Toast.makeText(parent?.context, "카테고리 별", Toast.LENGTH_SHORT).show()
-                            viewModel.select(2)
+                            spinnerViewModel.select(2)
                         }
                     }
                 }
@@ -85,81 +76,69 @@ class GoalFragment : Fragment() {
             }
         }
 
-        binding.apply {
-            recyclerView = binding!!.goalFirstRecycler
-            recyclerView!!.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            recyclerView!!.addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    LinearLayoutManager.VERTICAL
-                )
-            )
-            //클릭이벤트
-            adapter!!.setItemClickListener(object :
-                GoalFragRecyclerViewAdapter.OnItemClickListener {
-                override fun onClick(v: View, position: Int) {
-                    val item = adapter.scheList!![position]
-
-                    Toast.makeText(
-                        v.context,
-                        "Activity\n${item!!.sname}\n${item!!.sdate1}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    //다이얼로그
-                    dialogBuilder(view, item!!)
-
-                    adapter!!.notifyDataSetChanged()
+        binding!!.apply {
+            CoroutineScope(Dispatchers.Main).launch {
+                scheduleViewModel._newSchedules.value = RetrofitManager.instance.getGoals(1759543463)
+                Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
+                val adapter = GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
+                onGoingBtn.setOnClickListener {
+                    scheduleViewModel.setDone()
+                    adapter.setData(scheduleViewModel.newSchedules.value)
                 }
-            })
-            recyclerView!!.adapter = adapter
-/*
-        scheduleViewModel.newSchedule.observe(this, Observer {
+                doneBtn.setOnClickListener {
+                    scheduleViewModel.setOngoing()
+                    adapter.setData(scheduleViewModel.newSchedules.value)
 
-        })  를 이용해서 값이 변경될때마다 목표 프래그먼트의 리사이클러뷰 아이템을 고쳐주면 될듯 하다.
-*/
+                }
+                recyclerView = binding!!.goalFirstRecycler
+                recyclerView!!.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                recyclerView!!.addItemDecoration(
+                    DividerItemDecoration(
+                        requireContext(),
+                        LinearLayoutManager.VERTICAL
+                    )
+                )
+                //클릭이벤트
+                adapter!!.setItemClickListener(object :
+                    GoalFragRecyclerViewAdapter.OnItemClickListener {
+                    override fun onClick(v: View, position: Int) {
+                        val item = adapter.scheList!![position]
 
-            //테스트 코드
-//            var cal1 = generateCal(2021, 5, 1)
-//            var cal2 = generateCal(2021, 5, 5)
-//            var cal3 = generateCal(2021, 5, 15)
-//            var cal4 = generateCal(2021, 6, 20)
-//            var cal5 = generateCal(2021, 6, 30)
-//
-//            adapter!!.scheList.add(Schedule(15, Category.STUDY, "토익", cal3, cal5))
-//            adapter!!.scheList.add(Schedule(60, Category.EXERCISE, "러닝", cal2, cal3))
-//            adapter!!.scheList.add(Schedule(90, Category.EXERCISE, "턱걸이", cal1, cal2))
-//            adapter!!.scheList.add(Schedule(38, Category.SCHEDULE, "면접 준비", cal3, cal4))
-//            adapter!!.notifyDataSetChanged()
+                        Toast.makeText(
+                            v.context,
+                            "Activity\n${item!!.SNAME}\n${item!!.SDATE1}",
+                            Toast.LENGTH_SHORT
+                        ).show()
 
+                        //다이얼로그
+                        dialogBuilder(view, item!!)
 
-//            viewModel.selected.observe(viewLifecycleOwner, Observer {
-//                when (it) {
-//                    0 -> {
-//
-//                    }
-//                    1 -> {
-//                        adapter!!.scheList.sortBy { it.end }
-//                        adapter!!.notifyDataSetChanged()
-//                    }
-//                    2 -> {
-//                        adapter!!.scheList.sortBy { it.category }
-//                        adapter!!.notifyDataSetChanged()
-//                    }
-//                }
-//            })
+                        adapter!!.notifyDataSetChanged()
+                    }
+                })
+                recyclerView!!.adapter = adapter
+                spinnerViewModel.selected.observe(viewLifecycleOwner, Observer {
+                    when (it) {
+                        0 -> {
+                            adapter.scheList?.sortBy { it.SIMPORTANCE}
+                            adapter.scheList?.reverse()
+                            adapter.notifyDataSetChanged()
+                        }
+                        1 -> {
+                            adapter.scheList?.sortBy { it.SDATE2}
+                            adapter.notifyDataSetChanged()
+                        }
+                        2 -> {
+                            adapter.scheList?.sortBy { it.STYPE}
+                            adapter.notifyDataSetChanged()
+                        }
+                    }
+                })
+            }
         }
     }
 
-
-    private fun generateCal(year: Int, month: Int, day: Int): Calendar {
-        var cal = Calendar.getInstance()
-        cal.set(Calendar.YEAR, year)
-        cal.set(Calendar.MONTH, month - 1)
-        cal.set(Calendar.DAY_OF_MONTH, day)
-        return cal
-    }
 
     private fun dialogBuilder(view: View, schedule: ScheduleData) {
         val builder = AlertDialog.Builder(view.context)
@@ -207,10 +186,10 @@ class GoalFragment : Fragment() {
         val dialogDetailEditTxt = dialogView.findViewById<EditText>(R.id.detailEditText)
 
         //=데이터들 다이얼로그에 사전 세팅
-        dialogScheduleNameInputText.setText(schedule.sname)
-        dialogDetailEditTxt.setText(schedule.sdetail)
+        dialogScheduleNameInputText.setText(schedule.SNAME)
+        dialogDetailEditTxt.setText(schedule.SDETAIL)
 
-        when (schedule.stype) {
+        when (schedule.STYPE) {
             "공부" -> dialogScheduleTypeSpinner.setSelection(0)
             "과제" -> dialogScheduleTypeSpinner.setSelection(1)
             "운동" -> dialogScheduleTypeSpinner.setSelection(2)
@@ -219,7 +198,7 @@ class GoalFragment : Fragment() {
             "기타" -> dialogScheduleTypeSpinner.setSelection(5)
         }
 
-        when (schedule.sregular) {
+        when (schedule.SREGULAR) {
             1 -> radioButtonDaily.isChecked = true
             2 -> radioButtonWeekly.isChecked = true
             3 -> radioButtonMonthly.isChecked = true
@@ -232,7 +211,7 @@ class GoalFragment : Fragment() {
         }
 
         if (radioButtonWeekly.isChecked) {
-            when (schedule.sweekly) {
+            when (1) {
                 1 -> sunToggle.isChecked = true
                 2 -> monToggle.isChecked = true
                 3 -> tueToggle.isChecked = true
@@ -253,9 +232,9 @@ class GoalFragment : Fragment() {
         }
 
 
-        var estimateDB = schedule.sestimate
-        dialogSeekBar1.setProgress(schedule.sestimate)
-        when (schedule.sestimate) {
+        var estimateDB = schedule.SESTIMATE
+        dialogSeekBar1.setProgress(schedule.SESTIMATE)
+        when (schedule.SESTIMATE) {
             0 -> dialogEstimateTextView.setText("금방끝나는일정^^")
             1 -> dialogEstimateTextView.setText("1시간이내^^")
             2 -> dialogEstimateTextView.setText("1~4시간...")
@@ -285,9 +264,9 @@ class GoalFragment : Fragment() {
             }
         })
 
-        var importanceDB = schedule.simportance
-        dialogSeekBar2.setProgress(schedule.simportance)
-        when (schedule.simportance) {
+        var importanceDB = schedule.SIMPORTANCE
+        dialogSeekBar2.setProgress(schedule.SIMPORTANCE)
+        when (schedule.SIMPORTANCE) {
             0 -> dialogImportanceTextView.setText("안중요한 일정")
             1 -> dialogImportanceTextView.setText("까먹지만말기")
             2 -> dialogImportanceTextView.setText("살짝 중요")
@@ -321,14 +300,14 @@ class GoalFragment : Fragment() {
         }
         )
 
-        val year1 = handleSdate(schedule.sdate1).year
-        val month1 = handleSdate(schedule.sdate1).month
-        val day1 = handleSdate(schedule.sdate1).day
+        val year1 = handleSdate(schedule.SDATE1).year
+        val month1 = handleSdate(schedule.SDATE1).month
+        val day1 = handleSdate(schedule.SDATE1).day
         calBtn1.text = "${year1}/${month1 + 1}/$day1"
 
-        val year2 = handleSdate(schedule.sdate2).year
-        val month2 = handleSdate(schedule.sdate2).month
-        val day2 = handleSdate(schedule.sdate2).day
+        val year2 = handleSdate(schedule.SDATE2).year
+        val month2 = handleSdate(schedule.SDATE2).month
+        val day2 = handleSdate(schedule.SDATE2).day
         calBtn2.text = "${year2}/${month2 + 1}/$day2"
         if (calBtn1.text == calBtn2.text) {
             sRegularLayout.visibility = View.GONE
@@ -418,6 +397,7 @@ class GoalFragment : Fragment() {
             }
             .show()
     }
+
 
     override fun onDestroy() {
         super.onDestroy()

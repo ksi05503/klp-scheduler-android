@@ -1,7 +1,10 @@
 package com.example.klp.retrofit
 
 import android.util.Log
+import com.beust.klaxon.JsonReader
+import com.beust.klaxon.Klaxon
 import com.example.klp.data.AppUsageTime
+import com.example.klp.data.ScheduleData
 import com.google.gson.GsonBuilder
 import com.google.gson.JsonParser
 import kotlinx.coroutines.*
@@ -10,12 +13,15 @@ import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.ResponseBody
 import org.json.JSONObject
 import retrofit2.Response
+import java.io.Serializable
+import java.io.StringReader
 
 
 class RetrofitManager {
     companion object {
         private const val baseUrl =
-            "https://jsonplaceholder.typicode.com/" //http://35.232.144.196:3000
+            //"https://jsonplaceholder.typicode.com/" //http://35.232.144.196:3000
+            "http://35.232.144.196:3000"
         val instance = RetrofitManager()
     }
 
@@ -23,7 +29,7 @@ class RetrofitManager {
         .getClient(baseUrl)!!
         .create(IRetrofit::class.java)
 
-    private suspend fun execute(response: Response<ResponseBody>): Any {
+    private suspend fun execute(response: Response<ResponseBody>): Serializable {
         val value = GlobalScope.async(Dispatchers.IO) {
             // Do the GET request and get response
             if (response.isSuccessful) {
@@ -44,6 +50,37 @@ class RetrofitManager {
 
     suspend fun getDiary(uid: Int, enterDate: String): Any {
         return execute(iRetrofit.getDiary(uid, enterDate))
+    }
+
+    suspend fun getSchedules(type: String, from: String, to: String, achieved: Int): Any {
+        return execute(iRetrofit.getSchedules(type, from, to, achieved))
+    }
+
+    val array = """[
+        { "name": "Joe", "age": 23 },
+        { "name": "Jill", "age": 35 }
+    ]"""
+
+    fun streamingArray(array: String): ArrayList<ScheduleData> {
+        val klaxon = Klaxon()
+        JsonReader(StringReader(array)).use { reader ->
+            val result = arrayListOf<ScheduleData>()
+            reader.beginArray {
+                while (reader.hasNext()) {
+                    val person = klaxon.parse<ScheduleData>(reader)
+                    result.add(person!!)
+                }
+            }
+            return result
+        }
+    }
+
+    suspend fun getGoals(uid: Int): ArrayList<ScheduleData>? {
+        val str = execute(iRetrofit.getGoals(uid)).toString()
+
+        val result = streamingArray(str)
+        Log.d("HI", "### $result")
+        return result
     }
 
     suspend fun getPost(id: Int): Any {

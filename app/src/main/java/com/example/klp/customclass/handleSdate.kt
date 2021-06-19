@@ -1,8 +1,6 @@
 package com.example.klp.customclass
 
 class handleSdate(dayString:String) {
-
-
     var dayString =""
     var year:Int =-1
     var month:Int =-1
@@ -11,22 +9,14 @@ class handleSdate(dayString:String) {
     var smonth=""
     var sday=""
 
-
     init {
-
         syear = dayString.split('-')[0]
         smonth = dayString.split('-')[1]
-        sday = dayString.split('-')[2]
+        sday = dayString.split('-')[2].subSequence(0,2) as String
 
         year = dayString.split('-')[0].toInt()
         month = dayString.split('-')[1].toInt()
-        day = dayString.split('-')[2].toInt()
-
+        day = (dayString.split('-')[2].subSequence(0,2) as String).toInt()
     }
-
-
-
-
-
 
 }
