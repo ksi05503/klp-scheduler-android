@@ -1,6 +1,5 @@
 package com.example.klp.wholegoal
 
-import android.icu.text.SimpleDateFormat
 import android.icu.util.Calendar
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +8,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.customclass.handleSdate
-import com.example.klp.R
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.GoalRowBinding
 import kotlin.math.abs
@@ -78,7 +76,7 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         val ymdStr = scheList!![position].SDATE2.split("-")
         val year = ymdStr[0].toInt()
         val month = ymdStr[1].toInt()
-        val day = ymdStr[2].toInt()
+        val day = (ymdStr[2].subSequence(0, 2) as String).toInt()
 
         val dDayValue = calculateDday(year, month, day)
         if(dDayValue > 0){

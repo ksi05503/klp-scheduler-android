@@ -20,6 +20,10 @@ import com.example.klp.data.Schedule
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.FragmentGoalBinding
 import com.example.klp.model.ScheduleViewModel
+import com.example.klp.retrofit.RetrofitManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class GoalFragment : Fragment() {
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()
@@ -72,46 +76,47 @@ class GoalFragment : Fragment() {
         }
 
         binding!!.apply {
-            //scheduleViewModel.loadAllSchedules()
-            Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
-            val adapter = GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
-            onGoingBtn.setOnClickListener {
-                scheduleViewModel.setDone()
-                adapter.setData(scheduleViewModel.newSchedules.value)
-            }
-            doneBtn.setOnClickListener {
-                scheduleViewModel.setOngoing()
-                adapter.setData(scheduleViewModel.newSchedules.value)
-
-            }
-            recyclerView = binding!!.goalFirstRecycler
-            recyclerView!!.layoutManager =
-                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            recyclerView!!.addItemDecoration(
-                DividerItemDecoration(
-                    requireContext(),
-                    LinearLayoutManager.VERTICAL
-                )
-            )
-            //클릭이벤트
-            adapter!!.setItemClickListener(object :
-                GoalFragRecyclerViewAdapter.OnItemClickListener {
-                override fun onClick(v: View, position: Int) {
-                    val item = adapter.scheList!![position]
-
-                    Toast.makeText(
-                        v.context,
-                        "Activity\n${item!!.SNAME}\n${item!!.SDATE1}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    //다이얼로그
-                    dialogBuilder(view, item!!)
-
-                    adapter!!.notifyDataSetChanged()
+            CoroutineScope(Dispatchers.Main).launch {
+                scheduleViewModel._newSchedules.value = RetrofitManager.instance.getGoals(1759543463)
+                Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
+                val adapter = GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
+                onGoingBtn.setOnClickListener {
+                    scheduleViewModel.setDone()
+                    adapter.setData(scheduleViewModel.newSchedules.value)
                 }
-            })
-            recyclerView!!.adapter = adapter
+                doneBtn.setOnClickListener {
+                    scheduleViewModel.setOngoing()
+                    adapter.setData(scheduleViewModel.newSchedules.value)
+
+                }
+                recyclerView = binding!!.goalFirstRecycler
+                recyclerView!!.layoutManager =
+                    LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                recyclerView!!.addItemDecoration(
+                    DividerItemDecoration(
+                        requireContext(),
+                        LinearLayoutManager.VERTICAL
+                    )
+                )
+                //클릭이벤트
+                adapter!!.setItemClickListener(object :
+                    GoalFragRecyclerViewAdapter.OnItemClickListener {
+                    override fun onClick(v: View, position: Int) {
+                        val item = adapter.scheList!![position]
+
+                        Toast.makeText(
+                            v.context,
+                            "Activity\n${item!!.SNAME}\n${item!!.SDATE1}",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        //다이얼로그
+                        dialogBuilder(view, item!!)
+
+                        adapter!!.notifyDataSetChanged()
+                    }
+                })
+                recyclerView!!.adapter = adapter
 
 //            viewModel.selected.observe(viewLifecycleOwner, Observer {
 //                when (it) {
@@ -130,9 +135,9 @@ class GoalFragment : Fragment() {
 //                    }
 //                }
 //            })
+            }
         }
     }
-
 
 
     private fun dialogBuilder(view: View, schedule: ScheduleData) {

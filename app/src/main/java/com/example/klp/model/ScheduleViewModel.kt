@@ -7,13 +7,13 @@ import com.example.klp.retrofit.RetrofitManager
 import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 
 
 class ScheduleViewModel : ViewModel() {
     //내부에서 설정하는 자료형은 뮤터블로 변경가능하도록 설정
 
-    private val _newSchedules = MutableLiveData<ArrayList<ScheduleData>>()
+    val _newSchedules = MutableLiveData<ArrayList<ScheduleData>>()
 
     //변경되지 않는 데이터를 가저올때 이름을 _ 언더스코어 없이 설정
     //공개적으로 가져오는 변수는 private이 아닌 퍼블릭으로 외부에서 접근가능하도록 설정
@@ -46,7 +46,7 @@ class ScheduleViewModel : ViewModel() {
     //fun 전체목표 불러오기
     suspend fun loadAllSchedules() {
         UserApiClient.instance.me { user, _ ->
-            CoroutineScope(Dispatchers.Main).launch {
+            val result = CoroutineScope(Dispatchers.Main).async {
                 _newSchedules.value = RetrofitManager.instance.getGoals(user!!.id.toInt())
             }
         }
