@@ -97,7 +97,15 @@ class RetrofitManager {
     ): Any {
         return execute(iRetrofit.getStats(type, from, to, uid, achieved))
     }
-
+    suspend fun getUsageTime(
+        type: String,
+        from: String,
+        to: String,
+        appName: String?=null,
+        uid: Int?
+    ): Any {
+        return execute(iRetrofit.getUsageTime(type, from, to, appName, uid))
+    }
     suspend fun postAppUsageTime(uid: Int, enterDate: String, appUsageList: Array<AppUsageTime>) {
         val jsonObject = JSONObject()
         jsonObject.put("uid", uid)

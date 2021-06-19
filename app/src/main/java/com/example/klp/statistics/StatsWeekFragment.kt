@@ -62,6 +62,13 @@ class StatsWeekFragment : Fragment() {
                 RetrofitManager.instance.getStats("std", "2021-06-16", "2021-06-20", 1759543463, 0)
             val achievedS =
                 RetrofitManager.instance.getStats("std", "2021-06-16", "2021-06-20", 1759543463, 1)
+            val appUsageTime = RetrofitManager.instance.getUsageTime(
+                "object",
+                "2021-06-17",
+                "2021-06-20",
+                uid = 1759543463
+            )
+            Log.d("HI", "APPU: "+ appUsageTime.toString())
 
             withContext(Dispatchers.Main) {
                 val day = arrayOf("5/25", "5/26", "5/27", "5/28", "5/29", "5/30")

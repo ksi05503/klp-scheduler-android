@@ -35,12 +35,13 @@ interface IRetrofit {
     ): Response<ResponseBody>
 
     // /usageTime?from=“”&to=“”[&app_name=“”][&uid=“”]
-    @GET("/usageTime")
+    @GET("/app/getUsageTime")
     suspend fun getUsageTime(
-        @Query("from") from: Int,
-        @Query("to") to: Int,
+        @Query("type") type: String,
+        @Query("from") from: String,
+        @Query("to") to: String,
         @Query("app_name") app_name: String?,
-        @Query("uid") uid: String?
+        @Query("uid") uid: Int?
     ): Response<ResponseBody>
 
     // /diary?uid=""&enter_date=""
@@ -73,7 +74,8 @@ interface IRetrofit {
         @Query("uid") uid: Int?,
         @Query("achieved") achieved: Int?,
 
-    ): Response<ResponseBody>
+        ): Response<ResponseBody>
+
     /*****************************************************************************************************************************************************/
     /*
        PATCH METHOD

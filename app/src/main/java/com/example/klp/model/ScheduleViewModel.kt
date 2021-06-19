@@ -3,11 +3,6 @@ package com.example.klp.model
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.klp.data.ScheduleData
-import com.example.klp.retrofit.RetrofitManager
-import com.kakao.sdk.user.UserApiClient
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 
 
 class ScheduleViewModel : ViewModel() {
@@ -42,14 +37,6 @@ class ScheduleViewModel : ViewModel() {
 
     fun setOngoing() {
         type = 1
-    }
-    //fun 전체목표 불러오기
-    suspend fun loadAllSchedules() {
-        UserApiClient.instance.me { user, _ ->
-            val result = CoroutineScope(Dispatchers.Main).async {
-                _newSchedules.value = RetrofitManager.instance.getGoals(user!!.id.toInt())
-            }
-        }
     }
 /*
 model(db) view(layout) control
