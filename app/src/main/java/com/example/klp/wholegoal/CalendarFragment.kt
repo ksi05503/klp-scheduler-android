@@ -43,7 +43,7 @@ class CalendarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        scheduleList = scheduleViewModel.loadAllSchedules()
+        scheduleList = scheduleViewModel.newSchedules.value!!
 
         binding!!.millis.text = DateTime(millis).toString("yyyy년 MM월")
         binding!!.calendarView.initCalendar(DateTime(millis), CalendarUtils.getMonthList(DateTime(millis)), scheduleList)
