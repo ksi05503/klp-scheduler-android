@@ -52,12 +52,16 @@ class RetrofitManager {
         return execute(iRetrofit.getDiary(uid, enterDate))
     }
 
+    suspend fun getSchedules(type: String, from: String, to: String, achieved: Int): Any {
+        return execute(iRetrofit.getSchedules(type, from, to, achieved))
+    }
+
     val array = """[
         { "name": "Joe", "age": 23 },
         { "name": "Jill", "age": 35 }
     ]"""
 
-    fun streamingArray(array:String): ArrayList<ScheduleData> {
+    fun streamingArray(array: String): ArrayList<ScheduleData> {
         val klaxon = Klaxon()
         JsonReader(StringReader(array)).use { reader ->
             val result = arrayListOf<ScheduleData>()
@@ -74,7 +78,7 @@ class RetrofitManager {
     suspend fun getGoals(uid: Int): ArrayList<ScheduleData>? {
         val str = execute(iRetrofit.getGoals(uid)).toString()
 
-        val result =  streamingArray(str)
+        val result = streamingArray(str)
         Log.d("HI", "### $result")
         return result
     }

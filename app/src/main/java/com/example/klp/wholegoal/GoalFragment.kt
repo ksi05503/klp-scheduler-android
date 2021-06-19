@@ -2,6 +2,7 @@ package com.example.klp.wholegoal
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.R
 import com.example.klp.customclass.handleSdate
@@ -69,6 +72,46 @@ class GoalFragment : Fragment() {
         }
 
         binding!!.apply {
+            //scheduleViewModel.loadAllSchedules()
+            Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
+            val adapter = GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
+            onGoingBtn.setOnClickListener {
+                scheduleViewModel.setDone()
+                adapter.setData(scheduleViewModel.newSchedules.value)
+            }
+            doneBtn.setOnClickListener {
+                scheduleViewModel.setOngoing()
+                adapter.setData(scheduleViewModel.newSchedules.value)
+
+            }
+            recyclerView = binding!!.goalFirstRecycler
+            recyclerView!!.layoutManager =
+                LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+            recyclerView!!.addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+            //클릭이벤트
+            adapter!!.setItemClickListener(object :
+                GoalFragRecyclerViewAdapter.OnItemClickListener {
+                override fun onClick(v: View, position: Int) {
+                    val item = adapter.scheList!![position]
+
+                    Toast.makeText(
+                        v.context,
+                        "Activity\n${item!!.SNAME}\n${item!!.SDATE1}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    //다이얼로그
+                    dialogBuilder(view, item!!)
+
+                    adapter!!.notifyDataSetChanged()
+                }
+            })
+            recyclerView!!.adapter = adapter
 
 //            viewModel.selected.observe(viewLifecycleOwner, Observer {
 //                when (it) {

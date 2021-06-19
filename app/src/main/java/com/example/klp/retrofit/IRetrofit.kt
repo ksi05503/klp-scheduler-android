@@ -26,6 +26,15 @@ interface IRetrofit {
     /*
         GET METHOD
     */
+    // /schedule?type=mean&from=20210530&to=20210601&achieved=true
+    @GET("/schedule")
+    suspend fun getSchedules(
+        @Query("type") type: String,
+        @Query("from") from: String,
+        @Query("to") to: String,
+        @Query("achieved") achieved: Int,
+    ): Response<ResponseBody>
+
     @GET("/posts/{id}")
     suspend fun getPost(
         @Path("id") id: Int

@@ -86,6 +86,8 @@ class StatsDayFragment : Fragment() {
                 //val value = RetrofitManager.instance.getDiary(user!!.id.toInt(), "2021-06-17")
                 val value = RetrofitManager.instance.getGoals(user!!.id.toInt())
                 binding!!.dailyText.text = value.toString()
+                val value2 = RetrofitManager.instance.getSchedules("count", "2021-06-17", "2021-06-19", 0)
+                Log.d("HI", "$value2" )
             }
         }
 
