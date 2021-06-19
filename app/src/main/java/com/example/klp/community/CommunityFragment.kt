@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -15,6 +16,7 @@ import com.example.klp.R
 import com.example.klp.WriteArticleActivity
 import com.example.klp.data.Article
 import com.example.klp.databinding.FragmentCommunityBinding
+import org.w3c.dom.Text
 
 
 class CommunityFragment : Fragment() {
@@ -65,7 +67,18 @@ class CommunityFragment : Fragment() {
                     article: Article,
                     position: Int
                 ) {
-
+                    val btn = view.findViewById<ImageButton>(R.id.likeBtn)
+                    var text = holder.likes.text
+                    if(btn.isSelected){
+                        val prev = text.split(" ")[1].split("개")[0].toInt()
+                        holder.likes.text = "좋아요 ${prev-1}개"
+                        btn.isSelected = false
+                    }
+                    else{
+                        val prev = text.split(" ")[1].split("개")[0].toInt()
+                        holder.likes.text = "좋아요 ${prev+1}개"
+                        btn.isSelected = true
+                    }
                 }
             }
 
