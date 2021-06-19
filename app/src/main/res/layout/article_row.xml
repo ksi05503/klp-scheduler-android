@@ -19,7 +19,8 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="글 제목"
-            android:textSize="23sp" />
+            android:textSize="23sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
