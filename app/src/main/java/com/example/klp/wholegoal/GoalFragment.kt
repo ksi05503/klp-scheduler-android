@@ -124,11 +124,10 @@ class GoalFragment : Fragment() {
                         ).show()*/
 
                         var isDoneStr =""
-                        if(item.SDONE==0) isDoneStr="완료로변경"
-                        else isDoneStr="취소"
+
 
                         //다이얼로그
-                        dialogBuilder(view, item!!,isDoneStr)
+                        dialogBuilder(view, item!!)
 
                         adapter!!.notifyDataSetChanged()
                     }
@@ -179,7 +178,7 @@ class GoalFragment : Fragment() {
     }
 
 
-    private fun dialogBuilder(view: View, schedule: ScheduleData,isDoneStr:String) {
+    private fun dialogBuilder(view: View, schedule: ScheduleData) {
         val builder = AlertDialog.Builder(view.context)
 
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_schedule, null)
@@ -430,7 +429,7 @@ class GoalFragment : Fragment() {
                 }
 
             }
-            .setNegativeButton(isDoneStr) { dialogInterface, i ->
+            .setNegativeButton("취소") { dialogInterface, i ->
                 /* 취소일 때 아무 액션이 없으므로 빈칸 */
             }
             .show()
