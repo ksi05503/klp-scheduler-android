@@ -17,6 +17,11 @@ class handleSdate(dayString:String) {
         sday = dayString.split('-')[2].subSequence(0,2) as String
 
         year = dayString.split('-')[0].toInt()
+
+        if(year<10){
+            syear = "0${year}"
+        }
+
         month = dayString.split('-')[1].toInt()
         day = (dayString.split('-')[2].subSequence(0,2) as String).toInt()
 
