@@ -7,6 +7,14 @@
     android:orientation="vertical"
     tools:context=".appList.AppListActivity">
 
+    <Button
+        android:id="@+id/appListCheckBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:backgroundTint="#9F1317B1"
+        android:text="확인" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

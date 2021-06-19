@@ -18,7 +18,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import com.example.klp.appList.AppData
+import com.example.klp.appList.AppListActivity
 import com.example.klp.databinding.FragmentStatsDayBinding
+import com.example.klp.login.GlobalApplication
 import com.example.klp.request.APIService
 import com.example.klp.retrofit.RetrofitManager
 import com.google.gson.GsonBuilder
@@ -63,7 +65,22 @@ class StatsDayFragment : Fragment() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun init() {
+        val appList = GlobalApplication.prefs.getStringSet()
+        if (appList == null) {
+            val intent = Intent(requireActivity(), AppListActivity::class.java)
+            startActivity(intent)
+        } else {
+            val checkBoxes = arrayOf(
+                binding?.checkBox,
+                binding?.checkBox2,
+                binding?.checkBox3,
+                binding?.checkBox4
+            )
+            appList?.forEachIndexed { index, s ->
+                if (index < checkBoxes.size) checkBoxes[index]?.text = s
+            }
 
+        }
         if (!checkForPermission()) {
             Log.i("HH", "The user may not allow the access to apps usage. ")
             Toast.makeText(
@@ -79,15 +96,36 @@ class StatsDayFragment : Fragment() {
             //postMethod()
         }
 
-            //Log.i("HI", "회원번호: " + user!!.id)
-            CoroutineScope(Dispatchers.Main).launch {
-                //val value = RetrofitManager.instance.getDiary(user!!.id.toInt(), "2021-06-17")
-                val value = RetrofitManager.instance.getGoals(1759543463)
-                binding!!.dailyText.text = value.toString()
-                val value2 = RetrofitManager.instance.getSchedules("count", "2021-06-17", "2021-06-19", 0)
-                Log.d("HI", "$value2" )
-            }
 
+        CoroutineScope(Dispatchers.Main).launch {
+            //val value = RetrofitManager.instance.getDiary(user!!.id.toInt(), "2021-06-17")
+            val value = RetrofitManager.instance.getStats(
+                "mean",
+                "2021-06-17",
+                "2021-06-20",
+                1759543463,
+                0
+            ) as String
+            Log.d("HI", "MMS: $value")
+        }
+
+
+        //Log.i("HI", "회원번호: " + user!!.id)
+        CoroutineScope(Dispatchers.Main).launch {
+            //val value = RetrofitManager.instance.getDiary(user!!.id.toInt(), "2021-06-17")
+            val value = RetrofitManager.instance.getDiary(1759543463, "2021-06-17") as String
+            binding!!.dailyText.text = value.split('"')[3]
+            val value2 =
+                RetrofitManager.instance.getStats("count", "2021-06-17", "2021-06-19", 1759543463, 0)
+            Log.d("HI", "$value2")
+        }
+        binding!!.submitBtn.setOnClickListener {
+            appList?.forEach { app ->
+                CoroutineScope(Dispatchers.IO).launch {
+                    RetrofitManager.instance.postDangerApp(1759543463, 6, app)
+                }
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.Q)

@@ -43,25 +43,34 @@
                 android:gravity="center"
                 android:orientation="horizontal">
 
-                <ToggleButton
+                <CheckBox
+                    android:id="@+id/checkBox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ToggleButton" />
+                    android:layout_weight="1"
+                    android:text="CheckBox" />
 
-                <ToggleButton
+                <CheckBox
+                    android:id="@+id/checkBox2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ToggleButton" />
+                    android:layout_weight="1"
+                    android:text="CheckBox" />
 
-                <ToggleButton
+                <CheckBox
+                    android:id="@+id/checkBox3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ToggleButton" />
+                    android:layout_weight="1"
+                    android:text="CheckBox" />
 
-                <ToggleButton
+                <CheckBox
+                    android:id="@+id/checkBox4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ToggleButton" />
+                    android:layout_weight="1"
+                    android:text="CheckBox" />
+
             </LinearLayout>
 
             <EditText
@@ -73,7 +82,7 @@
                 android:inputType="textMultiLine" />
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/submitBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="-" />
