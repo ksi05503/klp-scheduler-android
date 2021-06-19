@@ -18,12 +18,16 @@ class ArticleListAdapter(val articleList:ArrayList<Article>):
     inner class ViewHolder(binding:ArticleRowBinding):RecyclerView.ViewHolder(binding.root){
         val formHead = binding.formHeadText
         val likes = binding.likesText
-        val commentNum = binding.commentNumText
+        val body = binding.body
         init {
             binding.articleRowLay.setOnClickListener {
                 itemClickListener?.OnItemClick(this, it, articleList[adapterPosition], adapterPosition)
             }
         }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return position
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -35,8 +39,8 @@ class ArticleListAdapter(val articleList:ArrayList<Article>):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.formHead.text = articleList[position].FORM_HEAD
-        holder.likes.text = "[좋아요 ${articleList[position].FORM_LIKE}개]"
-        holder.commentNum.text = "[댓글 ${articleList[position].COMMENT_NUM}개]"
+        holder.likes.text = "좋아요 ${articleList[position].FORM_LIKE}개"
+        holder.body.text = articleList[position].BODY
     }
 
     override fun getItemCount(): Int {

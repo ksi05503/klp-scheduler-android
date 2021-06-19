@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/articleRowLay"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -18,14 +19,27 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="글 제목"
-            android:textSize="23sp" />
+            android:textColor="@color/black"
+            android:textSize="23sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="내용"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:visibility="gone" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_gravity="right|center_vertical"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <TextView
@@ -33,13 +47,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="[좋아요 N개]" />
+            android:text="좋아요 N개"
+            android:textSize="12sp" />
 
-        <TextView
-            android:id="@+id/commentNumText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <ImageButton
+            android:id="@+id/imageButton"
+            android:layout_width="27dp"
+            android:layout_height="27dp"
+            android:layout_marginLeft="5dp"
             android:layout_weight="1"
-            android:text="[댓글 N개]" />
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY"
+            app:srcCompat="@android:drawable/btn_star_big_on" />
+
     </LinearLayout>
 </LinearLayout>
