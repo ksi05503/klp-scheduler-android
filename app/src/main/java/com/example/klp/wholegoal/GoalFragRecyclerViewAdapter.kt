@@ -47,27 +47,13 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         holder.itemView.setOnClickListener {
             itemClickListener.onClick(it, position)
         }
-
-        val now = Calendar.getInstance()
-//        val start = scheList[position].start
-//        val end = scheList[position].end
-//        val percent = scheList[position].percent
-//        val dDay = (end.timeInMillis - now.timeInMillis)/(24*60*60*1000)
-//
-//        holder.per_circle.progress = percent
-//        holder.percentText.text = scheList[position].percent.toString()+"%"
-//        holder.periodText.text = "${start.get(Calendar.YEAR)}.${start.get(Calendar.MONTH)+1}.${start.get(Calendar.DAY_OF_MONTH)}~${end.get(Calendar.YEAR)}.${end.get(Calendar.MONTH)+1}.${end.get(Calendar.DAY_OF_MONTH)}"
-//        holder.titleText.text = "${scheList[position].title}"
-
-        now.get(Calendar.YEAR)
-        now.get(Calendar.MONTH)
-        now.get(Calendar.DATE)
-
+        
         val hsd = handleSdate(scheList!![position].SDATE1)
         holder.sname.text = scheList!![position].SNAME
         holder.sdate.text = "${hsd.year}년 ${hsd.month}월 ${hsd.day}일"
         holder.stype.text = scheList!![position].STYPE
 
+        //주기 표시
         when(scheList!![position].SREGULAR){
             0->holder.sregular.text = ""
             1->holder.sregular.text = "매일"
@@ -75,6 +61,7 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
             3->holder.sregular.text = "매달"
         }
 
+        //DDAY 계산
         val ymdStr = scheList!![position].SDATE2.split("-")
         val year = ymdStr[0].toInt()
         val month = ymdStr[1].toInt()
@@ -89,6 +76,26 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         } else {
             holder.dDay.text = "D+" + abs(dDayValue).toString()
         }
+
+        //퍼센트 계산 (경과율)
+        val start = scheList!![position].SDATE1.split("-")
+        val end = scheList!![position].SDATE2.split("-")
+        val now = Calendar.getInstance()
+
+        val startCal = generateCal(start[0].toInt(), start[1].toInt(), start[2].toInt())
+        val endCal = generateCal(end[0].toInt(), end[1].toInt(), end[2].toInt())
+        val difference = (endCal.timeInMillis - startCal.timeInMillis) / (24*60*60*1000) // 전체 기간
+        val perDay = (now.timeInMillis - startCal.timeInMillis) / (24*60*60*1000) // 시작지점부터 오늘까지
+
+        if(perDay > 0){
+            val percentage = (perDay/difference)*100
+            holder.percentText.text = percentage.toInt().toString()+"%"
+            holder.per_circle.progress = percentage.toInt()
+        }
+        else{
+            holder.percentText.text = "100%"
+            holder.per_circle.progress = 100
+        }
     }
 
     private fun calculateDday(year: Int, month: Int, day: Int): Long {
@@ -99,6 +106,12 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         end.set(Calendar.DAY_OF_MONTH, day)
 
         return (end.timeInMillis - now.timeInMillis) / (24 * 60 * 60 * 1000)
+    }
+
+    private fun generateCal(year:Int, month:Int, day:Int):Calendar{
+        val cal = Calendar.getInstance()
+        cal.set(year, month, day)
+        return cal
     }
 
     // (2) 리스너 인터페이스
