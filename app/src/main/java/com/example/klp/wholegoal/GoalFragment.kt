@@ -11,6 +11,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,7 +27,7 @@ class GoalFragment : Fragment() {
 
     var binding: FragmentGoalBinding? = null
     var calendarAdapter: CalendarAdapter? = null
-    val viewModel: SpinnerViewModel by activityViewModels()
+    val spinnerViewModel: SpinnerViewModel by activityViewModels()
     var recyclerView: RecyclerView? = null
     var scheduleList = mutableListOf<Schedule>()
     var mCalendarList: MutableLiveData<ArrayList<Object>>? = null
@@ -54,15 +55,15 @@ class GoalFragment : Fragment() {
                     when (position) {
                         0 -> {
                             Toast.makeText(parent?.context, "중요도 순", Toast.LENGTH_SHORT).show()
-                            viewModel.select(0)
+                            spinnerViewModel.select(0)
                         }
                         1 -> {
                             Toast.makeText(parent?.context, "남은 기한 순", Toast.LENGTH_SHORT).show()
-                            viewModel.select(1)
+                            spinnerViewModel.select(1)
                         }
                         2 -> {
                             Toast.makeText(parent?.context, "카테고리 별", Toast.LENGTH_SHORT).show()
-                            viewModel.select(2)
+                            spinnerViewModel.select(2)
                         }
                     }
                 }
@@ -113,23 +114,23 @@ class GoalFragment : Fragment() {
             })
             recyclerView!!.adapter = adapter
 
-//            viewModel.selected.observe(viewLifecycleOwner, Observer {
-//                when (it) {
-//                    0 -> {
-//                        adapter.scheList?.sortBy { it.simportance}
-//                        adapter.scheList?.reverse()
-//                        adapter.notifyDataSetChanged()
-//                    }
-//                    1 -> {
-//                        adapter.scheList?.sortBy { it.sdate2}
-//                        adapter.notifyDataSetChanged()
-//                    }
-//                    2 -> {
-//                        adapter.scheList?.sortBy { it.stype}
-//                        adapter.notifyDataSetChanged()
-//                    }
-//                }
-//            })
+            spinnerViewModel.selected.observe(viewLifecycleOwner, Observer {
+                when (it) {
+                    0 -> {
+                        adapter.scheList?.sortBy { it.SIMPORTANCE}
+                        adapter.scheList?.reverse()
+                        adapter.notifyDataSetChanged()
+                    }
+                    1 -> {
+                        adapter.scheList?.sortBy { it.SDATE2}
+                        adapter.notifyDataSetChanged()
+                    }
+                    2 -> {
+                        adapter.scheList?.sortBy { it.STYPE}
+                        adapter.notifyDataSetChanged()
+                    }
+                }
+            })
         }
     }
 
