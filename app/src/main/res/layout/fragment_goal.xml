@@ -41,8 +41,11 @@
                 android:src="@android:drawable/ic_menu_edit"
                 android:layout_gravity="right"/>
 
+
             <TextView
-                android:id="@+id/textView"
+
+                android:clickable="true"
+                android:id="@+id/editScheduleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

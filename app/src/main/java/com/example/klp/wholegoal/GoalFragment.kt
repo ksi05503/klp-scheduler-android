@@ -81,6 +81,19 @@ class GoalFragment : Fragment() {
                 scheduleViewModel._newSchedules.value = RetrofitManager.instance.getGoals(1759543463)
                 Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
                 val adapter = GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
+
+                editScheduleView.setOnClickListener {
+                    when(binding!!.editScheduleView.text){
+                        "편집"->{
+                            binding!!.editScheduleView.text = "확인"
+                        }
+                        "확인"->{
+                            binding!!.editScheduleView.text = "편집"
+                        }
+                    }
+                    //편집버튼
+                }
+
                 onGoingBtn.setOnClickListener {
                     scheduleViewModel.setDone()
                     adapter.setData(scheduleViewModel.newSchedules.value)
@@ -88,7 +101,6 @@ class GoalFragment : Fragment() {
                 doneBtn.setOnClickListener {
                     scheduleViewModel.setOngoing()
                     adapter.setData(scheduleViewModel.newSchedules.value)
-
                 }
                 recyclerView = binding!!.goalFirstRecycler
                 recyclerView!!.layoutManager =
@@ -105,18 +117,45 @@ class GoalFragment : Fragment() {
                     override fun onClick(v: View, position: Int) {
                         val item = adapter.scheList!![position]
 
-                        Toast.makeText(
+/*                        Toast.makeText(
                             v.context,
                             "Activity\n${item!!.SNAME}\n${item!!.SDATE1}",
                             Toast.LENGTH_SHORT
-                        ).show()
+                        ).show()*/
+
+                        var isDoneStr =""
+                        if(item.SDONE==0) isDoneStr="완료로변경"
+                        else isDoneStr="취소"
 
                         //다이얼로그
-                        dialogBuilder(view, item!!)
+                        dialogBuilder(view, item!!,isDoneStr)
 
                         adapter!!.notifyDataSetChanged()
                     }
                 })
+                adapter!!.setItemLongClickListener(object:
+                    GoalFragRecyclerViewAdapter.OnItemLongClickListener {
+                    override fun onLongClick(v: View, position: Int): Boolean {
+                        val item = adapter.scheList!![position]
+                        val builder2 = AlertDialog.Builder(view.context)
+
+
+                        builder2.setTitle("\"${item.SNAME}\" 일정을 삭제하시겠습니까?")
+                            .setPositiveButton("삭제") { dialogInterface, i ->
+                            //DB 데이터 삭제
+                            }
+                            .setNegativeButton("취소") { dialogInterface, i ->
+                                /* 취소일 때 아무 액션이 없으므로 빈칸 */
+                            }
+                            .show()
+
+                        adapter!!.notifyDataSetChanged()
+                        return super.onLongClick(v, position)
+
+                    }
+
+                })
+
                 recyclerView!!.adapter = adapter
                 spinnerViewModel.selected.observe(viewLifecycleOwner, Observer {
                     when (it) {
@@ -140,7 +179,7 @@ class GoalFragment : Fragment() {
     }
 
 
-    private fun dialogBuilder(view: View, schedule: ScheduleData) {
+    private fun dialogBuilder(view: View, schedule: ScheduleData,isDoneStr:String) {
         val builder = AlertDialog.Builder(view.context)
 
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_schedule, null)
@@ -391,9 +430,8 @@ class GoalFragment : Fragment() {
                 }
 
             }
-            .setNegativeButton("취소") { dialogInterface, i ->
+            .setNegativeButton(isDoneStr) { dialogInterface, i ->
                 /* 취소일 때 아무 액션이 없으므로 빈칸 */
-
             }
             .show()
     }
