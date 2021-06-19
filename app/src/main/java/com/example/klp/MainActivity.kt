@@ -10,11 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.klp.databinding.ActivityMainBinding
 import com.example.klp.model.ScheduleViewModel
 import androidx.fragment.app.Fragment
+import com.example.klp.retrofit.RetrofitManager
 import com.example.klp.statistics.StatsDayFragment
 import com.example.klp.statistics.StatsMonthFragment
 import com.example.klp.statistics.StatsWeekFragment
 import com.example.klp.statistics.ViewModelForStatsTab
 import com.google.android.material.tabs.TabLayoutMediator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -73,8 +77,7 @@ class MainActivity : AppCompatActivity() {
 
             val calBtn1 = dialogView.findViewById<Button>(R.id.dateBtn1)
             val calBtn2 = dialogView.findViewById<Button>(R.id.dateBtn2)
-            var dbDate = ""  //db에 들어갈 string
-            var dbTime = ""  //db에 들어갈 string
+
 
             var calendar = Calendar.getInstance()
             var myYear = calendar.get(Calendar.YEAR)
@@ -143,7 +146,8 @@ class MainActivity : AppCompatActivity() {
 
             }
             )
-
+            var dbDate1 = ""  //db에 들어갈 string
+            var dbDate2= ""  //db에 들어갈 string
             calBtn1.setOnClickListener {
                 var date_listener = object : DatePickerDialog.OnDateSetListener {
                     override fun onDateSet(
@@ -153,11 +157,12 @@ class MainActivity : AppCompatActivity() {
                         dayOfMonth: Int
                     ) {
                         calBtn1.text = "$year/${month + 1}/$dayOfMonth"
+                        dbDate1 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
+                        dbDate2 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
 
                         myYear = year
                         myMonth = month
                         myDay = dayOfMonth
-                        dbDate = "${year.toString()}/${month.toString()}/${dayOfMonth}"
                         calBtn2.text = "$myYear/${myMonth + 1}/$myDay"
 
                         if(calBtn1.text == calBtn2.text ){
@@ -186,7 +191,7 @@ class MainActivity : AppCompatActivity() {
                         dayOfMonth: Int
                     ) {
                         calBtn2.text = "$year/${month + 1}/$dayOfMonth"
-                        dbTime = "${year.toString()}/${month.toString()}/${dayOfMonth}"
+                        dbDate2 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
                         if(calBtn1.text == calBtn2.text ){
                             sRegularLayout.visibility = View.GONE
                         }else{
@@ -215,6 +220,12 @@ class MainActivity : AppCompatActivity() {
                         val detail = dialogDetail.text.toString()
 //              입력된 DATA 정보들은 위와같다. (정규일정여부와 소요시간과 중요도(라디오버튼input)는 index정보로 db에 들어갈것이다)
                         //            val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
+
+
+                        CoroutineScope(Dispatchers.Main).launch{
+                            RetrofitManager.instance.addSchedule(1,10,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
+                        }
+
 
                     }
 

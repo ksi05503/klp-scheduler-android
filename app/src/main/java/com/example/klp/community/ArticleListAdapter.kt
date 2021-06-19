@@ -9,11 +9,22 @@ import com.example.klp.databinding.ArticleRowBinding
 
 class ArticleListAdapter(val articleList:ArrayList<Article>):
     RecyclerView.Adapter<ArticleListAdapter.ViewHolder>() {
-        inner class ViewHolder(binding:ArticleRowBinding):RecyclerView.ViewHolder(binding.root){
-            val formHead = binding.formHeadText
-            val likes = binding.likesText
-            val commentNum = binding.commentNumText
+
+    interface OnItemClickListener{
+        fun OnItemClick(holder: ViewHolder, view:View, article:Article, position:Int)
+    }
+    var itemClickListener:OnItemClickListener?=null
+
+    inner class ViewHolder(binding:ArticleRowBinding):RecyclerView.ViewHolder(binding.root){
+        val formHead = binding.formHeadText
+        val likes = binding.likesText
+        val commentNum = binding.commentNumText
+        init {
+            binding.articleRowLay.setOnClickListener {
+                itemClickListener?.OnItemClick(this, it, articleList[adapterPosition], adapterPosition)
+            }
         }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(ArticleRowBinding.inflate(

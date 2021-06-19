@@ -24,6 +24,10 @@ interface IRetrofit {
     @POST("/post")
     suspend fun f2(@PartMap map: HashMap<String?, RequestBody?>): Response<ResponseBody>
 
+
+    @POST("/addSchedule")
+    suspend fun addSchedule(@Body requestBody: RequestBody): Response<ResponseBody>
+
     /*****************************************************************************************************************************************************/
     /*
         GET METHOD
@@ -105,6 +109,9 @@ interface IRetrofit {
 
     @DELETE("/typicode/demo/posts/1")
     suspend fun deleteC(): Response<ResponseBody>
+
+    @DELETE("/deleteSchedule")
+    suspend fun deleteSchedule(): Response<ResponseBody>
 
 
     /*****************************************************************************************************************************************************/
