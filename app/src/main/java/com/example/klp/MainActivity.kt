@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         StatsWeekFragment(),
         StatsMonthFragment()
     )
-    private val fragArr = arrayListOf<String>("전체 목표", "오늘 실천", "나의 통계", "커뮤니티")
+    private val fragArr = arrayListOf<String>("전체 목표", "오늘 실천", "나의 통계", "한마디")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
