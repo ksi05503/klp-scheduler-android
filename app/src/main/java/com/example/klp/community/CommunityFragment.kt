@@ -12,6 +12,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.klp.R
+import com.example.klp.WriteArticleActivity
 import com.example.klp.data.Article
 import com.example.klp.databinding.FragmentCommunityBinding
 
@@ -39,7 +40,7 @@ class CommunityFragment : Fragment() {
 
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
-            adapter!!.itemClickListener = object : ArticleListAdapter.OnItemClickListener{
+            adapter!!.itemClickListener1 = object : ArticleListAdapter.OnItemClickListener{
                 override fun OnItemClick(
                     holder: ArticleListAdapter.ViewHolder,
                     view: View,
@@ -57,11 +58,28 @@ class CommunityFragment : Fragment() {
                 }
             }
 
+            adapter!!.itemClickListener2 = object : ArticleListAdapter.OnItemClickListener{
+                override fun OnItemClick(
+                    holder: ArticleListAdapter.ViewHolder,
+                    view: View,
+                    article: Article,
+                    position: Int
+                ) {
+
+                }
+            }
+
+            addArticleBtn.setOnClickListener {
+                val intent = Intent(requireContext(), WriteArticleActivity::class.java)
+                startActivity(intent)
+            }
+
             //테스트
             adapter!!.articleList.add(Article(1, 1, "테스트", "테스트테스트테스트테스트테스트테스트테스트테스트테스트", 999))
             adapter!!.notifyDataSetChanged()
 
             recyclerView.adapter = adapter
+
         }
     }
 

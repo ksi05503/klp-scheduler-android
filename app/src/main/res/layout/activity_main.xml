@@ -39,6 +39,7 @@
                 android:background="@drawable/layout_border"
                 android:orientation="vertical">
 
+
             </LinearLayout>
 
             <ImageButton
@@ -51,6 +52,16 @@
                 app:srcCompat="@drawable/ic_baseline_control_point_50"
                 app:tint="@color/purple_500" />
 
+            <Button
+                android:clickable="true"
+                android:id="@+id/klpButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="13dp"
+                android:layout_marginRight="20dp"
+                android:backgroundTint="#979797"
+                android:text="klp 비서" />
         </FrameLayout>
 
     </LinearLayout>

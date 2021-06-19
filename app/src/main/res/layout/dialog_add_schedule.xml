@@ -34,6 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
+
         <Button
             android:id="@+id/dateBtn1"
             android:layout_width="wrap_content"
@@ -41,6 +43,7 @@
             android:layout_marginLeft="40dp"
             android:backgroundTint="#818181"
             android:layout_weight="1"
+
             android:text="시작날짜"></Button>
 
         <Button

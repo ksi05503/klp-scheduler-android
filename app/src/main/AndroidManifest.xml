@@ -17,8 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.KLP"
         android:usesCleartextTraffic="true">
+        <activity android:name=".WriteArticleActivity"></activity>
         <activity android:name=".appList.PreferencesActivity" />
-        <activity android:name=".WriteArticleActivity" />
         <activity android:name=".appList.AppListActivity" />
         <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity">
             <intent-filter>
