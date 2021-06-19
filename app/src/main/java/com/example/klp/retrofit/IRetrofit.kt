@@ -47,7 +47,11 @@ interface IRetrofit {
         @Query("enter_date") enter_date: String,
     ): Response<ResponseBody>
 
-
+    // /getAllGoals?uid=""
+    @GET("/getAllGoals")
+    suspend fun getGoals(
+        @Query("UID") uid: Int,
+    ): Response<ResponseBody>
     /*****************************************************************************************************************************************************/
     /*
        PATCH METHOD

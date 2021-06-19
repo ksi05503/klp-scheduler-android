@@ -84,7 +84,7 @@ class StatsDayFragment : Fragment() {
             Log.i("HI", "회원번호: " + user!!.id)
             CoroutineScope(Dispatchers.Main).launch {
                 //val value = RetrofitManager.instance.getDiary(user!!.id.toInt(), "2021-06-17")
-                val value = RetrofitManager.instance.getPost(1)
+                val value = RetrofitManager.instance.getGoals(user!!.id.toInt())
                 binding!!.dailyText.text = value.toString()
             }
         }
