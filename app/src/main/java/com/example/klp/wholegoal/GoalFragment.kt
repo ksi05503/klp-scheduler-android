@@ -142,6 +142,9 @@ class GoalFragment : Fragment() {
                         builder2.setTitle("\"${item.SNAME}\" 일정을 삭제하시겠습니까?")
                             .setPositiveButton("삭제") { dialogInterface, i ->
                             //DB 데이터 삭제
+                                CoroutineScope(Dispatchers.Main).launch{
+                                    RetrofitManager.instance.deleteSchedule(1,item.SID)
+                                }
                             }
                             .setNegativeButton("취소") { dialogInterface, i ->
                                 /* 취소일 때 아무 액션이 없으므로 빈칸 */
