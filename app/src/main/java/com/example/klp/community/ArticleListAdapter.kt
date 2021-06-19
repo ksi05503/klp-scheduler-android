@@ -13,15 +13,20 @@ class ArticleListAdapter(val articleList:ArrayList<Article>):
     interface OnItemClickListener{
         fun OnItemClick(holder: ViewHolder, view:View, article:Article, position:Int)
     }
-    var itemClickListener:OnItemClickListener?=null
+    var itemClickListener1:OnItemClickListener?=null
+    var itemClickListener2:OnItemClickListener?=null
 
     inner class ViewHolder(binding:ArticleRowBinding):RecyclerView.ViewHolder(binding.root){
         val formHead = binding.formHeadText
         val likes = binding.likesText
         val body = binding.body
+        val likeBtn = binding.likeBtn
         init {
             binding.articleRowLay.setOnClickListener {
-                itemClickListener?.OnItemClick(this, it, articleList[adapterPosition], adapterPosition)
+                itemClickListener1?.OnItemClick(this, it, articleList[adapterPosition], adapterPosition)
+            }
+            binding.likeBtn.setOnClickListener {
+                itemClickListener2?.OnItemClick(this, it, articleList[adapterPosition], adapterPosition)
             }
         }
     }
