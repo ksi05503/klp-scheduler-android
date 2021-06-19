@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.view.animation.AnimationUtils
+import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.klp.R
 import com.example.klp.WriteArticleActivity
 import com.example.klp.data.Article
 import com.example.klp.databinding.FragmentCommunityBinding
@@ -33,31 +36,50 @@ class CommunityFragment : Fragment() {
         adapter= ArticleListAdapter(ArrayList<Article>())
 
         binding!!.apply {
+            val fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in)
+
             recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
-            adapter!!.itemClickListener = object : ArticleListAdapter.OnItemClickListener{
+            adapter!!.itemClickListener1 = object : ArticleListAdapter.OnItemClickListener{
                 override fun OnItemClick(
                     holder: ArticleListAdapter.ViewHolder,
                     view: View,
                     article: Article,
                     position: Int
                 ) {
-                    val intent = Intent(requireContext(), ArticleActivity::class.java)
-                    intent.putExtra("article", article)
-                    startActivity(intent)
+                    val body = view.findViewById<TextView>(R.id.body)
+                    if(body.isVisible){
+                        body.visibility = View.GONE
+                    }
+                    else{
+                        body.visibility = View.VISIBLE
+                        body.startAnimation(fadeIn)
+                    }
                 }
             }
 
-            //테스트
-            adapter!!.articleList.add(Article(1, 1, "테스트", "테스트입니다.", 5, 5))
-            adapter!!.notifyDataSetChanged()
+            adapter!!.itemClickListener2 = object : ArticleListAdapter.OnItemClickListener{
+                override fun OnItemClick(
+                    holder: ArticleListAdapter.ViewHolder,
+                    view: View,
+                    article: Article,
+                    position: Int
+                ) {
+
+                }
+            }
 
             addArticleBtn.setOnClickListener {
                 val intent = Intent(requireContext(), WriteArticleActivity::class.java)
                 startActivity(intent)
             }
 
+            //테스트
+            adapter!!.articleList.add(Article(1, 1, "테스트", "테스트테스트테스트테스트테스트테스트테스트테스트테스트", 999))
+            adapter!!.notifyDataSetChanged()
+
             recyclerView.adapter = adapter
+
         }
     }
 
