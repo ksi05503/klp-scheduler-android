@@ -46,7 +46,7 @@ class ScheduleViewModel : ViewModel() {
     //fun 전체목표 불러오기
     suspend fun loadAllSchedules() {
         UserApiClient.instance.me { user, _ ->
-            CoroutineScope(Dispatchers.IO).launch {
+            CoroutineScope(Dispatchers.Main).launch {
                 _newSchedules.value = RetrofitManager.instance.getGoals(user!!.id.toInt())
             }
         }
