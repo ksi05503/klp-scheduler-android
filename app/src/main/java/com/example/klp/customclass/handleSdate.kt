@@ -9,6 +9,8 @@ class handleSdate(dayString:String) {
     var smonth=""
     var sday=""
 
+    var dayInt =-1
+
     init {
         syear = dayString.split('-')[0]
         smonth = dayString.split('-')[1]
@@ -17,6 +19,9 @@ class handleSdate(dayString:String) {
         year = dayString.split('-')[0].toInt()
         month = dayString.split('-')[1].toInt()
         day = (dayString.split('-')[2].subSequence(0,2) as String).toInt()
+
+
+        dayInt = year*10000+ month*100 + day
     }
 
 }

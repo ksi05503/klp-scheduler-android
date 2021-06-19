@@ -1,7 +1,9 @@
 package com.example.klp.model
 
+import android.icu.util.Calendar
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.klp.customclass.handleSdate
 import com.example.klp.data.ScheduleData
 import com.example.klp.retrofit.RetrofitManager
 import com.kakao.sdk.user.UserApiClient
@@ -12,6 +14,9 @@ import kotlinx.coroutines.async
 
 class ScheduleViewModel : ViewModel() {
     //내부에서 설정하는 자료형은 뮤터블로 변경가능하도록 설정
+
+    val cal = Calendar.getInstance()
+    val todayInt = cal.get(Calendar.YEAR)*10000+ (cal.get(Calendar.MONTH)+1)*100 + cal.get(Calendar.DATE)
 
     val _newSchedules = MutableLiveData<ArrayList<ScheduleData>>()
 
@@ -24,11 +29,11 @@ class ScheduleViewModel : ViewModel() {
             val liveData = LiveScheduleData<ArrayList<ScheduleData>>()
             val tmp = ArrayList<ScheduleData>()
             if (type == 0) {
-                val data = ArrayList(_newSchedules?.value?.filter { item -> item.SDONE == 0 }
+                val data = ArrayList(_newSchedules?.value?.filter { item -> item.SDONE == 0  }
                     ?: tmp)
                 liveData.setData(data)
             } else {
-                val data = ArrayList(_newSchedules?.value?.filter { item -> item.SDONE == 1 }
+                val data = ArrayList(_newSchedules?.value?.filter { item -> item.SDONE == 1 || handleSdate(item.SDATE2.split('T')[0]).dayInt < todayInt }
                     ?: tmp)
                 liveData.setData(data)
             }
