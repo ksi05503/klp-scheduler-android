@@ -7,13 +7,6 @@
     android:orientation="vertical"
     tools:context=".wholegoal.GoalFragment">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/goalTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/black"
-        app:tabTextColor="@color/black" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
