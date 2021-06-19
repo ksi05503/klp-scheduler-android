@@ -84,18 +84,6 @@ class GoalFragment : Fragment() {
                 Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
                 val adapter = GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
 
-                editScheduleView.setOnClickListener {
-                    when(binding!!.editScheduleView.text){
-                        "편집"->{
-                            binding!!.editScheduleView.text = "확인"
-                        }
-                        "확인"->{
-                            binding!!.editScheduleView.text = "편집"
-                        }
-                    }
-                    //편집버튼
-                }
-
                 onGoingBtn.setOnClickListener {
                     scheduleViewModel.setDone()
                     adapter.setData(scheduleViewModel.newSchedules.value)
