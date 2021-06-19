@@ -57,7 +57,7 @@ class TodayFragment : Fragment() {
             val ymdStr = it.SDATE2.split("-")
             val tarYear = ymdStr[0].toInt()
             val tarMonth = ymdStr[1].toInt()
-            val tarDate = ymdStr[2].toInt()
+            val tarDate = (ymdStr[2].subSequence(0,2) as String).toInt()
 
             //아래 조건이면 삭제
             it.SDONE==1 // 이미 완료된 일정
