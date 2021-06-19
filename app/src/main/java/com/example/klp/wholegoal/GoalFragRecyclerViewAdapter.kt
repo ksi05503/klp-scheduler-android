@@ -69,9 +69,6 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
 
 
 
-
-
-
         //텍스트바인드
         val hsd = handleSdate(scheList!![position].SDATE2)
         holder.sname.text = scheList!![position].SNAME

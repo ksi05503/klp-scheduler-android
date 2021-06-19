@@ -53,7 +53,7 @@
             android:textAlignment="center" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/submitBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="사진 넣기" />

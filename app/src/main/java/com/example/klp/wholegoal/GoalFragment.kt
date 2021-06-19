@@ -22,9 +22,11 @@ import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.FragmentGoalBinding
 import com.example.klp.model.ScheduleViewModel
 import com.example.klp.retrofit.RetrofitManager
+import com.example.klp.utils.CalendarUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.joda.time.DateTime
 
 class GoalFragment : Fragment() {
     private val scheduleViewModel: ScheduleViewModel by activityViewModels()

@@ -7,6 +7,7 @@ data class AppData(
     var appLabel: String,
     var appPackageName: String,
     var appIcon: Drawable? = null,
+    var checked: Boolean = false,
     var usageTime: Int = 0
 ) : Serializable {
 }

@@ -16,6 +16,8 @@ interface IRetrofit {
     @POST("/app/usageTime")
     suspend fun postAppUsageTime(@Body requestBody: RequestBody): Response<ResponseBody>
 
+    @POST("/app/danger")
+    suspend fun postDangerApp(@Body requestBody: RequestBody): Response<ResponseBody>
 
     // Form Data
     @Multipart
@@ -30,14 +32,6 @@ interface IRetrofit {
     /*
         GET METHOD
     */
-    // /schedule?type=mean&from=20210530&to=20210601&achieved=true
-    @GET("/schedule")
-    suspend fun getSchedules(
-        @Query("type") type: String,
-        @Query("from") from: String,
-        @Query("to") to: String,
-        @Query("achieved") achieved: Int,
-    ): Response<ResponseBody>
 
     @GET("/posts/{id}")
     suspend fun getPost(
@@ -56,8 +50,15 @@ interface IRetrofit {
     // /diary?uid=""&enter_date=""
     @GET("/diary")
     suspend fun getDiary(
+        @Query("UID") UID: Int,
+        @Query("ENTER_DATE") ENTER_DATE: String,
+    ): Response<ResponseBody>
+
+    // /diary?uid=""&enter_date=""
+    @GET("/app/danger")
+    suspend fun getDangerApp(
         @Query("uid") uid: Int,
-        @Query("enter_date") enter_date: String,
+        @Query("month") month: Int,
     ): Response<ResponseBody>
 
     // /getAllGoals?uid=""
@@ -65,15 +66,28 @@ interface IRetrofit {
     suspend fun getGoals(
         @Query("UID") uid: Int,
     ): Response<ResponseBody>
+
+
+    // /schedule?type=(‘object’|‘count’|‘mean’|’std‘)[from=“”&to=“”][&uid=“”][&achieved=(‘true’|‘false’)]
+    @GET("/schedule")
+    suspend fun getStats(
+        @Query("type") type: String,
+        @Query("from") from: String?,
+        @Query("to") to: String?,
+        @Query("uid") uid: Int?,
+        @Query("achieved") achieved: Int?,
+
+    ): Response<ResponseBody>
     /*****************************************************************************************************************************************************/
     /*
        PATCH METHOD
     */
 
-    @PATCH("/example")
-    suspend fun updateA(
+    @PATCH("/app/danger")
+    suspend fun updateDangerApp(
         @Query("uid") uid: Int,
-        @Body requestBody: RequestBody
+        @Query("month") month: Int,
+        @Query("app_name") app_name: String,
     ): Response<ResponseBody>
 
 
