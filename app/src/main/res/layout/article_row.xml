@@ -57,9 +57,8 @@
             android:layout_marginLeft="5dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:scaleType="fitXY"
-            android:clickable="true"
-            app:srcCompat="@android:drawable/btn_star_big_on" />
+            app:srcCompat="@drawable/selectable_like_button"
+            android:scaleType="fitXY" />
 
     </LinearLayout>
 </LinearLayout>
