@@ -23,7 +23,9 @@ class ArticleListAdapter(val articleList:ArrayList<Article>):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.formHead.text = articleList[position].FORM_HEAD
+        holder.likes.text = "[좋아요 ${articleList[position].FORM_LIKE}개]"
+        holder.commentNum.text = "[댓글 ${articleList[position].COMMENT_NUM}개]"
     }
 
     override fun getItemCount(): Int {
