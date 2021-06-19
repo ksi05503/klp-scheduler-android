@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.example.klp.customview.CalendarView
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.FragmentCalendarBinding
 import com.example.klp.model.ScheduleViewModel
@@ -14,6 +15,7 @@ import org.joda.time.DateTime
 
 class CalendarFragment : Fragment() {
     var binding:FragmentCalendarBinding?=null
+    var calendarView:CalendarView?=null
     val scheduleViewModel:ScheduleViewModel by activityViewModels()
     var scheduleList = ArrayList<ScheduleData>()
 
@@ -25,7 +27,7 @@ class CalendarFragment : Fragment() {
             }
         }
     }
-    private var millis:Long = 0L
+    var millis:Long = 0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,6 +48,7 @@ class CalendarFragment : Fragment() {
         scheduleList = scheduleViewModel.newSchedules.value!!
 
         binding!!.millis.text = DateTime(millis).toString("yyyy년 MM월")
+        calendarView = binding!!.calendarView
         binding!!.calendarView.initCalendar(DateTime(millis), CalendarUtils.getMonthList(DateTime(millis)), scheduleList)
     }
 
