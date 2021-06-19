@@ -7,12 +7,12 @@
     </string-array>
 
     <string-array name="schedule_type">
-        <item>공부</item>
-        <item>과제</item>
-        <item>운동</item>
-        <item>회의</item>
-        <item>약속</item>
-        <item>기타</item>
+        <item>study</item>
+        <item>assignment</item>
+        <item>excercise</item>
+        <item>meeting</item>
+        <item>friend</item>
+        <item>etc</item>
     </string-array>
 
 </resources>

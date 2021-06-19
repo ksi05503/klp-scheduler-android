@@ -219,12 +219,12 @@ class GoalFragment : Fragment() {
         dialogDetailEditTxt.setText(schedule.SDETAIL)
 
         when (schedule.STYPE) {
-            "공부" -> dialogScheduleTypeSpinner.setSelection(0)
-            "과제" -> dialogScheduleTypeSpinner.setSelection(1)
-            "운동" -> dialogScheduleTypeSpinner.setSelection(2)
-            "회의" -> dialogScheduleTypeSpinner.setSelection(3)
-            "약속" -> dialogScheduleTypeSpinner.setSelection(4)
-            "기타" -> dialogScheduleTypeSpinner.setSelection(5)
+            "study" -> dialogScheduleTypeSpinner.setSelection(0)
+            "assignment" -> dialogScheduleTypeSpinner.setSelection(1)
+            "excercise" -> dialogScheduleTypeSpinner.setSelection(2)
+            "meeting" -> dialogScheduleTypeSpinner.setSelection(3)
+            "friend" -> dialogScheduleTypeSpinner.setSelection(4)
+            "etc" -> dialogScheduleTypeSpinner.setSelection(5)
         }
 
         when (schedule.SREGULAR) {
