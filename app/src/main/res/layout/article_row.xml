@@ -19,6 +19,7 @@
             android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:text="글 제목"
+            android:textColor="@color/black"
             android:textSize="23sp"
             android:textStyle="bold" />
 
@@ -46,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="[좋아요 N개]"
+            android:text="좋아요 N개"
             android:textSize="12sp" />
 
         <ImageButton

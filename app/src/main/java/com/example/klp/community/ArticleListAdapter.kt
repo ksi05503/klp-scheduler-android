@@ -39,7 +39,7 @@ class ArticleListAdapter(val articleList:ArrayList<Article>):
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.formHead.text = articleList[position].FORM_HEAD
-        holder.likes.text = "[좋아요 ${articleList[position].FORM_LIKE}개]"
+        holder.likes.text = "좋아요 ${articleList[position].FORM_LIKE}개"
         holder.body.text = articleList[position].BODY
     }
 

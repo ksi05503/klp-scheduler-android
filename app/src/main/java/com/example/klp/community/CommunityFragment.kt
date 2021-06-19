@@ -58,7 +58,7 @@ class CommunityFragment : Fragment() {
             }
 
             //테스트
-            adapter!!.articleList.add(Article(1, 1, "테스트", "밤새 테스트 하는 중", 999))
+            adapter!!.articleList.add(Article(1, 1, "테스트", "테스트테스트테스트테스트테스트테스트테스트테스트테스트", 999))
             adapter!!.notifyDataSetChanged()
 
             recyclerView.adapter = adapter
