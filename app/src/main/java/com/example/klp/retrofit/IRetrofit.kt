@@ -50,6 +50,13 @@ interface IRetrofit {
         @Query("ENTER_DATE") ENTER_DATE: String,
     ): Response<ResponseBody>
 
+    // /diary?uid=""&enter_date=""
+    @GET("/app/danger")
+    suspend fun getDangerApp(
+        @Query("uid") uid: Int,
+        @Query("month") month: Int,
+    ): Response<ResponseBody>
+
     // /getAllGoals?uid=""
     @GET("/getAllGoals")
     suspend fun getGoals(
@@ -72,10 +79,11 @@ interface IRetrofit {
        PATCH METHOD
     */
 
-    @PATCH("/example")
-    suspend fun updateA(
+    @PATCH("/app/danger")
+    suspend fun updateDangerApp(
         @Query("uid") uid: Int,
-        @Body requestBody: RequestBody
+        @Query("month") month: Int,
+        @Query("app_name") app_name: String,
     ): Response<ResponseBody>
 
 

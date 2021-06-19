@@ -82,7 +82,12 @@ class RetrofitManager {
     suspend fun getPost(id: Int): Any {
         return execute(iRetrofit.getPost(id))
     }
-
+    suspend fun getDangerApp(id: Int, month:Int): Any {
+        return execute(iRetrofit.getDangerApp(id, month))
+    }
+    suspend fun updateDangerApp(id: Int,month:Int, appName:String): Any {
+        return execute(iRetrofit.updateDangerApp(id, month, appName))
+    }
     suspend fun getStats(
         type: String,
         from: String?,

@@ -122,7 +122,8 @@ class StatsDayFragment : Fragment() {
         binding!!.submitBtn.setOnClickListener {
             appList?.forEach { app ->
                 CoroutineScope(Dispatchers.IO).launch {
-                    RetrofitManager.instance.postDangerApp(1759543463, 6, app)
+                    //RetrofitManager.instance.postDangerApp(1759543463, 6, app)
+                    RetrofitManager.instance.updateDangerApp(1759543463, 6,"YouTube")
                 }
             }
         }

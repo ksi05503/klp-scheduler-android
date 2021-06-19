@@ -2,11 +2,13 @@ package com.example.klp.statistics
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.klp.databinding.FragmentStatsMonthBinding
+import com.example.klp.retrofit.RetrofitManager
 import com.github.mikephil.charting.animation.Easing
 import com.github.mikephil.charting.charts.HorizontalBarChart
 import com.github.mikephil.charting.charts.PieChart
@@ -17,6 +19,9 @@ import com.github.mikephil.charting.data.*
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class StatsMonthFragment : Fragment() {
     private var binding: FragmentStatsMonthBinding? = null
@@ -39,6 +44,13 @@ class StatsMonthFragment : Fragment() {
         val data: BarData = BarData(set)
         chart.data = data
         val labels = arrayOf("나의 이번달 평균", "나의 1년간 평균", "사용자 전체 평균")
+
+
+        CoroutineScope(Dispatchers.Main).launch {
+            //val value = RetrofitManager.instance.getDiary(user!!.id.toInt(), "2021-06-17")
+            val value = RetrofitManager.instance.getDangerApp(1759543463, 6)
+            Log.d("HI", "MOPNTH: $value")
+        }
 
 
         // draw shadows for each bar that show the maximum value
