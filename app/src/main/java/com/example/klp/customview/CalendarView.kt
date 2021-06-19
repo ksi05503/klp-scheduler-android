@@ -77,7 +77,7 @@ class CalendarView @JvmOverloads constructor(
 
             if(now.get(Calendar.DAY_OF_MONTH) >= date){ // 아직 해당일이 오지 않은 곳은 그리기 X
                 tempArray.removeIf {
-                    val ymdStr = it.SDATE2.split("-")
+                    val ymdStr = it.SDATE2.split("T")[0].split("-")
 
                     (it.SREGULAR==0 && (year!=ymdStr[0].toInt() || month != ymdStr[1].toInt() || date != ymdStr[2].toInt()))
                             /* || (it.SREGULAR==2 && it.sweekly != now.get(Calendar.DAY_OF_WEEK)) */
