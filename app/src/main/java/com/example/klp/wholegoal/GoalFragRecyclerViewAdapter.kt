@@ -1,19 +1,22 @@
 package com.example.klp.wholegoal
 
+import android.content.Context
 import android.icu.util.Calendar
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.customclass.handleSdate
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.GoalRowBinding
 import kotlin.math.abs
+import kotlin.math.round
 
 
 class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
+
 
     inner class ViewHolder(binding: GoalRowBinding):RecyclerView.ViewHolder(binding.root){
         val sname: TextView = binding.sname
@@ -21,9 +24,12 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         val sregular:TextView = binding.sregular
         val dDay: TextView = binding.dDay
         val stype: TextView = binding.stype
-        val percentText: TextView = binding.percentText
         val per_circle: ProgressBar = binding.percentCircle
+        val doneCheckBox: CheckBox = binding.doneCheckBox
+
+
     }
+
 
     fun setData(data: ArrayList<ScheduleData>?) {
         scheList = data
@@ -45,7 +51,25 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         holder.itemView.setOnClickListener {
             itemClickListener.onClick(it, position)
         }
+        holder.itemView.setOnLongClickListener {
+            itemLongClickListener.onLongClick(it, position)
+        }
 
+        holder.doneCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
+            if(isChecked){
+                //잘 동작하는거 확인했음 (여기서 DB에 sdone = 1 로 patch)
+            }else{
+                //여기서 DB에 sdone = 0 으로 patch
+            }
+        }
+
+        //완료일정인경우 체크박스가 표시되어있는채로
+        holder.doneCheckBox.isChecked = scheList!![position].SDONE==1
+
+
+
+
+        //텍스트바인드
         val hsd = handleSdate(scheList!![position].SDATE2)
         holder.sname.text = scheList!![position].SNAME
         holder.sdate.text = "${hsd.year}년 ${hsd.month}월 ${hsd.day}일"
@@ -68,32 +92,34 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         val dDayValue = calculateDday(year, month, day)
         if(dDayValue > 0){
             holder.dDay.text = "D-"+abs(dDayValue).toString()
+
+            val start = scheList!![position].SDATE1.split("-")
+            val end = scheList!![position].SDATE2.split("-")
+
+            val nowCal = Calendar.getInstance()
+            val startCal = generateCal(start[0].toInt(), start[1].toInt(), (start[2].subSequence(0,2) as String).toInt())
+            val endCal = generateCal(end[0].toInt(), end[1].toInt(), (end[2].subSequence(0,2) as String).toInt())
+
+            val onGoing = (nowCal.timeInMillis - startCal.timeInMillis).toDouble()
+            val entire = (endCal.timeInMillis - startCal.timeInMillis).toDouble()
+
+            if(onGoing > 0){
+                val difference = onGoing/entire // 전체 기간
+                holder.per_circle.progress = (difference*100).toInt()
+            }
+            else{
+                holder.per_circle.progress = 0
+            }
+
         }
         else if(dDayValue==0L){
             holder.dDay.text = "D-DAY"
+            holder.per_circle.progress = 100
         } else {
             holder.dDay.text = "D+" + abs(dDayValue).toString()
-        }
-
-        //퍼센트 계산 (경과율)
-        val start = scheList!![position].SDATE1.split("-")
-        val end = scheList!![position].SDATE2.split("-")
-        val now = Calendar.getInstance()
-
-        val startCal = generateCal(start[0].toInt(), start[1].toInt(), (start[2].subSequence(0,2) as String).toInt())
-        val endCal = generateCal(end[0].toInt(), end[1].toInt(), (end[2].subSequence(0,2) as String).toInt())
-        val difference = (endCal.timeInMillis - startCal.timeInMillis) / (24*60*60*1000) // 전체 기간
-        val perDay = (now.timeInMillis - startCal.timeInMillis) / (24*60*60*1000) // 시작지점부터 오늘까지
-
-        if(perDay > 0){
-            val percentage = (perDay/difference)*100
-            holder.percentText.text = percentage.toInt().toString()+"%"
-            holder.per_circle.progress = percentage.toInt()
-        }
-        else{
-            holder.percentText.text = "100%"
             holder.per_circle.progress = 100
         }
+
     }
 
     private fun calculateDday(year: Int, month: Int, day: Int): Long {
@@ -108,7 +134,7 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
 
     private fun generateCal(year:Int, month:Int, day:Int):Calendar{
         val cal = Calendar.getInstance()
-        cal.set(year, month, day)
+        cal.set(year, month - 1, day)
         return cal
     }
 
@@ -141,4 +167,10 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
     override fun getItemCount(): Int {
         return scheList?.size ?: 0
     }
+
+
+
+
+
+
 }

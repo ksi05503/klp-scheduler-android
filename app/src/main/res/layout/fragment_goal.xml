@@ -7,17 +7,10 @@
     android:orientation="vertical"
     tools:context=".wholegoal.GoalFragment">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/goalTabLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/black"
-        app:tabTextColor="@color/black" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -27,19 +20,32 @@
             android:layout_marginLeft="10dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:padding="5dp">
+            android:padding="2dp">
+
+            <Spinner
+                android:id="@+id/goalSpinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:entries="@array/goalSpinner"
+
+                android:textAlignment="center" />
 
             <ImageView
+                android:layout_marginLeft="130dp"
                 android:id="@+id/imageView"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_weight="1"
                 android:padding="3dp"
                 android:scaleType="fitXY"
-                android:src="@android:drawable/ic_menu_edit" />
+                android:src="@android:drawable/ic_menu_edit"
+                android:layout_gravity="right"/>
+
 
             <TextView
-                android:id="@+id/textView"
+
+                android:clickable="true"
+                android:id="@+id/editScheduleView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -47,14 +53,6 @@
                 android:textColor="@color/black"
                 android:textSize="14sp" />
         </LinearLayout>
-
-        <Spinner
-            android:id="@+id/goalSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/goalSpinner"
-            android:gravity="center"
-            android:textAlignment="center" />
 
     </LinearLayout>
 
@@ -68,14 +66,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="진행중" />
+            android:backgroundTint="#E8E6E6"
+            android:text="진행중인 일정"
+            android:textColor="#000000" />
 
+        <View
+            android:layout_width="3dp"
+            android:layout_height="0dp"/>
         <Button
             android:id="@+id/doneBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="종료된" />
+            android:text="종료된 일정"
+            android:backgroundTint="#E8E6E6"
+            android:textColor="#000000"/>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
