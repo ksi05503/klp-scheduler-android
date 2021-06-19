@@ -12,7 +12,7 @@ import com.example.klp.R
 import com.example.klp.data.ScheduleData
 import kotlin.math.abs
 
-class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
+class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
 
     inner class ViewHolder(view: View):RecyclerView.ViewHolder(view){
         val sname:TextView = view.findViewById(R.id.sname)
@@ -22,6 +22,11 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
         val stype:TextView = view.findViewById(R.id.stype)
         val percentText:TextView = view.findViewById(R.id.percentText)
         val per_circle:ProgressBar = view.findViewById(R.id.percent_circle)
+    }
+
+    fun setData(data: ArrayList<ScheduleData>?) {
+        scheList = data
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -50,17 +55,17 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
         now.get(Calendar.MONTH)
         now.get(Calendar.DATE)
 
-        holder.sname.text = scheList[position].sname
-        holder.stype.text = scheList[position].stype
-        holder.sdate.text = scheList[position].sdate2
-        when(scheList[position].sregular){
+        holder.sname.text = scheList!![position].sname
+        holder.stype.text = scheList!![position].stype
+        holder.sdate.text = scheList!![position].sdate2
+        when(scheList!![position].sregular){
             0->holder.sregular.text = ""
             1->holder.sregular.text = "매일"
             2->holder.sregular.text = "매주"
             3->holder.sregular.text = "매달"
         }
 
-        val ymdStr = scheList[position].sdate2.split("-")
+        val ymdStr = scheList!![position].sdate2.split("-")
         val year = ymdStr[0].toInt()
         val month = ymdStr[1].toInt()
         val day = ymdStr[2].toInt()
@@ -99,6 +104,6 @@ class GoalFragRecyclerViewAdapter(val scheList:ArrayList<ScheduleData>):Recycler
     private lateinit var itemClickListener : OnItemClickListener
 
     override fun getItemCount(): Int {
-        return scheList.size
+        return scheList!!.size
     }
 }

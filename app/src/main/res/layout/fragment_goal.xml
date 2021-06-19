@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     tools:context=".wholegoal.GoalFragment">
 
@@ -19,19 +19,6 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="horizontal">
-
-        <Spinner
-            android:id="@+id/goalSpinner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:entries="@array/goalSpinner"
-            android:gravity="center"
-            android:textAlignment="textEnd" />
-
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
 
         <LinearLayout
             android:id="@+id/goalEditLayout"
@@ -61,19 +48,54 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
+        <Spinner
+            android:id="@+id/goalSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:entries="@array/goalSpinner"
+            android:gravity="center"
+            android:textAlignment="center" />
+
     </LinearLayout>
 
-    <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/goalViewPager"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/onGoingBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="진행중" />
+
+        <Button
+            android:id="@+id/doneBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="종료된" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/goalFirstRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_weight="1" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/calendar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="bottom"
-        android:layout_weight="1" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom">
+
+    </androidx.viewpager2.widget.ViewPager2>
 
 </LinearLayout>

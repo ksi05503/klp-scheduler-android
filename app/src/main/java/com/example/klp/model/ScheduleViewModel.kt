@@ -15,8 +15,30 @@ class ScheduleViewModel: ViewModel() {
     //공개적으로 가져오는 변수는 private이 아닌 퍼블릭으로 외부에서 접근가능하도록 설정
     //값을 직접 라이브데이터에 접근하지 않고 뷰모델을 통해 가져올 수 있도록 설정
 
-    val newSchedules: LiveData<ArrayList<ScheduleData>>
-        get() = _newSchedules        //get함수 대신 그냥 바로 newSchedule을 가져오면 된다 (수직관계를 위해 이렇게까지)
+//    val newSchedules: LiveData<ArrayList<ScheduleData>>
+//        get() = _newSchedules        //get함수 대신 그냥 바로 newSchedule을 가져오면 된다 (수직관계를 위해 이렇게까지)
+
+    private var type = 0
+    val newSchedules: LiveScheduleData<ArrayList<ScheduleData>>
+        get() {
+            val liveData = LiveScheduleData<ArrayList<ScheduleData>>()
+
+            when(type){
+                0->{
+                    val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 0 } ?: ArrayList<ScheduleData>())
+                    liveData.setData(data)
+                }
+                1->{
+                    val data = ArrayList(_newSchedules?.value?.filter { item -> item.sdone == 1 } ?: ArrayList<ScheduleData>())
+                    liveData.setData(data)
+                }
+                2->{
+
+                }
+            }
+
+            return liveData
+        }
 
     init{
         //스케줄 초기화 필요하다면 추가
@@ -32,6 +54,14 @@ class ScheduleViewModel: ViewModel() {
     var data5 = ScheduleData (1,5,"조깅","2021-06-16","2021-07-27",3,5,"운동",2,1,"",0)
     var data6 = ScheduleData (1,6,"대청소","2021-06-18","2021-07-18",3,5,"기타",2,4,"",0)
     var data7 = ScheduleData (1,6,"콘서트","2021-06-12","2021-06-18",0,5,"약속",2,4,"",1)
+
+    fun setDone() {
+        type = 0
+    }
+
+    fun setOngoing() {
+        type = 1
+    }
 
     //fun 전체목표 불러오기
     fun loadAllSchedules():ArrayList<ScheduleData>{
