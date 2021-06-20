@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.StringReader
+import java.time.LocalDate
 
 class StatsWeekFragment : Fragment() {
     private var binding: FragmentStatsWeekBinding? = null
@@ -40,15 +41,12 @@ class StatsWeekFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val from = "2021-06-16"
-        val to = "2021-06-20"
+        val today: LocalDate = LocalDate.now()
+        val last = today.minusDays(7)
+        val from = last.toString()
+        val to = today.toString()
         CoroutineScope(Dispatchers.Main).launch {
             //RetrofitManager.instance.postDangerApp(1759543463, 6, app)
-            val notAchievedS =
-                RetrofitManager.instance.getStats("std", from, to, 1759543463, 0)
-            val achievedS =
-                RetrofitManager.instance.getStats("std", from, to, 1759543463, 1)
             val appUsageTime = RetrofitManager.instance.getUsageTime(
                 "object",
                 from,
@@ -63,12 +61,14 @@ class StatsWeekFragment : Fragment() {
             )
             val appUsageList = appUsageParser(appUsageTime as String)
             withContext(Dispatchers.Main) {
-                val day = arrayOf("5/25", "5/26", "5/27", "5/28", "5/29", "5/30")
+                val day = ArrayList<String>()
                 val combinedChart: CombinedChart = binding!!.weekChart
                 val data = CombinedData()
 
                 val entries2 = ArrayList<BarEntry>()
                 for (i in 0 until appUsageList.size) {
+                    val tmp = today.minusDays((appUsageList.size - i - 1).toLong())
+                    day.add(tmp.toString())
                     entries2.add(BarEntry(i.toFloat(), appUsageList[i].USAGE_TIME.toFloat()))
                 }
                 val set2 = BarDataSet(entries2, "총사용시간")
@@ -98,7 +98,7 @@ class StatsWeekFragment : Fragment() {
                 }
                 combinedChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
                 combinedChart.invalidate()
-                Log.d("HI", appUsageTimeM as String)
+
                 binding!!.cMeanText.text = "평균: ${valueParser(appUsageTimeM as String)}"
                 if (true) {
                     val notAchievedC =
@@ -109,19 +109,17 @@ class StatsWeekFragment : Fragment() {
                         RetrofitManager.instance.getStats("mean", from, to, 1759543463, 0)
                     val achievedM =
                         RetrofitManager.instance.getStats("mean", from, to, 1759543463, 1)
-                    val notAchievedS =
-                        RetrofitManager.instance.getStats("std", from, to, 1759543463, 0)
-                    val achievedS =
-                        RetrofitManager.instance.getStats("std", from, to, 1759543463, 1)
-                    val AllnotAchievedM = 1.3f
-                    val AllachievedM = 1.1f
-                    val AllnotAchievedS = 0.15f
-                    val AllachievedS = 0.07f
+                    val AllnotAchievedM = 2.3f
+                    val AllachievedM = 1.3f
+                    val consumedTimeM = 10.1f
+                    val AllnotAchievedS = 0.25f
+                    val AllachievedS = 0.3f
+                    val consumedTimeS = 1.4f
                     Log.d("HI", "ac: " + notAchievedC)
                     Log.d("HI", "ac: " + achievedC)
                     binding!!.sMeanText.text = "평균: ${valueParser(achievedM as String)}"
                     binding!!.tsMeanText.text = "평균: ${valueParser(notAchievedM as String)}"
-                    binding!!.tsPercentText.text = rankRate(
+                        binding!!.tsPercentText.text = rankRate(
                         AllnotAchievedM,
                         AllnotAchievedS,
                         valueParser(notAchievedM as String)
@@ -131,18 +129,22 @@ class StatsWeekFragment : Fragment() {
                         AllachievedS,
                         valueParser(achievedM as String)
                     ).toString()
-
+                    binding!!.cPercentText.text = rankRate(
+                        consumedTimeM,
+                        consumedTimeS,
+                        valueParser(appUsageTimeM as String)
+                    ).toString()
                     val chart: ScatterChart = binding!!.scatterChart
 
                     val entries1 = ArrayList<Entry>()
                     countParser(notAchievedC as String, entries1)
-                    val set1 = ScatterDataSet(entries1, "완료한 일정 수")
-                    set1.setScatterShape(ScatterChart.ScatterShape.TRIANGLE)
+                    val set1 = ScatterDataSet(entries1, "완료 못한 일정 수")
+                    set1.setScatterShape(ScatterChart.ScatterShape.SQUARE)
                     set1.color = ColorTemplate.COLORFUL_COLORS[1]
                     val entries2 = ArrayList<Entry>()
                     countParser(achievedC as String, entries2)
 
-                    val set2 = ScatterDataSet(entries2, "계획한 일정 수")
+                    val set2 = ScatterDataSet(entries2, "완료한 일정 수")
                     set2.setScatterShape(ScatterChart.ScatterShape.SQUARE)
                     set2.color = ColorTemplate.COLORFUL_COLORS[0]
 
@@ -156,6 +158,12 @@ class StatsWeekFragment : Fragment() {
                     val data = ScatterData(dataSets)
                     chart.data = data
                     chart.xAxis.granularity = 1f
+                    chart
+                    chart.xAxis.valueFormatter = object : ValueFormatter() {
+                        override fun getFormattedValue(value: Float): String {
+                            return day[(value).toInt()]
+                        }
+                    }
                     chart.invalidate()
 
                 }
