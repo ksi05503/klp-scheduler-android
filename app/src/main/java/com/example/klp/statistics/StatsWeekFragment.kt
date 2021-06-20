@@ -7,6 +7,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.beust.klaxon.JsonReader
+import com.beust.klaxon.Klaxon
+import com.example.klp.data.AppUsageTimeForParser
 import com.example.klp.databinding.FragmentStatsWeekBinding
 import com.example.klp.retrofit.RetrofitManager
 import com.github.mikephil.charting.charts.CombinedChart
@@ -22,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.StringReader
 
 class StatsWeekFragment : Fragment() {
     private var binding: FragmentStatsWeekBinding? = null
@@ -57,41 +61,16 @@ class StatsWeekFragment : Fragment() {
                 to,
                 uid = 1759543463
             )
-            Log.d("HI", "APPU: " + appUsageTime.toString())
-            Log.d("HI", "APPU: " + appUsageTimeM.toString())
-
+            val appUsageList = appUsageParser(appUsageTime as String)
             withContext(Dispatchers.Main) {
                 val day = arrayOf("5/25", "5/26", "5/27", "5/28", "5/29", "5/30")
                 val combinedChart: CombinedChart = binding!!.weekChart
                 val data = CombinedData()
-                val entries = ArrayList<Entry>()
-                entries.add(Entry(1f, 4f))
-                entries.add(Entry(2f, 2f))
-                entries.add(Entry(3f, 6f))
-                entries.add(Entry(4f, 10f))
-                entries.add(Entry(5f, 1f))
-                val set = LineDataSet(entries, "소비시간")
-                set.color = Color.rgb(240, 238, 70)
-                set.lineWidth = 2.5f
-                set.setCircleColor(Color.rgb(240, 238, 70))
-                set.circleRadius = 5f
-                set.fillColor = Color.rgb(240, 238, 70)
-                set.mode = LineDataSet.Mode.CUBIC_BEZIER
-                set.setDrawValues(true)
-                set.valueTextSize = 10f
-                set.valueTextColor = Color.rgb(240, 238, 70)
-                set.axisDependency = YAxis.AxisDependency.LEFT
-
-
-                val lineData = LineData(set)
-                data.setData(lineData)
 
                 val entries2 = ArrayList<BarEntry>()
-                entries2.add(BarEntry(1f, 20f))
-                entries2.add(BarEntry(2f, 34f))
-                entries2.add(BarEntry(3f, 19f))
-                entries2.add(BarEntry(4f, 17f))
-                entries2.add(BarEntry(5f, 45f))
+                for (i in 0 until appUsageList.size) {
+                    entries2.add(BarEntry(i.toFloat(), appUsageList[i].USAGE_TIME.toFloat()))
+                }
                 val set2 = BarDataSet(entries2, "총사용시간")
                 set2.color = Color.rgb(60, 220, 78);
                 set2.valueTextColor = Color.rgb(60, 220, 78);
@@ -119,7 +98,8 @@ class StatsWeekFragment : Fragment() {
                 }
                 combinedChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
                 combinedChart.invalidate()
-
+                Log.d("HI", appUsageTimeM as String)
+                binding!!.cMeanText.text = "평균: ${valueParser(appUsageTimeM as String)}"
                 if (true) {
                     val notAchievedC =
                         RetrofitManager.instance.getStats("count", from, to, 1759543463, 0)
@@ -129,14 +109,29 @@ class StatsWeekFragment : Fragment() {
                         RetrofitManager.instance.getStats("mean", from, to, 1759543463, 0)
                     val achievedM =
                         RetrofitManager.instance.getStats("mean", from, to, 1759543463, 1)
-                    val AllnotAchievedM =
-                        RetrofitManager.instance.getStats("mean", from, to, achieved=0)
-                    val AllachievedM =
-                        RetrofitManager.instance.getStats("mean", from, to, achieved=1)
+                    val notAchievedS =
+                        RetrofitManager.instance.getStats("std", from, to, 1759543463, 0)
+                    val achievedS =
+                        RetrofitManager.instance.getStats("std", from, to, 1759543463, 1)
+                    val AllnotAchievedM = 1.3f
+                    val AllachievedM = 1.1f
+                    val AllnotAchievedS = 0.15f
+                    val AllachievedS = 0.07f
                     Log.d("HI", "ac: " + notAchievedC)
                     Log.d("HI", "ac: " + achievedC)
-                    binding!!.sMeanText.text = "평균: ${valueParser(notAchievedM as String)}"
-                    binding!!.tsMeanText.text = "평균: ${valueParser(achievedM as String)}"
+                    binding!!.sMeanText.text = "평균: ${valueParser(achievedM as String)}"
+                    binding!!.tsMeanText.text = "평균: ${valueParser(notAchievedM as String)}"
+                    binding!!.tsPercentText.text = rankRate(
+                        AllnotAchievedM,
+                        AllnotAchievedS,
+                        valueParser(notAchievedM as String)
+                    ).toString()
+                    binding!!.sPercentText.text = rankRate(
+                        AllachievedM,
+                        AllachievedS,
+                        valueParser(achievedM as String)
+                    ).toString()
+
                     val chart: ScatterChart = binding!!.scatterChart
 
                     val entries1 = ArrayList<Entry>()
@@ -181,8 +176,47 @@ class StatsWeekFragment : Fragment() {
             entry.add(Entry(i.toFloat(), value))
         }
     }
+
     private fun valueParser(str: String): Float {
         val sub = str.split('"')[2]
-        return sub.substring(2, sub.length - 1).toFloat()
+        val value = sub.substring(2, sub.length - 1)
+        for (i in 0 until value.length) {
+            if (value[i] in '0'..'9' || value[i] == '.') continue
+            else return value.substring(0, i).toFloat()
+        }
+        return value.substring(0, value.length - 1).toFloat()
+    }
+
+    private fun rankRate(mean: Float, std: Float, point: Float): Float {
+        var result: Float = 0f
+        if (point > mean + 3.5 * std) result = 0.1f
+        else if (point > mean + 2.5 * std) result = 0.6f
+        else if (point > mean + 2 * std) result = 2f
+        else if (point > mean + 1.5 * std) result = 7f
+        else if (point > mean + 1 * std) result = 16f
+        else if (point > mean + 0.5 * std) result = 31f
+        else if (point > mean) result = 50f
+        else if (point > mean - 0.5 * std) result = 70f
+        else if (point > mean - 1 * std) result = 84f
+        else if (point > mean - 1.5 * std) result = 93f
+        else if (point > mean - 2 * std) result = 98f
+        else if (point > mean - 2.5 * std) result = 99.3f
+        else if (point > mean - 3.5 * std) result = 99.9f
+        return result
+    }
+
+    fun appUsageParser(array: String): ArrayList<AppUsageTimeForParser> {
+        val klaxon = Klaxon()
+        JsonReader(StringReader(array)).use { reader ->
+            val result = arrayListOf<AppUsageTimeForParser>()
+            reader.beginArray {
+                while (reader.hasNext()) {
+                    val person = klaxon.parse<AppUsageTimeForParser>(reader)
+                    result.add(person!!)
+                }
+            }
+            return result
+        }
     }
 }
+

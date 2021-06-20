@@ -204,56 +204,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/medium_margin"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/PlainText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:text="이번주 총 사용시간은 " />
-
-                <TextView
-                    android:id="@+id/tcMeanText"
-                    style="@style/HighlightText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:text="평균: 0" />
-
-                <TextView
-                    android:id="@+id/tcStdText"
-                    style="@style/HighlightText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:text="표준편차: 0" />
-
-                <TextView
-                    style="@style/PlainText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="로, 상위" />
-
-                <TextView
-                    android:id="@+id/tcPercentText"
-                    style="@style/HighlightText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:text="50%" />
-
-                <TextView
-                    style="@style/PlainText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="입니다." />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
                 android:layout_marginBottom="@dimen/big_margin"
                 android:orientation="horizontal">
 

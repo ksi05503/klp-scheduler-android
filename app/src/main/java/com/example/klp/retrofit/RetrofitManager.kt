@@ -75,9 +75,7 @@ class RetrofitManager {
     suspend fun getGoals(uid: Int): ArrayList<ScheduleData>? {
         val str = execute(iRetrofit.getGoals(uid)).toString()
 
-        val result = streamingArray(str)
-        Log.d("HI", "### $result")
-        return result
+        return streamingArray(str)
     }
 
     suspend fun getPost(id: Int): Any {

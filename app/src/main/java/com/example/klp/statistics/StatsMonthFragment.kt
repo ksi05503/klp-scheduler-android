@@ -2,11 +2,13 @@ package com.example.klp.statistics
 
 import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.beust.klaxon.JsonReader
+import com.beust.klaxon.Klaxon
+import com.example.klp.data.DangerApp
 import com.example.klp.databinding.FragmentStatsMonthBinding
 import com.example.klp.retrofit.RetrofitManager
 import com.github.mikephil.charting.animation.Easing
@@ -22,6 +24,7 @@ import com.github.mikephil.charting.utils.ColorTemplate
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.io.StringReader
 
 class StatsMonthFragment : Fragment() {
     private var binding: FragmentStatsMonthBinding? = null
@@ -49,7 +52,90 @@ class StatsMonthFragment : Fragment() {
         CoroutineScope(Dispatchers.Main).launch {
             //val value = RetrofitManager.instance.getDiary(user!!.id.toInt(), "2021-06-17")
             val value = RetrofitManager.instance.getDangerApp(1759543463, 6)
-            Log.d("HI", "MOPNTH: $value")
+            val dangerApp = dangerAppParser(value as String)
+            val chart2: PieChart = binding!!.pieChart
+            val entries2 = ArrayList<PieEntry>()
+            dangerApp.forEachIndexed { index, app ->
+                entries2.add(index, PieEntry(app.COUNT.toFloat(), app.APP_NAME))
+            }
+            val set2 = PieDataSet(entries2, "위험앱 선정 횟수")
+
+
+            // add a lot of colors
+            val colors = java.util.ArrayList<Int>()
+
+            for (c in ColorTemplate.VORDIPLOM_COLORS) colors.add(c)
+
+            for (c in ColorTemplate.JOYFUL_COLORS) colors.add(c)
+
+            for (c in ColorTemplate.COLORFUL_COLORS) colors.add(c)
+
+            for (c in ColorTemplate.LIBERTY_COLORS) colors.add(c)
+
+            for (c in ColorTemplate.PASTEL_COLORS) colors.add(c)
+
+            colors.add(ColorTemplate.getHoloBlue())
+
+            set2.colors = colors
+            //dataSet.setSelectionShift(0f);
+            set2.valueLinePart1OffsetPercentage = 80f
+            set2.valueLinePart1Length = 0.2f
+            set2.valueLinePart2Length = 0.4f
+
+            //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+
+            //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
+            set2.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
+            val data2 = PieData(set2)
+            data2.setValueFormatter(PercentFormatter(chart2))
+            data2.setValueTextSize(12f)
+
+
+            chart2.data = data2
+
+            chart2.setUsePercentValues(true)
+            chart2.description.isEnabled = false
+            chart2.setExtraOffsets(5f, 10f, 5f, 5f)
+
+            chart2.dragDecelerationFrictionCoef = 0.95f
+
+
+            chart2.isDrawHoleEnabled = true
+            chart2.setHoleColor(Color.WHITE)
+
+            chart2.setTransparentCircleColor(Color.WHITE)
+            chart2.setTransparentCircleAlpha(110)
+
+            chart2.holeRadius = 58f
+            chart2.transparentCircleRadius = 61f
+
+            chart2.setDrawCenterText(true)
+
+            chart2.rotationAngle = 0f
+            chart2.isRotationEnabled = true
+            chart2.isHighlightPerTapEnabled = true
+
+            //chart2.setOnChartValueSelectedListener(this) //pie click event listener
+
+            chart2.animateY(1400, Easing.EaseInOutQuad)
+            // chart.spin(2000, 0, 360);
+
+            // chart.spin(2000, 0, 360);
+            chart2.legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
+            chart2.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
+            chart2.legend.orientation = Legend.LegendOrientation.VERTICAL
+            chart2.legend.setDrawInside(false)
+            chart2.legend.xEntrySpace = 7f
+            chart2.legend.yEntrySpace = 0f
+            chart2.legend.yOffset = 0f
+
+            // entry label styling
+
+            // entry label styling
+            chart2.setEntryLabelColor(Color.BLACK)
+            chart2.setEntryLabelTextSize(20f)
+            chart2.setUsePercentValues(true)
+            chart2.invalidate()
         }
 
 
@@ -94,89 +180,19 @@ class StatsMonthFragment : Fragment() {
 
         chart.invalidate()
 
+    }
 
-        val chart2: PieChart = binding!!.pieChart
-        val entries2 = ArrayList<PieEntry>()
-        entries2.add(0, PieEntry(50f, "유투브"))
-        entries2.add(1, PieEntry(35f, "카카오톡"))
-        entries2.add(2, PieEntry(5f, "크롬"))
-        val set2 = PieDataSet(entries2, "앱 사용시간")
-
-
-        // add a lot of colors
-        val colors = java.util.ArrayList<Int>()
-
-        for (c in ColorTemplate.VORDIPLOM_COLORS) colors.add(c)
-
-        for (c in ColorTemplate.JOYFUL_COLORS) colors.add(c)
-
-        for (c in ColorTemplate.COLORFUL_COLORS) colors.add(c)
-
-        for (c in ColorTemplate.LIBERTY_COLORS) colors.add(c)
-
-        for (c in ColorTemplate.PASTEL_COLORS) colors.add(c)
-
-        colors.add(ColorTemplate.getHoloBlue())
-
-        set2.colors = colors
-        //dataSet.setSelectionShift(0f);
-        set2.valueLinePart1OffsetPercentage = 80f
-        set2.valueLinePart1Length = 0.2f
-        set2.valueLinePart2Length = 0.4f
-
-        //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-
-        //dataSet.setXValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
-        set2.yValuePosition = PieDataSet.ValuePosition.OUTSIDE_SLICE
-        val data2 = PieData(set2)
-        data2.setValueFormatter(PercentFormatter(chart2))
-        data2.setValueTextSize(12f)
-
-
-        chart2.data = data2
-
-        chart2.setUsePercentValues(true)
-        chart2.description.isEnabled = false
-        chart2.setExtraOffsets(5f, 10f, 5f, 5f)
-
-        chart2.dragDecelerationFrictionCoef = 0.95f
-
-
-        chart2.isDrawHoleEnabled = true
-        chart2.setHoleColor(Color.WHITE)
-
-        chart2.setTransparentCircleColor(Color.WHITE)
-        chart2.setTransparentCircleAlpha(110)
-
-        chart2.holeRadius = 58f
-        chart2.transparentCircleRadius = 61f
-
-        chart2.setDrawCenterText(true)
-
-        chart2.rotationAngle = 0f
-        chart2.isRotationEnabled = true
-        chart2.isHighlightPerTapEnabled = true
-
-        //chart2.setOnChartValueSelectedListener(this) //pie click event listener
-
-        chart2.animateY(1400, Easing.EaseInOutQuad)
-        // chart.spin(2000, 0, 360);
-
-        // chart.spin(2000, 0, 360);
-        chart2.legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-        chart2.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-        chart2.legend.orientation = Legend.LegendOrientation.VERTICAL
-        chart2.legend.setDrawInside(false)
-        chart2.legend.xEntrySpace = 7f
-        chart2.legend.yEntrySpace = 0f
-        chart2.legend.yOffset = 0f
-
-        // entry label styling
-
-        // entry label styling
-        chart2.setEntryLabelColor(Color.BLACK)
-        chart2.setEntryLabelTextSize(20f)
-        chart2.setUsePercentValues(true)
-        chart2.invalidate()
+    fun dangerAppParser(array: String): ArrayList<DangerApp> {
+        val klaxon = Klaxon()
+        JsonReader(StringReader(array)).use { reader ->
+            val result = arrayListOf<DangerApp>()
+            reader.beginArray {
+                while (reader.hasNext()) {
+                    val person = klaxon.parse<DangerApp>(reader)
+                    result.add(person!!)
+                }
+            }
+            return result
+        }
     }
 }
