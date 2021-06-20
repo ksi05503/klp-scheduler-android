@@ -83,11 +83,11 @@ class GoalFragment : Fragment() {
                 val adapter = GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
 
                 onGoingBtn.setOnClickListener {
-                    scheduleViewModel.setDone()
+                    scheduleViewModel.setOngoing()
                     adapter.setData(scheduleViewModel.newSchedules.value)
                 }
                 doneBtn.setOnClickListener {
-                    scheduleViewModel.setOngoing()
+                    scheduleViewModel.setDone()
                     adapter.setData(scheduleViewModel.newSchedules.value)
                 }
                 recyclerView = binding!!.goalFirstRecycler
