@@ -2,24 +2,28 @@ package com.example.klp.community
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import android.widget.TextView
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.klp.R
 import com.example.klp.WriteArticleActivity
 import com.example.klp.data.Article
 import com.example.klp.databinding.FragmentCommunityBinding
+import com.example.klp.retrofit.RetrofitManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 
 class CommunityFragment : Fragment() {
-    var binding:FragmentCommunityBinding?=null
-    var adapter:ArticleListAdapter?=null
+    var binding: FragmentCommunityBinding? = null
+    var adapter: ArticleListAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,14 +37,20 @@ class CommunityFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
 
-        adapter= ArticleListAdapter(ArrayList<Article>())
+        adapter = ArticleListAdapter(ArrayList<Article>())
 
         binding!!.apply {
             val fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in)
 
-            recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-            recyclerView.addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
-            adapter!!.itemClickListener1 = object : ArticleListAdapter.OnItemClickListener{
+            recyclerView.layoutManager =
+                LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            recyclerView.addItemDecoration(
+                DividerItemDecoration(
+                    requireContext(),
+                    LinearLayoutManager.VERTICAL
+                )
+            )
+            adapter!!.itemClickListener1 = object : ArticleListAdapter.OnItemClickListener {
                 override fun OnItemClick(
                     holder: ArticleListAdapter.ViewHolder,
                     view: View,
@@ -48,17 +58,16 @@ class CommunityFragment : Fragment() {
                     position: Int
                 ) {
                     val body = view.findViewById<TextView>(R.id.body)
-                    if(body.isVisible){
+                    if (body.isVisible) {
                         body.visibility = View.GONE
-                    }
-                    else{
+                    } else {
                         body.visibility = View.VISIBLE
                         body.startAnimation(fadeIn)
                     }
                 }
             }
 
-            adapter!!.itemClickListener2 = object : ArticleListAdapter.OnItemClickListener{
+            adapter!!.itemClickListener2 = object : ArticleListAdapter.OnItemClickListener {
                 override fun OnItemClick(
                     holder: ArticleListAdapter.ViewHolder,
                     view: View,
@@ -75,8 +84,12 @@ class CommunityFragment : Fragment() {
             }
 
             //테스트
-            adapter!!.articleList.add(Article(1, 1, "테스트", "테스트테스트테스트테스트테스트테스트테스트테스트테스트", 999))
-            adapter!!.notifyDataSetChanged()
+            CoroutineScope(Dispatchers.Main).launch {
+                //RetrofitManager.instance.postDangerApp(1759543463, 6, app)
+                val forms = RetrofitManager.instance.getForms()
+                forms.forEach { item -> adapter!!.articleList.add(item) }
+                adapter!!.notifyDataSetChanged()
+            }
 
             recyclerView.adapter = adapter
 

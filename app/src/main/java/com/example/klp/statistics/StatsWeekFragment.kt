@@ -36,7 +36,7 @@ class StatsWeekFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.Main).launch  {
             //RetrofitManager.instance.postDangerApp(1759543463, 6, app)
             val notAchievedC = RetrofitManager.instance.getStats(
                 "count",
@@ -56,6 +56,7 @@ class StatsWeekFragment : Fragment() {
             Log.d("HI", achievedC.toString())
             val notAchievedM =
                 RetrofitManager.instance.getStats("mean", "2021-06-16", "2021-06-20", 1759543463, 0)
+            Log.d("HI", "asdasdasd: "+ notAchievedM.toString())
             val achievedM =
                 RetrofitManager.instance.getStats("mean", "2021-06-16", "2021-06-20", 1759543463, 1)
             val notAchievedS =
@@ -68,7 +69,14 @@ class StatsWeekFragment : Fragment() {
                 "2021-06-20",
                 uid = 1759543463
             )
+            val appUsageTimeM = RetrofitManager.instance.getUsageTime(
+                "mean",
+                "2021-06-17",
+                "2021-06-20",
+                uid = 1759543463
+            )
             Log.d("HI", "APPU: "+ appUsageTime.toString())
+            Log.d("HI", "APPU: "+ appUsageTimeM.toString())
 
             withContext(Dispatchers.Main) {
                 val day = arrayOf("5/25", "5/26", "5/27", "5/28", "5/29", "5/30")
