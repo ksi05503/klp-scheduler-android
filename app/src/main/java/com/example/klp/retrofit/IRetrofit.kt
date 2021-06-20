@@ -31,6 +31,8 @@ interface IRetrofit {
     @POST("/autoInsert")
     suspend fun autoInsert(@Body requestBody: RequestBody): Response<ResponseBody>
 
+    @POST("/insForms")
+    suspend fun insForms(@Body requestBody: RequestBody): Response<ResponseBody>
 
     @POST("/modifySchedule")
     suspend fun modifySchedule(@Body requestBody: RequestBody): Response<ResponseBody>

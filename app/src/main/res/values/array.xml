@@ -9,7 +9,7 @@
     <string-array name="schedule_type">
         <item>study</item>
         <item>assignment</item>
-        <item>excercise</item>
+        <item>exercise</item>
         <item>meeting</item>
         <item>friend</item>
         <item>etc</item>

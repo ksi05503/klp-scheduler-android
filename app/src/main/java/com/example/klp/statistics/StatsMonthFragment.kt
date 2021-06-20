@@ -25,6 +25,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.StringReader
+import java.time.LocalDate
 
 class StatsMonthFragment : Fragment() {
     private var binding: FragmentStatsMonthBinding? = null
@@ -48,10 +49,9 @@ class StatsMonthFragment : Fragment() {
         chart.data = data
         val labels = arrayOf("나의 이번달 평균", "나의 1년간 평균", "사용자 전체 평균")
 
-
+        val today: LocalDate = LocalDate.now()
         CoroutineScope(Dispatchers.Main).launch {
-            //val value = RetrofitManager.instance.getDiary(user!!.id.toInt(), "2021-06-17")
-            val value = RetrofitManager.instance.getDangerApp(1759543463, 6)
+            val value = RetrofitManager.instance.getDangerApp(1759543463, today.monthValue)
             val dangerApp = dangerAppParser(value as String)
             val chart2: PieChart = binding!!.pieChart
             val entries2 = ArrayList<PieEntry>()
@@ -121,9 +121,7 @@ class StatsMonthFragment : Fragment() {
             // chart.spin(2000, 0, 360);
 
             // chart.spin(2000, 0, 360);
-            chart2.legend.verticalAlignment = Legend.LegendVerticalAlignment.TOP
-            chart2.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
-            chart2.legend.orientation = Legend.LegendOrientation.VERTICAL
+
             chart2.legend.setDrawInside(false)
             chart2.legend.xEntrySpace = 7f
             chart2.legend.yEntrySpace = 0f
@@ -165,7 +163,7 @@ class StatsMonthFragment : Fragment() {
         chart.legend.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
         chart.legend.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
         chart.legend.orientation = Legend.LegendOrientation.HORIZONTAL
-        chart.legend.setDrawInside(false)
+        chart.legend.setDrawInside(true)
         chart.legend.formSize = 8f
         chart.legend.xEntrySpace = 4f
         chart.xAxis.valueFormatter = object : ValueFormatter() {

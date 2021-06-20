@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.klp.databinding.ActivityMainBinding
+import com.example.klp.model.ArticleViewModel
 import com.example.klp.model.ScheduleViewModel
 import com.example.klp.retrofit.RetrofitManager
 import com.example.klp.statistics.StatsDayFragment
@@ -26,6 +27,8 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
     private val scheduleViewModel: ScheduleViewModel by viewModels()
+
+    private val articleViewModel: ArticleViewModel by viewModels()
 
 
     lateinit var binding: ActivityMainBinding
@@ -56,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
 
     //              일정추가 dialog
-    private fun dialogBuilder(flag:Int) {
+    private fun dialogBuilder(flag: Int) {
 
         binding.addBtn.setOnClickListener {
             val builder = AlertDialog.Builder(this)
@@ -150,38 +153,39 @@ class MainActivity : AppCompatActivity() {
             }
             )
             var dbDate1 = ""  //db에 들어갈 string
-            var dbDate2= ""  //db에 들어갈 string
+            var dbDate2 = ""  //db에 들어갈 string
 
-                calBtn1.setOnClickListener {
-                    var date_listener = object : DatePickerDialog.OnDateSetListener {
-                        override fun onDateSet(
-                            view: DatePicker?,
-                            year: Int,
-                            month: Int,
-                            dayOfMonth: Int
-                        ) {
-                            val monthStr = if(month+1>=10)(month+1)else("0"+(month+1).toString())
-                            calBtn1.text = "$year/${month + 1}/$dayOfMonth"
-                            dbDate1 = "$year-${monthStr}-${dayOfMonth}"
-                            dbDate2 = "$year-${monthStr}-${dayOfMonth}"
+            calBtn1.setOnClickListener {
+                var date_listener = object : DatePickerDialog.OnDateSetListener {
+                    override fun onDateSet(
+                        view: DatePicker?,
+                        year: Int,
+                        month: Int,
+                        dayOfMonth: Int
+                    ) {
+                        val monthStr =
+                            if (month + 1 >= 10) (month + 1) else ("0" + (month + 1).toString())
+                        calBtn1.text = "$year/${month + 1}/$dayOfMonth"
+                        dbDate1 = "$year-${monthStr}-${dayOfMonth}"
+                        dbDate2 = "$year-${monthStr}-${dayOfMonth}"
 
-                            myYear = year
-                            myMonth = month
-                            myDay = dayOfMonth
-                            calBtn2.text = "$myYear/${myMonth + 1}/$myDay"
+                        myYear = year
+                        myMonth = month
+                        myDay = dayOfMonth
+                        calBtn2.text = "$myYear/${myMonth + 1}/$myDay"
 
-                            if (calBtn1.text == calBtn2.text) {
-                                sRegularLayout.visibility = View.GONE
-                            } else {
-                                sRegularLayout.visibility = View.VISIBLE
-                            }
-
-
+                        if (calBtn1.text == calBtn2.text) {
+                            sRegularLayout.visibility = View.GONE
+                        } else {
+                            sRegularLayout.visibility = View.VISIBLE
                         }
+
+
                     }
-                    var builder = DatePickerDialog(this, date_listener, myYear, myMonth, myDay)
-                    builder.show()
                 }
+                var builder = DatePickerDialog(this, date_listener, myYear, myMonth, myDay)
+                builder.show()
+            }
 
 
 
@@ -197,10 +201,11 @@ class MainActivity : AppCompatActivity() {
                         month: Int,
                         dayOfMonth: Int
                     ) {
-                        val monthStr = if(month+1>=10)(month+1)else("0"+(month+1).toString())
+                        val monthStr =
+                            if (month + 1 >= 10) (month + 1) else ("0" + (month + 1).toString())
                         calBtn2.text = "$year/${month + 1}/$dayOfMonth"
                         dbDate2 = "$year-${monthStr}-${dayOfMonth}"
-                        if(calBtn1.text == calBtn2.text ){
+                        if (calBtn1.text == calBtn2.text) {
                             sRegularLayout.visibility = View.GONE
                         } else {
                             sRegularLayout.visibility = View.VISIBLE
@@ -232,6 +237,7 @@ class MainActivity : AppCompatActivity() {
 
                         CoroutineScope(Dispatchers.Main).launch{
                             RetrofitManager.instance.addSchedule(1759543463,101,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
+                        }
 
                             scheduleViewModel._newSchedules.value =
                                 RetrofitManager.instance.getGoals(1759543463)
@@ -267,8 +273,8 @@ class MainActivity : AppCompatActivity() {
             val dialogSeekBar1 = dialogView.findViewById<SeekBar>(R.id.estimateSeekBar)
             val dialogEstimateTextView = dialogView.findViewById<TextView>(R.id.estimateTextView)
             val dialogSeekBar2 = dialogView.findViewById<SeekBar>(R.id.importanceSeekBar)
-            val dialogImportanceTextView = dialogView.findViewById<TextView>(R.id.importanceTextView)
-
+            val dialogImportanceTextView =
+                dialogView.findViewById<TextView>(R.id.importanceTextView)
 
 
             val dialogDetail = dialogView.findViewById<EditText>(R.id.detailEditText)
@@ -287,27 +293,27 @@ class MainActivity : AppCompatActivity() {
             val radioButtonWeekly = dialogView.findViewById<RadioButton>(R.id.radioButtonWeekly)
 
             radioButtonWeekly.setOnCheckedChangeListener { buttonView, isChecked ->
-                if(isChecked){
+                if (isChecked) {
                     dayOfWeekLayout.visibility = View.VISIBLE
-                }else{
+                } else {
                     dayOfWeekLayout.visibility = View.GONE
                 }
             }
 
             var estimateDB = 0
             dialogEstimateTextView.setText("금방끝나는일정^^")
-            dialogSeekBar1.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            dialogSeekBar1.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    when(progress){
-                        0->dialogEstimateTextView.setText("금방끝나는일정^^")
-                        1->dialogEstimateTextView.setText("1시간이내^^")
-                        2->dialogEstimateTextView.setText("1~4시간...")
-                        3->dialogEstimateTextView.setText("4시간 이상.....")
-                        4->dialogEstimateTextView.setText("상상을 초월..........")
+                    when (progress) {
+                        0 -> dialogEstimateTextView.setText("금방끝나는일정^^")
+                        1 -> dialogEstimateTextView.setText("1시간이내^^")
+                        2 -> dialogEstimateTextView.setText("1~4시간...")
+                        3 -> dialogEstimateTextView.setText("4시간 이상.....")
+                        4 -> dialogEstimateTextView.setText("상상을 초월..........")
                     }
                     estimateDB = progress
                 }
@@ -321,19 +327,19 @@ class MainActivity : AppCompatActivity() {
 
             var importanceDB = 0
             dialogImportanceTextView.setText("안중요한 일정")
-            dialogSeekBar2.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
+            dialogSeekBar2.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
                 override fun onProgressChanged(
                     seekBar: SeekBar?,
                     progress: Int,
                     fromUser: Boolean
                 ) {
-                    when(progress){
-                        0->dialogImportanceTextView.setText("안중요한 일정")
-                        1->dialogImportanceTextView.setText("까먹지만말기")
-                        2->dialogImportanceTextView.setText("살짝 중요")
-                        3->dialogImportanceTextView.setText("중요한 일정")
-                        4->dialogImportanceTextView.setText("매우 중요")
-                        5->dialogImportanceTextView.setText("굉장히 중요!")
+                    when (progress) {
+                        0 -> dialogImportanceTextView.setText("안중요한 일정")
+                        1 -> dialogImportanceTextView.setText("까먹지만말기")
+                        2 -> dialogImportanceTextView.setText("살짝 중요")
+                        3 -> dialogImportanceTextView.setText("중요한 일정")
+                        4 -> dialogImportanceTextView.setText("매우 중요")
+                        5 -> dialogImportanceTextView.setText("굉장히 중요!")
                     }
                     importanceDB = progress
                 }
@@ -347,37 +353,37 @@ class MainActivity : AppCompatActivity() {
             }
             )
             var dbDate1 = ""  //db에 들어갈 string
-            var dbDate2= ""  //db에 들어갈 string
+            var dbDate2 = ""  //db에 들어갈 string
 
-                calBtn1.setOnClickListener {
-                    var date_listener = object : DatePickerDialog.OnDateSetListener {
-                        override fun onDateSet(
-                            view: DatePicker?,
-                            year: Int,
-                            month: Int,
-                            dayOfMonth: Int
-                        ) {
-                            calBtn1.text = "$year/${month + 1}/$dayOfMonth"
-                            dbDate1 = "$year-${month + 1}-${dayOfMonth}"
-                            dbDate2 = "$year-${month + 1}-${dayOfMonth}"
+            calBtn1.setOnClickListener {
+                var date_listener = object : DatePickerDialog.OnDateSetListener {
+                    override fun onDateSet(
+                        view: DatePicker?,
+                        year: Int,
+                        month: Int,
+                        dayOfMonth: Int
+                    ) {
+                        calBtn1.text = "$year/${month + 1}/$dayOfMonth"
+                        dbDate1 = "$year-${month + 1}-${dayOfMonth}"
+                        dbDate2 = "$year-${month + 1}-${dayOfMonth}"
 
-                            myYear = year
-                            myMonth = month
-                            myDay = dayOfMonth
-                            calBtn2.text = "$myYear/${myMonth + 1}/$myDay"
+                        myYear = year
+                        myMonth = month
+                        myDay = dayOfMonth
+                        calBtn2.text = "$myYear/${myMonth + 1}/$myDay"
 
-                            if (calBtn1.text == calBtn2.text) {
-                                sRegularLayout.visibility = View.GONE
-                            } else {
-                                sRegularLayout.visibility = View.VISIBLE
-                            }
-
-
+                        if (calBtn1.text == calBtn2.text) {
+                            sRegularLayout.visibility = View.GONE
+                        } else {
+                            sRegularLayout.visibility = View.VISIBLE
                         }
+
+
                     }
-                    var builder = DatePickerDialog(this, date_listener, myYear, myMonth, myDay)
-                    builder.show()
                 }
+                var builder = DatePickerDialog(this, date_listener, myYear, myMonth, myDay)
+                builder.show()
+            }
 
             calBtn2.setOnClickListener {
                 var year = myYear
@@ -392,7 +398,8 @@ class MainActivity : AppCompatActivity() {
                         dayOfMonth: Int
                     ) {
                         calBtn2.text = "$year/${month + 1}/$dayOfMonth"
-                        val monthStr = if (month + 1 >= 10) (month + 1) else '0' + (month + 1).toString()
+                        val monthStr =
+                            if (month + 1 >= 10) (month + 1) else '0' + (month + 1).toString()
                         dbDate2 = "$year-${monthStr}-${dayOfMonth}"
                         if (calBtn1.text == calBtn2.text) {
                             sRegularLayout.visibility = View.GONE

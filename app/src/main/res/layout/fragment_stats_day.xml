@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/big_margin"
-                android:text="어제 하루 요약:" />
+                android:text="오늘 하루 요약:" />
 
             <TextView
                 android:id="@+id/dailyText"
@@ -27,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/big_margin"
-                android:text="" />
+                android:text="총 4개의 일정 중 3개를 완료하였습니다.\n소비앱으로 선택하신 총 앱 사용 시간은 2.5시간입니다." />
 
             <TextView
                 style="@style/MainText"
@@ -37,6 +38,7 @@
                 android:text="무엇이 문제였을까?" />
 
             <LinearLayout
+                android:id="@+id/checkBoxLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/medium_margin"
@@ -45,48 +47,67 @@
 
                 <CheckBox
                     android:id="@+id/checkBox"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="CheckBox" />
 
                 <CheckBox
                     android:id="@+id/checkBox2"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="CheckBox" />
 
                 <CheckBox
                     android:id="@+id/checkBox3"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="CheckBox" />
 
                 <CheckBox
                     android:id="@+id/checkBox4"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="CheckBox" />
 
             </LinearLayout>
 
-            <EditText
+            <LinearLayout
+                android:id="@+id/emptyLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="간단한 메모 작성..."
-                android:inputType="textMultiLine" />
+                android:orientation="vertical">
+            </LinearLayout>
 
-            <Button
+            <LinearLayout
                 android:id="@+id/submitBtn"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="-" />
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/gradient_button"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:paddingLeft="30dp"
+                android:paddingTop="15dp"
+                android:paddingRight="30dp"
+                android:paddingBottom="15dp"
+                android:elevation="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="제출"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>
+
 </FrameLayout>

@@ -110,35 +110,6 @@
                     android:text="입니다." />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/big_margin"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/PlainText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:text="주간 평균 성취도는 " />
-
-                <TextView
-                    android:id="@+id/sIndexText"
-                    style="@style/HighlightText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:text="0.8" />
-
-                <TextView
-                    android:id="@+id/sStatusText"
-                    style="@style/HighlightText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(과도합니다)" />
-            </LinearLayout>
-
             <TextView
                 style="@style/MainText"
                 android:layout_width="match_parent"
@@ -173,14 +144,6 @@
                     android:text="평균: 0" />
 
                 <TextView
-                    android:id="@+id/cStdText"
-                    style="@style/HighlightText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:text="표준편차: 0" />
-
-                <TextView
                     style="@style/PlainText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -201,34 +164,6 @@
                     android:text="입니다." />
             </LinearLayout>
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/big_margin"
-                android:orientation="horizontal">
-
-                <TextView
-                    style="@style/PlainText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:text="소비지수는 " />
-
-                <TextView
-                    android:id="@+id/cIndexText"
-                    style="@style/HighlightText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/small_margin"
-                    android:text="0.8" />
-
-                <TextView
-                    android:id="@+id/cStatusText"
-                    style="@style/HighlightText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(과도합니다)" />
-            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

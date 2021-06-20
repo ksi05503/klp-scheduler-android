@@ -20,7 +20,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/big_margin"
-                android:text="차트" />
+                android:text="월간 소비 차트" />
 
             <com.github.mikephil.charting.charts.HorizontalBarChart
                 android:id="@+id/monthChart"

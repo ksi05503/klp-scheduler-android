@@ -180,6 +180,9 @@ class GoalFragment : Fragment() {
         val builder = AlertDialog.Builder(view.context)
 
         val dialogView = layoutInflater.inflate(R.layout.dialog_add_schedule, null)
+        val dialogTitle =dialogView.findViewById<TextView>(R.id.dialogTitle)
+        dialogTitle.setText("일정 수정")
+
         val dialogScheduleName = dialogView.findViewById<EditText>(R.id.scheduleNameInputText)
         val dialogScheduleTypeSpinner = dialogView.findViewById<Spinner>(R.id.spinner1)
         val dialogRegularRadioGroup =
@@ -414,6 +417,8 @@ class GoalFragment : Fragment() {
                 }
             }
             var builder = DatePickerDialog(view.context, date_listener, year, month, day)
+
+
 
             builder.show()
         }
