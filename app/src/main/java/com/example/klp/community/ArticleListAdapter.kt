@@ -20,7 +20,6 @@ class ArticleListAdapter(val articleList:ArrayList<Article>):
         val formHead = binding.formHeadText
         val likes = binding.likesText
         val body = binding.body
-        val likeBtn = binding.likeBtn
         init {
             binding.articleRowLay.setOnClickListener {
                 itemClickListener1?.OnItemClick(this, it, articleList[adapterPosition], adapterPosition)
