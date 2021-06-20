@@ -109,7 +109,19 @@ class RetrofitManager {
     ): Any {
         return execute(iRetrofit.getUsageTime(type, from, to, appName, uid))
     }
+    suspend fun insForm(form_head:String, body:String){
+        val jsonObject = JSONObject()
+        jsonObject.put("form_head", form_head)
+        jsonObject.put("body", body)
 
+        // Convert JSONObject to String
+        val jsonObjectString = jsonObject.toString()
+
+        // Create RequestBody ( We're not using any converter, like GsonConverter, MoshiConverter e.t.c, that's why we use RequestBody )
+        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+
+        execute(iRetrofit.insForms(requestBody))
+    }
     suspend fun postAppUsageTime(uid: Int, enterDate: String, appUsageList: Array<AppUsageTime>) {
         val jsonObject = JSONObject()
         jsonObject.put("uid", uid)

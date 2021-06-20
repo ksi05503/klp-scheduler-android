@@ -10,12 +10,14 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.klp.R
 import com.example.klp.WriteArticleActivity
 import com.example.klp.data.Article
 import com.example.klp.databinding.FragmentCommunityBinding
+import com.example.klp.model.ArticleViewModel
 import com.example.klp.retrofit.RetrofitManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,8 +25,15 @@ import kotlinx.coroutines.launch
 
 
 class CommunityFragment : Fragment() {
-    var binding: FragmentCommunityBinding? = null
+    private val articleViewModel: ArticleViewModel by activityViewModels()
+
     var adapter: ArticleListAdapter? = null
+    fun addArticle(article: Article) {
+        adapter!!.addArticle(article)
+    }
+
+
+    var binding: FragmentCommunityBinding? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,7 +46,9 @@ class CommunityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = ArticleListAdapter(ArrayList<Article>())
-
+        articleViewModel.articles.observe(viewLifecycleOwner, {
+            adapter!!.setData(it)
+        })
         binding!!.apply {
             val fadeIn = AnimationUtils.loadAnimation(context, R.anim.fade_in)
 
@@ -75,14 +86,13 @@ class CommunityFragment : Fragment() {
                 ) {
                     val btn = view.findViewById<ImageButton>(R.id.likeBtn)
                     var text = holder.likes.text
-                    if(btn.isSelected){
+                    if (btn.isSelected) {
                         val prev = text.split(" ")[1].split("개")[0].toInt()
-                        holder.likes.text = "좋아요 ${prev-1}개"
+                        holder.likes.text = "좋아요 ${prev - 1}개"
                         btn.isSelected = false
-                    }
-                    else{
+                    } else {
                         val prev = text.split(" ")[1].split("개")[0].toInt()
-                        holder.likes.text = "좋아요 ${prev+1}개"
+                        holder.likes.text = "좋아요 ${prev + 1}개"
                         btn.isSelected = true
                     }
                 }
@@ -90,12 +100,11 @@ class CommunityFragment : Fragment() {
 
             addArticleBtn.setOnClickListener {
                 val intent = Intent(requireContext(), WriteArticleActivity::class.java)
-                startActivity(intent)
+                startActivityForResult(intent, 100)
             }
 
             //테스트
             CoroutineScope(Dispatchers.Main).launch {
-                //RetrofitManager.instance.postDangerApp(1759543463, 6, app)
                 val forms = RetrofitManager.instance.getForms()
                 forms.forEach { item -> adapter!!.articleList.add(item) }
                 adapter!!.notifyDataSetChanged()
@@ -107,6 +116,17 @@ class CommunityFragment : Fragment() {
 
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == 100) {
+            if (resultCode == 100) {
+                val form_head = data!!.getStringExtra("form_head")
+                val body = data!!.getStringExtra("body")
+                adapter!!.addArticle(Article(0, form_head!!, body!!, 0))
+            }
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         binding = null
@@ -114,6 +134,11 @@ class CommunityFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        binding!!.addArticleBtn.startAnimation(AnimationUtils.loadAnimation(requireActivity(), R.anim.fade_inandout))
+        binding!!.addArticleBtn.startAnimation(
+            AnimationUtils.loadAnimation(
+                requireActivity(),
+                R.anim.fade_inandout
+            )
+        )
     }
 }
