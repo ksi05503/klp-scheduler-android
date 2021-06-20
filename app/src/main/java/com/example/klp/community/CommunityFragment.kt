@@ -36,8 +36,6 @@ class CommunityFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-
         adapter = ArticleListAdapter(ArrayList<Article>())
 
         binding!!.apply {
@@ -95,8 +93,6 @@ class CommunityFragment : Fragment() {
                 startActivity(intent)
             }
 
-            addArticleBtn.startAnimation(AnimationUtils.loadAnimation(requireActivity(), R.anim.fade_inandout))
-
             //테스트
             CoroutineScope(Dispatchers.Main).launch {
                 //RetrofitManager.instance.postDangerApp(1759543463, 6, app)
@@ -108,10 +104,16 @@ class CommunityFragment : Fragment() {
             recyclerView.adapter = adapter
 
         }
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         binding = null
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding!!.addArticleBtn.startAnimation(AnimationUtils.loadAnimation(requireActivity(), R.anim.fade_inandout))
     }
 }
