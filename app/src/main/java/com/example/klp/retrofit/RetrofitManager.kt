@@ -172,7 +172,30 @@ class RetrofitManager {
 
     }
 
-    suspend fun deleteSchedule(UID: Int, SID: Int) {
+    suspend fun modifySchedule(    UID: Int, SID: Int, SNAME: String, SDATE1: String, SDATE2: String,SREGULAR: Int,
+                                STYPE: String, SESTIMATE: Int, SIMPORTANCE: Int, SDETAIL: String,SDONE: Int) {
+
+        val jsonObject = JSONObject()
+        jsonObject.put("UID",UID)
+        jsonObject.put("SID",SID)
+        jsonObject.put("SNAME",SNAME)
+        jsonObject.put("SDATE1",SDATE1)
+        jsonObject.put("SDATE2",SDATE2)
+        jsonObject.put("SREGULAR",SREGULAR)
+        jsonObject.put("SWEEKLY",0)
+        jsonObject.put("STYPE",STYPE)
+        jsonObject.put("SESTIMATE",SESTIMATE)
+        jsonObject.put("SIMPORTANCE",SIMPORTANCE)
+        jsonObject.put("SDETAIL",SDETAIL)
+        jsonObject.put("SDONE",SDONE)
+        val jsonObjectString = jsonObject.toString()
+        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+        execute(iRetrofit.modifySchedule(requestBody))
+
+
+    }
+
+    suspend fun deleteSchedule(UID: Int, SID: Int){
         val jsonObject = JSONObject()
         jsonObject.put("UID", UID)
         jsonObject.put("SID", SID)
@@ -195,5 +218,22 @@ class RetrofitManager {
 
             execute(iRetrofit.postDangerApp(requestBody))
         }
+    }
+    suspend fun autoInsert(UID: Int, SID: Int, SNAME: String, SDATE2: String,SREGULAR: Int, SWEEKLY: Int,
+                           STYPE: String, SESTIMATE: Int, SIMPORTANCE: Int, SDETAIL: String){
+        val jsonObject = JSONObject()
+        jsonObject.put("UID",UID)
+        jsonObject.put("SID",SID)
+        jsonObject.put("SNAME",SNAME)
+        jsonObject.put("SDATE2",SDATE2)
+        jsonObject.put("SREGULAR",0)
+        jsonObject.put("SWEEKLY",0)
+        jsonObject.put("STYPE",STYPE)
+        jsonObject.put("SESTIMATE",SESTIMATE)
+        jsonObject.put("SIMPORTANCE",SIMPORTANCE)
+        jsonObject.put("SDETAIL",SDETAIL)
+        val jsonObjectString = jsonObject.toString()
+        val requestBody = jsonObjectString.toRequestBody("application/json".toMediaTypeOrNull())
+        execute(iRetrofit.autoInsert(requestBody))
     }
 }

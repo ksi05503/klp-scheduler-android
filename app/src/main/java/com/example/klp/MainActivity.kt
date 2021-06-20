@@ -149,7 +149,7 @@ class MainActivity : AppCompatActivity() {
             )
             var dbDate1 = ""  //db에 들어갈 string
             var dbDate2= ""  //db에 들어갈 string
-            if(flag ==0) {
+
                 calBtn1.setOnClickListener {
                     var date_listener = object : DatePickerDialog.OnDateSetListener {
                         override fun onDateSet(
@@ -158,9 +158,10 @@ class MainActivity : AppCompatActivity() {
                             month: Int,
                             dayOfMonth: Int
                         ) {
+                            val monthStr = if(month+1>=10)(month+1)else("0"+(month+1).toString())
                             calBtn1.text = "$year/${month + 1}/$dayOfMonth"
-                            dbDate1 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
-                            dbDate2 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
+                            dbDate1 = "$year-${monthStr}-${dayOfMonth}"
+                            dbDate2 = "$year-${monthStr}-${dayOfMonth}"
 
                             myYear = year
                             myMonth = month
@@ -179,9 +180,9 @@ class MainActivity : AppCompatActivity() {
                     var builder = DatePickerDialog(this, date_listener, myYear, myMonth, myDay)
                     builder.show()
                 }
-            }else{
-                calBtn1.setText("klp추천")
-            }
+
+
+
             calBtn2.setOnClickListener {
                 var year = myYear
                 var month = myMonth
@@ -194,9 +195,9 @@ class MainActivity : AppCompatActivity() {
                         month: Int,
                         dayOfMonth: Int
                     ) {
-
+                        val monthStr = if(month+1>=10)(month+1)else("0"+(month+1).toString())
                         calBtn2.text = "$year/${month + 1}/$dayOfMonth"
-                        dbDate2 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
+                        dbDate2 = "$year-${monthStr}-${dayOfMonth}T"
                         if(calBtn1.text == calBtn2.text ){
                             sRegularLayout.visibility = View.GONE
                         } else {
@@ -228,7 +229,7 @@ class MainActivity : AppCompatActivity() {
 
 
                         CoroutineScope(Dispatchers.Main).launch{
-                            RetrofitManager.instance.addSchedule(1,10,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
+                            RetrofitManager.instance.addSchedule(1759543463,22,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
                         }
 
 
@@ -335,7 +336,7 @@ class MainActivity : AppCompatActivity() {
             )
             var dbDate1 = ""  //db에 들어갈 string
             var dbDate2= ""  //db에 들어갈 string
-            if(flag ==0) {
+
                 calBtn1.setOnClickListener {
                     var date_listener = object : DatePickerDialog.OnDateSetListener {
                         override fun onDateSet(
@@ -345,8 +346,8 @@ class MainActivity : AppCompatActivity() {
                             dayOfMonth: Int
                         ) {
                             calBtn1.text = "$year/${month + 1}/$dayOfMonth"
-                            dbDate1 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
-                            dbDate2 = "$year-${month + 1}-${dayOfMonth}T00:00:00.000Z"
+                            dbDate1 = "$year-${month + 1}-${dayOfMonth}"
+                            dbDate2 = "$year-${month + 1}-${dayOfMonth}"
 
                             myYear = year
                             myMonth = month
@@ -365,9 +366,7 @@ class MainActivity : AppCompatActivity() {
                     var builder = DatePickerDialog(this, date_listener, myYear, myMonth, myDay)
                     builder.show()
                 }
-            }else{
-                calBtn1.setText("klp추천")
-            }
+
             calBtn2.setOnClickListener {
                 var year = myYear
                 var month = myMonth
@@ -382,7 +381,7 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         calBtn2.text = "$year/${month + 1}/$dayOfMonth"
                         val monthStr = if (month + 1 >= 10) (month + 1) else '0' + (month + 1).toString()
-                        dbDate2 = "$year-${monthStr}-${dayOfMonth}T00:00:00"
+                        dbDate2 = "$year-${monthStr}-${dayOfMonth}"
                         if (calBtn1.text == calBtn2.text) {
                             sRegularLayout.visibility = View.GONE
                         } else {
@@ -412,21 +411,8 @@ class MainActivity : AppCompatActivity() {
 //              입력된 DATA 정보들은 위와같다. (정규일정여부와 소요시간과 중요도(라디오버튼input)는 index정보로 db에 들어갈것이다)
                         //            val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
 
-
-                        CoroutineScope(Dispatchers.Main).launch {
-                            RetrofitManager.instance.addSchedule(
-                                1,
-                                10,
-                                name,
-                                dbDate1,
-                                dbDate2,
-                                regular,
-                                type,
-                                estimate,
-                                importance,
-                                detail,
-                                0
-                            )
+                        CoroutineScope(Dispatchers.Main).launch{
+                            RetrofitManager.instance.autoInsert(1759543463,54,name,dbDate2,0,0,type,estimate,importance,detail)
                         }
 
 

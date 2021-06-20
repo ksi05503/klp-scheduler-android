@@ -28,6 +28,12 @@ interface IRetrofit {
     @POST("/addSchedule")
     suspend fun addSchedule(@Body requestBody: RequestBody): Response<ResponseBody>
 
+    @POST("/autoInsert")
+    suspend fun autoInsert(@Body requestBody: RequestBody): Response<ResponseBody>
+
+
+    @POST("/modifySchedule")
+    suspend fun modifySchedule(@Body requestBody: RequestBody): Response<ResponseBody>
     /*****************************************************************************************************************************************************/
     /*
         GET METHOD
@@ -114,7 +120,7 @@ interface IRetrofit {
     @DELETE("/typicode/demo/posts/1")
     suspend fun deleteC(): Response<ResponseBody>
 
-    @DELETE("/deleteSchedule")
+    @POST("/deleteSchedule")
     suspend fun deleteSchedule(@Body requestBody: RequestBody): Response<ResponseBody>
 
 

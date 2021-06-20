@@ -131,7 +131,7 @@ class GoalFragment : Fragment() {
                             .setPositiveButton("삭제") { dialogInterface, i ->
                             //DB 데이터 삭제
                                 CoroutineScope(Dispatchers.Main).launch{
-                                    RetrofitManager.instance.deleteSchedule(1,item.SID)
+                                    RetrofitManager.instance.deleteSchedule(1759543463,item.SID)
                                 }
                             }
                             .setNegativeButton("취소") { dialogInterface, i ->
@@ -219,12 +219,12 @@ class GoalFragment : Fragment() {
         dialogDetailEditTxt.setText(schedule.SDETAIL)
 
         when (schedule.STYPE) {
-            "공부" -> dialogScheduleTypeSpinner.setSelection(0)
-            "과제" -> dialogScheduleTypeSpinner.setSelection(1)
-            "운동" -> dialogScheduleTypeSpinner.setSelection(2)
-            "회의" -> dialogScheduleTypeSpinner.setSelection(3)
-            "약속" -> dialogScheduleTypeSpinner.setSelection(4)
-            "기타" -> dialogScheduleTypeSpinner.setSelection(5)
+            "study" -> dialogScheduleTypeSpinner.setSelection(0)
+            "assignment" -> dialogScheduleTypeSpinner.setSelection(1)
+            "excercise" -> dialogScheduleTypeSpinner.setSelection(2)
+            "meeting" -> dialogScheduleTypeSpinner.setSelection(3)
+            "friend" -> dialogScheduleTypeSpinner.setSelection(4)
+            "etc" -> dialogScheduleTypeSpinner.setSelection(5)
         }
 
         when (schedule.SREGULAR) {
@@ -344,6 +344,8 @@ class GoalFragment : Fragment() {
             sRegularLayout.visibility = View.VISIBLE
         }
 
+        var dbDate1 =""
+        var dbDate2 = ""
         calBtn1.setOnClickListener {
             var date_listener = object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(
@@ -352,7 +354,10 @@ class GoalFragment : Fragment() {
                     month: Int,
                     dayOfMonth: Int
                 ) {
+                    val monthStr = if(month+1>=10)(month+1)else("0"+(month+1).toString())
                     calBtn1.text = "$year/${month + 1}/$dayOfMonth"
+                    dbDate1 = "$year-$monthStr-$dayOfMonth"
+                    dbDate2 = "$year-${monthStr}-${dayOfMonth}"
 
                     myYear = year
                     myMonth = month
@@ -385,8 +390,11 @@ class GoalFragment : Fragment() {
                     month: Int,
                     dayOfMonth: Int
                 ) {
+                    val monthStr = if(month+1>=10)(month+1)else("0"+(month+1).toString())
+
                     calBtn2.text = "$year/${month + 1}/$dayOfMonth"
                     dbTime = "${year.toString()}/${month.toString()}/${dayOfMonth}"
+                    dbDate2 = "$year-${monthStr}-${dayOfMonth}"
                     if (calBtn1.text == calBtn2.text) {
                         sRegularLayout.visibility = View.GONE
                     } else {
@@ -403,7 +411,7 @@ class GoalFragment : Fragment() {
         builder.setView(dialogView)
             .setPositiveButton("수정") { dialogInterface, i ->
 
-                //DB 데이터 수정
+
 
                 binding.apply {
                     val name = dialogScheduleName.text.toString()
@@ -417,6 +425,9 @@ class GoalFragment : Fragment() {
 //              입력된 DATA 정보들은 위와같다. (정규일정여부와 소요시간과 중요도(라디오버튼input)는 index정보로 db에 들어갈것이다)
                     //            val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
 
+                    CoroutineScope(Dispatchers.Main).launch{
+                        RetrofitManager.instance.modifySchedule(1759543463,schedule.SID,name,dbDate1,dbDate2,0,type,estimate,importance,detail,0)
+                    }
                 }
 
             }
