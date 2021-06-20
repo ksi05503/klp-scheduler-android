@@ -115,6 +115,7 @@ class StatsDayFragment : Fragment() {
                     textView.layoutParams = lp
                     layout.addView(textView)
                     binding!!.checkBoxLayout.visibility = View.GONE
+                    binding!!.submitBtn.visibility = View.GONE
                 }
             }
 
