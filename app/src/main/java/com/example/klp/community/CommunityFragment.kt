@@ -31,10 +31,6 @@ class CommunityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCommunityBinding.inflate(layoutInflater)
-        binding!!.apply {
-            val fadeInAndOut = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_inandout)
-            addArticleBtn.startAnimation(fadeInAndOut)
-        }
         return binding!!.root
     }
 
@@ -98,6 +94,8 @@ class CommunityFragment : Fragment() {
                 val intent = Intent(requireContext(), WriteArticleActivity::class.java)
                 startActivity(intent)
             }
+
+            addArticleBtn.startAnimation(AnimationUtils.loadAnimation(requireActivity(), R.anim.fade_inandout))
 
             //테스트
             CoroutineScope(Dispatchers.Main).launch {

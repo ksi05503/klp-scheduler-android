@@ -24,7 +24,7 @@ class ScheduleViewModel : ViewModel() {
             val liveData = LiveScheduleData<ArrayList<ScheduleData>>()
             val tmp = ArrayList<ScheduleData>()
             if (type == 0) {
-                val data = ArrayList(_newSchedules?.value?.filter { item -> item.SDONE == 0  }
+                val data = ArrayList(_newSchedules?.value?.filter { item -> item.SDONE == 0 && handleSdate(item.SDATE2.split('T')[0]).dayInt >= todayInt }
                     ?: tmp)
                 liveData.setData(data)
             } else {

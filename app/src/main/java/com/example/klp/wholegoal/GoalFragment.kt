@@ -60,15 +60,12 @@ class GoalFragment : Fragment() {
                 ) {
                     when (position) {
                         0 -> {
-                            Toast.makeText(parent?.context, "중요도 순", Toast.LENGTH_SHORT).show()
                             spinnerViewModel.select(0)
                         }
                         1 -> {
-                            Toast.makeText(parent?.context, "남은 기한 순", Toast.LENGTH_SHORT).show()
                             spinnerViewModel.select(1)
                         }
                         2 -> {
-                            Toast.makeText(parent?.context, "카테고리 별", Toast.LENGTH_SHORT).show()
                             spinnerViewModel.select(2)
                         }
                     }
