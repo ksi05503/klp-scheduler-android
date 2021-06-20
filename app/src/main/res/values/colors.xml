@@ -8,4 +8,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lineColor">#f2f1f1</color>
+    <color name="light_blue">#FF94C7FF</color>
+    <color name="light_purple">#FFD791FC</color>
 </resources>

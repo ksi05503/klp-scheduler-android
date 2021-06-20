@@ -60,15 +60,12 @@ class GoalFragment : Fragment() {
                 ) {
                     when (position) {
                         0 -> {
-                            Toast.makeText(parent?.context, "중요도 순", Toast.LENGTH_SHORT).show()
                             spinnerViewModel.select(0)
                         }
                         1 -> {
-                            Toast.makeText(parent?.context, "남은 기한 순", Toast.LENGTH_SHORT).show()
                             spinnerViewModel.select(1)
                         }
                         2 -> {
-                            Toast.makeText(parent?.context, "카테고리 별", Toast.LENGTH_SHORT).show()
                             spinnerViewModel.select(2)
                         }
                     }
@@ -83,11 +80,11 @@ class GoalFragment : Fragment() {
                 val adapter = GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
 
                 onGoingBtn.setOnClickListener {
-                    scheduleViewModel.setDone()
+                    scheduleViewModel.setOngoing()
                     adapter.setData(scheduleViewModel.newSchedules.value)
                 }
                 doneBtn.setOnClickListener {
-                    scheduleViewModel.setOngoing()
+                    scheduleViewModel.setDone()
                     adapter.setData(scheduleViewModel.newSchedules.value)
                 }
                 recyclerView = binding!!.goalFirstRecycler
@@ -344,8 +341,11 @@ class GoalFragment : Fragment() {
             sRegularLayout.visibility = View.VISIBLE
         }
 
-        var dbDate1 =""
-        var dbDate2 = ""
+        val monthStr1 = if(month1+1>=10)(month1+1)else("0"+(month1+1).toString())
+        val monthStr2 = if(month2+1>=10)(month2+1)else("0"+(month2+1).toString())
+
+        var dbDate1 ="${year1}-${monthStr1}-$day1"
+        var dbDate2 = "${year2}-${monthStr2}-$day2"
         calBtn1.setOnClickListener {
             var date_listener = object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(

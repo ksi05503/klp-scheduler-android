@@ -95,6 +95,8 @@ class CommunityFragment : Fragment() {
                 startActivity(intent)
             }
 
+            addArticleBtn.startAnimation(AnimationUtils.loadAnimation(requireActivity(), R.anim.fade_inandout))
+
             //테스트
             CoroutineScope(Dispatchers.Main).launch {
                 //RetrofitManager.instance.postDangerApp(1759543463, 6, app)
