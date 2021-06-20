@@ -37,11 +37,11 @@ class ScheduleViewModel : ViewModel() {
         }
 
     fun setDone() {
-        type = 0
+        type = 1
     }
 
     fun setOngoing() {
-        type = 1
+        type = 0
     }
 /*
 model(db) view(layout) control

@@ -17,7 +17,6 @@ import kotlin.math.round
 
 class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
 
-
     inner class ViewHolder(binding: GoalRowBinding):RecyclerView.ViewHolder(binding.root){
         val sname: TextView = binding.sname
         val sdate: TextView = binding.sdate
@@ -26,10 +25,7 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         val stype: TextView = binding.stype
         val per_circle: ProgressBar = binding.percentCircle
         val doneCheckBox: CheckBox = binding.doneCheckBox
-
-
     }
-
 
     fun setData(data: ArrayList<ScheduleData>?) {
         scheList = data
@@ -65,9 +61,6 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
 
         //완료일정인경우 체크박스가 표시되어있는채로
         holder.doneCheckBox.isChecked = scheList!![position].SDONE==1
-
-
-
 
         //텍스트바인드
         val hsd = handleSdate(scheList!![position].SDATE2)
