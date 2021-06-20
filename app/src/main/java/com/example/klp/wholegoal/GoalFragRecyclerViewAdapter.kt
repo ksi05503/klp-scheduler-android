@@ -11,11 +11,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.klp.customclass.handleSdate
 import com.example.klp.data.ScheduleData
 import com.example.klp.databinding.GoalRowBinding
+import com.example.klp.retrofit.RetrofitManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.math.round
 
 
 class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):RecyclerView.Adapter<GoalFragRecyclerViewAdapter.ViewHolder>() {
+
 
     inner class ViewHolder(binding: GoalRowBinding):RecyclerView.ViewHolder(binding.root){
         val sname: TextView = binding.sname
@@ -25,7 +30,10 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
         val stype: TextView = binding.stype
         val per_circle: ProgressBar = binding.percentCircle
         val doneCheckBox: CheckBox = binding.doneCheckBox
+
+
     }
+
 
     fun setData(data: ArrayList<ScheduleData>?) {
         scheList = data
@@ -43,6 +51,8 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val cal = Calendar.getInstance()
+        val todayInt = cal.get(Calendar.YEAR)*10000+ (cal.get(Calendar.MONTH)+1)*100 + cal.get(Calendar.DATE)
 
         holder.itemView.setOnClickListener {
             itemClickListener.onClick(it, position)
@@ -53,14 +63,27 @@ class GoalFragRecyclerViewAdapter(var scheList:ArrayList<ScheduleData>?):Recycle
 
         holder.doneCheckBox.setOnCheckedChangeListener { buttonView, isChecked ->
             if(isChecked){
-                //잘 동작하는거 확인했음 (여기서 DB에 sdone = 1 로 patch)
+
+                CoroutineScope(Dispatchers.Main).launch{
+                    RetrofitManager.instance.modifySchedule(1759543463,scheList!!.get(position).SID,scheList!!.get(position).SNAME,scheList!!.get(position).SDATE1.split('T')[0],scheList!!.get(position).SDATE2.split('T')[0],0,scheList!!.get(position).STYPE,scheList!!.get(position).SESTIMATE,scheList!!.get(position).SIMPORTANCE,scheList!!.get(position).SDETAIL,1)
+                    //완료일정인경우 체크박스가 표시되어있는채로
+                    holder.doneCheckBox.isChecked = scheList!![position].SDONE==1 || handleSdate(scheList!!.get(position).SDATE2.split('T')[0]).dayInt < todayInt
+                    handleSdate(scheList!!.get(position).SDATE2.split('T')[0]).dayInt < todayInt
+                }
             }else{
-                //여기서 DB에 sdone = 0 으로 patch
+                CoroutineScope(Dispatchers.Main).launch{
+                    RetrofitManager.instance.modifySchedule(1759543463,scheList!!.get(position).SID,scheList!!.get(position).SNAME,scheList!!.get(position).SDATE1.split('T')[0],scheList!!.get(position).SDATE2.split('T')[0],0,scheList!!.get(position).STYPE,scheList!!.get(position).SESTIMATE,scheList!!.get(position).SIMPORTANCE,scheList!!.get(position).SDETAIL,0)
+                }
             }
         }
 
+
+
         //완료일정인경우 체크박스가 표시되어있는채로
-        holder.doneCheckBox.isChecked = scheList!![position].SDONE==1
+        holder.doneCheckBox.isChecked = scheList!![position].SDONE==1 || handleSdate(scheList!!.get(position).SDATE2.split('T')[0]).dayInt < todayInt
+        handleSdate(scheList!!.get(position).SDATE2.split('T')[0]).dayInt < todayInt
+
+
 
         //텍스트바인드
         val hsd = handleSdate(scheList!![position].SDATE2)
