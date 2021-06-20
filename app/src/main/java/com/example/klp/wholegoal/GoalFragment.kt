@@ -342,12 +342,12 @@ class GoalFragment : Fragment() {
         val year1 = handleSdate(schedule.SDATE1).year
         val month1 = handleSdate(schedule.SDATE1).month
         val day1 = handleSdate(schedule.SDATE1).day
-        calBtn1.text = "${year1}/${month1 + 1}/$day1"
+        calBtn1.text = "${year1}/${month1}/$day1"
 
         val year2 = handleSdate(schedule.SDATE2).year
         val month2 = handleSdate(schedule.SDATE2).month
         val day2 = handleSdate(schedule.SDATE2).day
-        calBtn2.text = "${year2}/${month2 + 1}/$day2"
+        calBtn2.text = "${year2}/${month2}/$day2"
         if (calBtn1.text == calBtn2.text) {
             sRegularLayout.visibility = View.GONE
         } else {
