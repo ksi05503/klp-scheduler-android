@@ -66,7 +66,7 @@ class StatsDayFragment : Fragment() {
         )
         val appSet = GlobalApplication.prefs.getStringSet()
         val appList = ArrayList<String>()
-        if (appList == null) {
+        if (appSet == null) {
             val intent = Intent(requireActivity(), AppListActivity::class.java)
             startActivity(intent)
         } else {
