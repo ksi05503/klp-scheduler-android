@@ -129,7 +129,17 @@ class GoalFragment : Fragment() {
                             //DB 데이터 삭제
                                 CoroutineScope(Dispatchers.Main).launch{
                                     RetrofitManager.instance.deleteSchedule(1759543463,item.SID)
+                                    scheduleViewModel._newSchedules.value =
+                                        RetrofitManager.instance.getGoals(1759543463)
+                                    Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
+                                    val adapter =
+                                        GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
+                                    adapter.notifyDataSetChanged()
+                                    adapter.setData(scheduleViewModel.newSchedules.value)
+                                    scheduleViewModel.setOngoing()
+
                                 }
+
                             }
                             .setNegativeButton("취소") { dialogInterface, i ->
                                 /* 취소일 때 아무 액션이 없으므로 빈칸 */
@@ -427,6 +437,14 @@ class GoalFragment : Fragment() {
 
                     CoroutineScope(Dispatchers.Main).launch{
                         RetrofitManager.instance.modifySchedule(1759543463,schedule.SID,name,dbDate1,dbDate2,0,type,estimate,importance,detail,0)
+                        scheduleViewModel._newSchedules.value =
+                            RetrofitManager.instance.getGoals(1759543463)
+                        Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
+                        val adapter =
+                            GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
+                        adapter.notifyDataSetChanged()
+                        scheduleViewModel.setOngoing()
+                        adapter.setData(scheduleViewModel.newSchedules.value)
                     }
                 }
 

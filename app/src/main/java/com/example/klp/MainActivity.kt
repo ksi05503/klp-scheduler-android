@@ -2,6 +2,7 @@ package com.example.klp
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
@@ -15,6 +16,7 @@ import com.example.klp.statistics.StatsDayFragment
 import com.example.klp.statistics.StatsMonthFragment
 import com.example.klp.statistics.StatsWeekFragment
 import com.example.klp.statistics.ViewModelForStatsTab
+import com.example.klp.wholegoal.GoalFragRecyclerViewAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -230,11 +232,20 @@ class MainActivity : AppCompatActivity() {
 
                         CoroutineScope(Dispatchers.Main).launch{
                             RetrofitManager.instance.addSchedule(1759543463,101,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
+
+                            scheduleViewModel._newSchedules.value =
+                                RetrofitManager.instance.getGoals(1759543463)
+                            Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
+                            val adapter =
+                                GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
+                            adapter.notifyDataSetChanged()
+                            adapter.setData(scheduleViewModel.newSchedules.value)
+
+
+
                         }
 
-
-
-                    }
+                        }
 
                 }
                 .setNegativeButton("취소") { dialogInterface, i ->
@@ -413,7 +424,17 @@ class MainActivity : AppCompatActivity() {
                         //            val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
 
                         CoroutineScope(Dispatchers.Main).launch{
-                            RetrofitManager.instance.autoInsert(1759543463,55,name,dbDate2,0,0,type,estimate,importance,detail)
+                            RetrofitManager.instance.autoInsert(1759543463,59,name,dbDate2,0,0,type,estimate,importance,detail)
+
+                            scheduleViewModel._newSchedules.value =
+                                RetrofitManager.instance.getGoals(1759543463)
+                            Log.d("HI", "!@# " + scheduleViewModel.newSchedules.value.toString())
+                            val adapter =
+                                GoalFragRecyclerViewAdapter(scheduleViewModel.newSchedules.value)
+                            adapter.notifyDataSetChanged()
+                            scheduleViewModel.setOngoing()
+                            adapter.setData(scheduleViewModel.newSchedules.value)
+
                         }
 
 
