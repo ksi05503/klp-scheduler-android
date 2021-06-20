@@ -229,7 +229,7 @@ class MainActivity : AppCompatActivity() {
 
 
                         CoroutineScope(Dispatchers.Main).launch{
-                            RetrofitManager.instance.addSchedule(1759543463,22,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
+                            RetrofitManager.instance.addSchedule(1759543463,101,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
                         }
 
 
@@ -412,7 +412,7 @@ class MainActivity : AppCompatActivity() {
                         //            val newSchedule: ScheduleData = ScheduleData("임시id", -1, name,dbDate,dbTime,regular,type,estimate,importance,detail)
 
                         CoroutineScope(Dispatchers.Main).launch{
-                            RetrofitManager.instance.autoInsert(1759543463,54,name,dbDate2,0,0,type,estimate,importance,detail)
+                            RetrofitManager.instance.autoInsert(1759543463,55,name,dbDate2,0,0,type,estimate,importance,detail)
                         }
 
 

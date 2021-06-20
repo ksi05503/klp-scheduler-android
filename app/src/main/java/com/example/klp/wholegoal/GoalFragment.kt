@@ -344,8 +344,11 @@ class GoalFragment : Fragment() {
             sRegularLayout.visibility = View.VISIBLE
         }
 
-        var dbDate1 =""
-        var dbDate2 = ""
+        val monthStr1 = if(month1+1>=10)(month1+1)else("0"+(month1+1).toString())
+        val monthStr2 = if(month2+1>=10)(month2+1)else("0"+(month2+1).toString())
+
+        var dbDate1 ="${year1}-${monthStr1}-$day1"
+        var dbDate2 = "${year2}-${monthStr2}-$day2"
         calBtn1.setOnClickListener {
             var date_listener = object : DatePickerDialog.OnDateSetListener {
                 override fun onDateSet(
