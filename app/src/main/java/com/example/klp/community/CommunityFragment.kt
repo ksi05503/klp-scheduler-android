@@ -31,6 +31,10 @@ class CommunityFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCommunityBinding.inflate(layoutInflater)
+        binding!!.apply {
+            val fadeInAndOut = AnimationUtils.loadAnimation(requireContext(), R.anim.fade_inandout)
+            addArticleBtn.startAnimation(fadeInAndOut)
+        }
         return binding!!.root
     }
 
