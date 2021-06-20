@@ -96,7 +96,7 @@ class RetrofitManager {
         type: String,
         from: String?,
         to: String?,
-        uid: Int?,
+        uid: Int?=null,
         achieved: Int?
     ): Any {
         return execute(iRetrofit.getStats(type, from, to, uid, achieved))

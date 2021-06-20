@@ -33,50 +33,32 @@ class StatsWeekFragment : Fragment() {
         return binding!!.root
     }
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        CoroutineScope(Dispatchers.Main).launch  {
+        val from = "2021-06-16"
+        val to = "2021-06-20"
+        CoroutineScope(Dispatchers.Main).launch {
             //RetrofitManager.instance.postDangerApp(1759543463, 6, app)
-            val notAchievedC = RetrofitManager.instance.getStats(
-                "count",
-                "2021-06-16",
-                "2021-06-20",
-                1759543463,
-                0
-            )
-            Log.d("HI", notAchievedC.toString())
-            val achievedC = RetrofitManager.instance.getStats(
-                "count",
-                "2021-06-16",
-                "2021-06-20",
-                1759543463,
-                1
-            )
-            Log.d("HI", achievedC.toString())
-            val notAchievedM =
-                RetrofitManager.instance.getStats("mean", "2021-06-16", "2021-06-20", 1759543463, 0)
-            Log.d("HI", "asdasdasd: "+ notAchievedM.toString())
-            val achievedM =
-                RetrofitManager.instance.getStats("mean", "2021-06-16", "2021-06-20", 1759543463, 1)
             val notAchievedS =
-                RetrofitManager.instance.getStats("std", "2021-06-16", "2021-06-20", 1759543463, 0)
+                RetrofitManager.instance.getStats("std", from, to, 1759543463, 0)
             val achievedS =
-                RetrofitManager.instance.getStats("std", "2021-06-16", "2021-06-20", 1759543463, 1)
+                RetrofitManager.instance.getStats("std", from, to, 1759543463, 1)
             val appUsageTime = RetrofitManager.instance.getUsageTime(
                 "object",
-                "2021-06-17",
-                "2021-06-20",
+                from,
+                to,
                 uid = 1759543463
             )
             val appUsageTimeM = RetrofitManager.instance.getUsageTime(
                 "mean",
-                "2021-06-17",
-                "2021-06-20",
+                from,
+                to,
                 uid = 1759543463
             )
-            Log.d("HI", "APPU: "+ appUsageTime.toString())
-            Log.d("HI", "APPU: "+ appUsageTimeM.toString())
+            Log.d("HI", "APPU: " + appUsageTime.toString())
+            Log.d("HI", "APPU: " + appUsageTimeM.toString())
 
             withContext(Dispatchers.Main) {
                 val day = arrayOf("5/25", "5/26", "5/27", "5/28", "5/29", "5/30")
@@ -139,28 +121,32 @@ class StatsWeekFragment : Fragment() {
                 combinedChart.invalidate()
 
                 if (true) {
+                    val notAchievedC =
+                        RetrofitManager.instance.getStats("count", from, to, 1759543463, 0)
+                    val achievedC =
+                        RetrofitManager.instance.getStats("count", from, to, 1759543463, 1)
+                    val notAchievedM =
+                        RetrofitManager.instance.getStats("mean", from, to, 1759543463, 0)
+                    val achievedM =
+                        RetrofitManager.instance.getStats("mean", from, to, 1759543463, 1)
+                    val AllnotAchievedM =
+                        RetrofitManager.instance.getStats("mean", from, to, achieved=0)
+                    val AllachievedM =
+                        RetrofitManager.instance.getStats("mean", from, to, achieved=1)
+                    Log.d("HI", "ac: " + notAchievedC)
+                    Log.d("HI", "ac: " + achievedC)
+                    binding!!.sMeanText.text = "평균: ${valueParser(notAchievedM as String)}"
+                    binding!!.tsMeanText.text = "평균: ${valueParser(achievedM as String)}"
                     val chart: ScatterChart = binding!!.scatterChart
 
                     val entries1 = ArrayList<Entry>()
-                    notAchievedC
-                    entries1.add(Entry(1f, 3f))
-                    entries1.add(Entry(2f, 1f))
-                    entries1.add(Entry(3f, 3f))
-                    entries1.add(Entry(4f, 2f))
-                    entries1.add(Entry(5f, 2f))
-                    entries1.add(Entry(6f, 1f))
-                    entries1.add(Entry(7f, 3f))
+                    countParser(notAchievedC as String, entries1)
                     val set1 = ScatterDataSet(entries1, "완료한 일정 수")
                     set1.setScatterShape(ScatterChart.ScatterShape.TRIANGLE)
                     set1.color = ColorTemplate.COLORFUL_COLORS[1]
                     val entries2 = ArrayList<Entry>()
-                    entries2.add(Entry(1f, 5f))
-                    entries2.add(Entry(2f, 3f))
-                    entries2.add(Entry(3f, 4f))
-                    entries2.add(Entry(4f, 5f))
-                    entries2.add(Entry(5f, 4f))
-                    entries2.add(Entry(6f, 4f))
-                    entries2.add(Entry(7f, 3f))
+                    countParser(achievedC as String, entries2)
+
                     val set2 = ScatterDataSet(entries2, "계획한 일정 수")
                     set2.setScatterShape(ScatterChart.ScatterShape.SQUARE)
                     set2.color = ColorTemplate.COLORFUL_COLORS[0]
@@ -180,5 +166,23 @@ class StatsWeekFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun countParser(str: String, entry: ArrayList<Entry>) {
+        val tmp = str.split('[')[1]
+        val arr = tmp.substring(10, tmp.length - 8).split('{')
+        for (i in 0 until arr.size) {
+            val sub = arr[i].split('"')
+            val day = sub[1].substring(0, 3)
+            var count = sub[2].substring(2, 4)
+            if (count[1] == '\n') count = count.substring(0, 1)
+            val value = count.toFloat()
+
+            entry.add(Entry(i.toFloat(), value))
+        }
+    }
+    private fun valueParser(str: String): Float {
+        val sub = str.split('"')[2]
+        return sub.substring(2, sub.length - 1).toFloat()
     }
 }
