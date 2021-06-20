@@ -11,59 +11,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@color/white"
+        android:elevation="10dp"
+        android:orientation="vertical">
+
+        <Spinner
+            android:id="@+id/goalSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:entries="@array/goalSpinner"
+            android:textAlignment="center" />
 
         <LinearLayout
-            android:id="@+id/goalEditLayout"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:gravity="center"
             android:orientation="horizontal"
-            android:padding="2dp">
+            android:padding="7dp">
 
-            <Spinner
-                android:id="@+id/goalSpinner"
+            <LinearLayout
+                android:id="@+id/onGoingBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:entries="@array/goalSpinner"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/gradient_button"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:padding="15dp">
 
-                android:textAlignment="center" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="진행중인 일정"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/doneBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_weight="1"
+                android:background="@drawable/gradient_button"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:padding="15dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="종료된 일정"
+                    android:textAlignment="center"
+                    android:textColor="@color/white" />
+            </LinearLayout>
 
         </LinearLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/onGoingBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:backgroundTint="#E8E6E6"
-            android:text="진행중인 일정"
-            android:textColor="#000000"
-            app:iconPadding="8dp" />
-
-        <View
-            android:layout_width="3dp"
-            android:layout_height="0dp"/>
-
-        <Button
-            android:id="@+id/doneBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:backgroundTint="#E8E6E6"
-            android:text="종료된 일정"
-            android:textColor="#000000" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

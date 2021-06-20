@@ -38,6 +38,10 @@ interface IRetrofit {
     /*
         GET METHOD
     */
+    // /getForms
+    @GET("/getForms")
+    suspend fun getForms(
+    ): Response<ResponseBody>
 
     @GET("/posts/{id}")
     suspend fun getPost(
