@@ -197,7 +197,7 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         val monthStr = if(month+1>=10)(month+1)else("0"+(month+1).toString())
                         calBtn2.text = "$year/${month + 1}/$dayOfMonth"
-                        dbDate2 = "$year-${monthStr}-${dayOfMonth}T"
+                        dbDate2 = "$year-${monthStr}-${dayOfMonth}"
                         if(calBtn1.text == calBtn2.text ){
                             sRegularLayout.visibility = View.GONE
                         } else {
@@ -231,6 +231,7 @@ class MainActivity : AppCompatActivity() {
                         CoroutineScope(Dispatchers.Main).launch{
                             RetrofitManager.instance.addSchedule(1759543463,101,name,dbDate1,dbDate2,regular,type,estimate,importance,detail,0)
                         }
+
 
 
                     }
