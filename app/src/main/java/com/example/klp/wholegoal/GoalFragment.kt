@@ -425,9 +425,6 @@ class GoalFragment : Fragment() {
 
         builder.setView(dialogView)
             .setPositiveButton("수정") { dialogInterface, i ->
-
-
-
                 binding.apply {
                     val name = dialogScheduleName.text.toString()
                     val type = dialogScheduleTypeSpinner.selectedItem.toString()

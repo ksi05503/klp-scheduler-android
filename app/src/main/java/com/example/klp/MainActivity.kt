@@ -58,7 +58,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    //              일정추가 dialog
+    // 일정추가 dialog
     private fun dialogBuilder(flag: Int) {
 
         binding.addBtn.setOnClickListener {
@@ -87,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 
             var calendar = Calendar.getInstance()
             var myYear = calendar.get(Calendar.YEAR)
-            var myMonth = calendar.get(Calendar.MONTH+1)
+            var myMonth = calendar.get(Calendar.MONTH)
             var myDay = calendar.get(Calendar.DAY_OF_MONTH)
 
             val radioButtonWeekly = dialogView.findViewById<RadioButton>(R.id.radioButtonWeekly)
@@ -172,7 +172,7 @@ class MainActivity : AppCompatActivity() {
                         myYear = year
                         myMonth = month+1
                         myDay = dayOfMonth
-                        calBtn2.text = "$myYear/${myMonth + 1}/$myDay"
+                        calBtn2.text = "$myYear/${myMonth}/$myDay"
 
                         if (calBtn1.text == calBtn2.text) {
                             sRegularLayout.visibility = View.GONE
@@ -289,7 +289,7 @@ class MainActivity : AppCompatActivity() {
 
             var calendar = Calendar.getInstance()
             var myYear = calendar.get(Calendar.YEAR)
-            var myMonth = calendar.get(Calendar.MONTH+1)
+            var myMonth = calendar.get(Calendar.MONTH)
             var myDay = calendar.get(Calendar.DAY_OF_MONTH)
 
             val radioButtonWeekly = dialogView.findViewById<RadioButton>(R.id.radioButtonWeekly)
@@ -372,7 +372,7 @@ class MainActivity : AppCompatActivity() {
                         myYear = year
                         myMonth = month
                         myDay = dayOfMonth
-                        calBtn2.text = "$myYear/${myMonth + 1}/$myDay"
+                        calBtn2.text = "$myYear/${myMonth }/$myDay"
 
                         if (calBtn1.text == calBtn2.text) {
                             sRegularLayout.visibility = View.GONE
@@ -445,14 +445,10 @@ class MainActivity : AppCompatActivity() {
                             adapter.setData(scheduleViewModel.newSchedules.value)
 
                         }
-
-
                     }
-
                 }
                 .setNegativeButton("취소") { dialogInterface, i ->
                     /* 취소일 때 아무 액션이 없으므로 빈칸 */
-
                 }
                 .show()
         }
