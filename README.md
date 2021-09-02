@@ -10,7 +10,7 @@
     <a href="http://ecampus.konkuk.ac.kr/">ecampus</a>
 </p>
 
-[klp스케줄러 보고서](https://github.com/ksi05503/klp-scheduler-android/files/7101777/klp_scheduler_pdf.pdf)
+[klp scheduler 보고서 pdf](https://github.com/ksi05503/klp-scheduler-android/files/7101777/klp_scheduler_pdf.pdf)
 
 <!-- 목차 -->
 <details open="open">
