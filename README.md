@@ -1,3 +1,4 @@
+[klp_scheduler_pdf.pdf](https://github.com/ksi05503/klp-scheduler-android/files/7101777/klp_scheduler_pdf.pdf)
 <h1 align="center">KU MobileProgramming Team Project</h1>
 <p align="center">사용자 친화적 스케줄러 앱
 <br />
