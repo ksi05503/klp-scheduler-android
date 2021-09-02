@@ -12,23 +12,6 @@
 
 [klp scheduler 보고서 pdf](https://github.com/ksi05503/klp-scheduler-android/files/7101777/klp_scheduler_pdf.pdf)
 
-<!-- 목차 -->
-<details open="open">
-  <summary>Table of contents</summary>
-  <ol>
-    <li>
-      <a href="#description">Description</a>
-      <ul>
-        <li><a href="#Environment">Environment</a></li>
-      </ul>
-    </li>
-    <li><a href="#issue">Issue</a></li>
-    <li><a href="#function">Function</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#reference">Reference</a></li>
-  </ol>
-</details>
-
 
 
 <!-- DESCRIPTION -->
@@ -45,34 +28,6 @@
 * [AWS](https://aws.amazon.com/ko/)
 
 
-
-<!-- ISSUE -->
-## Issue
-1. 예시
-2. 예시
-3. 예시
-4. 예시
-5. 예시
-
-
-
-<!-- FUNCTION -->
-## Function
-* 1
-  ```sh
-  예시
-  ```
-* 2
-  ```sh
-  예시
-  ```
-* 3
-  ```sh
-  예시
-  ```
-  
-  
-  
 <!-- CONTACT -->
 ## Contact
 
