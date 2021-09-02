@@ -1,4 +1,4 @@
-<h1 align="center">(2021) 모바일 프로그래밍 팀 프로젝트</h1>
+<h1 align="center">KU MobileProgramming Team Project</h1>
 <p align="center">사용자 친화적 스케줄러 앱
 <br />
 <br />
