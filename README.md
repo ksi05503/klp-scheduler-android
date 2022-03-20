@@ -3,11 +3,6 @@
 <p align="center">사용자 친화적 스케줄러 앱
 <br />
 <br />
-    <a href="https://www.notion.so/MobilePrograming-b350334d6ae34fdd8842c6ad62dc7138">notion</a>
-    ·
-    <a href="https://app.diagrams.net/#G1RdXiJbnTlNnzXujYvS4g6mfIRDcKWq-5">draw.io</a>
-    ·
-    <a href="http://ecampus.konkuk.ac.kr/">ecampus</a>
 </p>
 
 ## Result
